@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	urxvt
+	xfce4-terminal
 
 # program launcher
 super + @space
@@ -119,3 +119,16 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+#
+# volume Control
+# https://www.reddit.com/r/bspwm/comments/lsz5jw/volume_control_keys/
+#
+
+XF86AudioLowerVolume
+	amixer set Master 5%-
+XF86AudioRaiseVolume
+	amixer set Master 5%+
+XF86AudioMute
+        amixer set Master toggle
+
