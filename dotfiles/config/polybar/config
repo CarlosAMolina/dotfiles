@@ -103,19 +103,6 @@ label-warn-foreground = ${colors.secondary}
 ramp-0 = temp
 ramp-foreground = ${colors.foreground-alt}
 
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
-
-format-prefix = "keyboard "
-format-prefix-foreground = ${colors.foreground-alt}
-
-label-layout = %layout%
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
-
 [module/network-wireless]
 type = internal/network
 interface = wlp3s0
@@ -130,6 +117,19 @@ interval = 5
 click-right = pavucontrol
 label-muted = muted
 label-muted-foreground = #66
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = "keyboard "
+format-prefix-foreground = ${colors.foreground-alt}
+
+label-layout = %layout%
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
 
 [settings]
 screenchange-reload = true
