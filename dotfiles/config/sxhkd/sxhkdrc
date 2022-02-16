@@ -2,10 +2,6 @@
 # wm independent hotkeys
 #
 
-# terminal emulator
-super + Return
-	xfce4-terminal
-
 # program launcher
 super + @space
 	dmenu_run
@@ -131,4 +127,17 @@ XF86AudioRaiseVolume
 	amixer set Master 5%+
 XF86AudioMute
         amixer set Master toggle
+
+#
+# software
+#
+
+ctrl + alt + t
+	xfce4-terminal
+
+ctrl + alt + k
+        $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
+
+ctrl + alt + f
+        $HOME/Software/firefox/firefox/firefox
 
