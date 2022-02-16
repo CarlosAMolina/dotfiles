@@ -132,12 +132,15 @@ XF86AudioMute
 # software
 #
 
-ctrl + alt + t
-	xfce4-terminal
+ctrl + alt + f
+        $HOME/Software/firefox/firefox/firefox
 
 ctrl + alt + k
         $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
 
-ctrl + alt + f
-        $HOME/Software/firefox/firefox/firefox
+ctrl + alt + p
+        bash $HOME/.config/polybar/launch.sh
+
+ctrl + alt + t
+	xfce4-terminal
 
