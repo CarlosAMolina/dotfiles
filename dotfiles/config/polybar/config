@@ -30,7 +30,7 @@ module-margin-right = 2
 
 font-0 = fixed:pixelsize=10;1
 
-modules-right = filesystem cpu memoryram memoryswap temperature xkeyboard network-wireless pulseaudio date
+modules-right = filesystem cpu memoryram memoryswap temperature xkeyboard network-wireless pulseaudio date menupower
 
 tray-position = right
 tray-padding = 2
@@ -87,6 +87,23 @@ label = %percentage_used%%/%gb_total%
 inherit = memory
 format-prefix = "swap "
 label = %percentage_swap_used%%/%gb_swap_total%
+
+[module/menupower]
+type = custom/menu
+
+format-spacing = 1
+
+label-open = power
+label-close = cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+
+menu-0-0 = reboot
+menu-0-0-exec = systemctl reboot
+menu-0-1 = power off
+menu-0-1-exec = systemctl poweroff
+menu-0-2 = logout
+menu-0-2-exec = bspc quit
 
 [module/temperature]
 type = internal/temperature
