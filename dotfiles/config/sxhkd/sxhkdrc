@@ -135,8 +135,9 @@ XF86AudioMute
 ctrl + alt + f
         $HOME/Software/firefox/firefox/firefox
 
+# https://www.reddit.com/r/bspwm/comments/6sr7ix/open_application_in_a_specific_desktop_and_then/
 ctrl + alt + k
-        $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
+        bspc desktop --focus ^2 && $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
 
 ctrl + alt + p
         bash $HOME/.config/polybar/launch.sh

@@ -94,8 +94,6 @@ type = custom/menu
 format-spacing = 1
 
 label-open = power
-label-close = cancel
-label-close-foreground = ${colors.secondary}
 label-separator = |
 
 menu-0-0 = reboot
@@ -104,6 +102,8 @@ menu-0-1 = power off
 menu-0-1-exec = systemctl poweroff
 menu-0-2 = logout
 menu-0-2-exec = bspc quit
+menu-0-3 = cancel
+menu-0-3-foreground = ${colors.secondary}
 
 [module/temperature]
 type = internal/temperature
