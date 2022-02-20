@@ -151,6 +151,9 @@ ctrl + alt + p
 ctrl + alt + r
         rofi -show run
 
+ctrl + alt + s
+        subl
+
 #ctrl + alt + t
 super + Return
 	xfce4-terminal
