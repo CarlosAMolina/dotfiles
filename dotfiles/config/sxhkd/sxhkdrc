@@ -148,6 +148,9 @@ ctrl + alt + k
 ctrl + alt + p
         bash $HOME/.config/polybar/launch.sh
 
+ctrl + alt + r
+        rofi -show run
+
 #ctrl + alt + t
 super + Return
 	xfce4-terminal
