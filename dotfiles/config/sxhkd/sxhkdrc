@@ -136,7 +136,7 @@ ctrl + alt + b
         bspc desktop --focus ^2 && protonmail-bridge
 
 ctrl + alt + e
-        /home/x/Software/thunderbird/thunderbird/thunderbird
+        $HOME/Software/thunderbird/thunderbird/thunderbird
 
 ctrl + alt + f
         $HOME/Software/firefox/firefox/firefox
