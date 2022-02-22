@@ -93,17 +93,21 @@ type = custom/menu
 
 format-spacing = 1
 
-label-open = power
+label-open = system
 label-separator = |
 
-menu-0-0 = reboot
-menu-0-0-exec = systemctl reboot
-menu-0-1 = power off
-menu-0-1-exec = systemctl poweroff
-menu-0-2 = logout
-menu-0-2-exec = bspc quit
-menu-0-3 = cancel
-menu-0-3-foreground = ${colors.secondary}
+menu-0-0 = power off
+menu-0-0-exec = systemctl poweroff
+menu-0-1 = reboot
+menu-0-1-exec = systemctl reboot
+menu-0-2 = suspend
+menu-0-2-exec = i3lock -i ~/Imágenes/lockscreen.png && systemctl suspend
+menu-0-3 = logout
+menu-0-3-exec = bspc quit
+menu-0-4 = lock screen
+menu-0-4-exec = i3lock
+menu-0-5 = cancel
+menu-0-5-foreground = ${colors.secondary}
 
 [module/temperature]
 type = internal/temperature
