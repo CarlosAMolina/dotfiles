@@ -146,7 +146,7 @@ ctrl + alt + k
         bspc desktop --focus ^2 && $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
 
 ctrl + alt + l
-        i3lock -i $HOME/Imágenes/lockscreen.png
+        $HOME/.config/i3lock/lockscreen
 
 ctrl + alt + p
         bash $HOME/.config/polybar/launch.sh
