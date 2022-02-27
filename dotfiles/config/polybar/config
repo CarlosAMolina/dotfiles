@@ -31,7 +31,7 @@ module-margin-right = 2
 font-0 = fixed:pixelsize=10;1
 
 modules-left = xworkspaces
-modules-right = pulseaudio filesystem cpu memoryram memoryswap network-wireless network-ethernet battery temperature date xkeyboard menupower
+modules-right = pulseaudio filesystem cpu memoryram memoryswap network-wireless network-ethernet backlight battery temperature date xkeyboard menupower
 
 tray-position = right
 tray-padding = 2
