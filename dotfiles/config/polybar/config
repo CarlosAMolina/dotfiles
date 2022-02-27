@@ -45,6 +45,12 @@ bottom = true
 ;Locale. Used in timezone, for example
 locale = es_ES.UTF-8
 
+[module/backlight]
+type = internal/backlight
+card = intel_backlight
+format = <label>
+label = BL %percentage%%
+
 [module/cpu]
 type = internal/cpu
 interval = 2
