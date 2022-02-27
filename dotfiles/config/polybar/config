@@ -31,7 +31,7 @@ module-margin-right = 2
 font-0 = fixed:pixelsize=10;1
 
 modules-left = xworkspaces
-modules-right = filesystem cpu memoryram memoryswap temperature pulseaudio network-wireless date menupower xkeyboard
+modules-right = pulseaudio filesystem cpu memoryram memoryswap network-wireless network-ethernet battery temperature date xkeyboard menupower
 
 tray-position = right
 tray-padding = 2
@@ -50,6 +50,25 @@ type = internal/backlight
 card = intel_backlight
 format = <label>
 label = BL %percentage%%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 100
+
+time-format = %H:%M
+format-charging = <label-charging>
+format-discharging = <label-discharging>
+format-charging-prefix = +
+format-discharging-prefix = -
+format-full-prefix = "full"
+format-charging-prefix-foreground = ${colors.foreground-alt}
+format-discharging-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix-foreground = ${colors.foreground-alt}
+
+label-charging = %percentage%% (%time%)
+label-discharging = %percentage%% (%time%)
 
 [module/cpu]
 type = internal/cpu
@@ -130,13 +149,23 @@ label-warn-foreground = ${colors.secondary}
 ramp-0 = 
 ramp-foreground = ${colors.foreground-alt}
 
-[module/network-wireless]
+[module/network]
 type = internal/network
-interface = wlp3s0
 interval = 3.0
-label-connected = %essid%
-label-disconnected = not connected
-label-disconnected-foreground = #66ffffff
+format-connected = <label-connected>
+format-disconnected = <label-disconnected>
+label-disconnected = %ifname% disconnected
+label-disconnected-foreground = ${colors.background-alt}
+
+[module/network-ethernet]
+inherit = module/network
+interface = enp2s0
+label-connected = %ifname% connected
+
+[module/network-wireless]
+inherit = module/network
+interface = wlp3s0
+label-connected = %ifname% %essid%
 
 [module/pulseaudio]
 type = internal/pulseaudio
