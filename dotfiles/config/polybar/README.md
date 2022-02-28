@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Proyect to configure Polybar.
+Project to configure Polybar.
 
 ## Steps
 
@@ -18,24 +18,15 @@ Create the folder to save the configuration:
 mkdir -p ~/.config/polybar/
 ```
 
-Configure environment variables:
-
-```bash
-vi ~/.bashrc
-# Add:
-# # Network interfaces
-# export INTERFACE_ETHERNET="$(ls /sys/class/net | grep enp)"
-# export INTERFACE_WIRELESS="$(ls /sys/class/net | grep wlp)"
-source ~/.bashrc
-```
-
-Copy the `config` file in the previous folder.
+Copy the `config` and `launch.sh` files in the previous folder.
 
 Run polybar:
 
 ```bash
-polybar bar1
+bash $HOME/.config/polybar/launch.sh
 ```
+
+Note, you can run polybar with `polybar bar1` but you need to configure in `~/.bashrc` the environment variables `INTERFACE_ETHERNET` and `INTERFACE_WIRELESS` configured at `launch.sh` and run `source ~/.bashrc`.
 
 ## Resources
 
