@@ -153,23 +153,20 @@ ramp-foreground = ${colors.foreground-alt}
 type = internal/network
 interval = 3.0
 format-connected = <label-connected>
+label-connected = ${self.label}
 format-disconnected = <label-disconnected>
-;label-disconnected = %ifname% disconnected
+label-disconnected = ${self.label}
 label-disconnected-foreground = ${colors.background-alt}
 
 [module/network-ethernet]
 inherit = module/network
 interface = ${env:INTERFACE_ETHERNET}
-;label-connected = %ifname% connected
-label-connected = eth connected
-label-disconnected = eth disconnected
+label = eth
 
 [module/network-wireless]
 inherit = module/network
 interface = ${env:INTERFACE_WIRELESS}
-;label-connected = %ifname% %essid%
-label-connected = wlan connected
-label-disconnected = wlan disconnected
+label = wlan
 
 [module/pulseaudio]
 type = internal/pulseaudio
