@@ -1,5 +1,6 @@
 # i3status configuration file.
 # see "man i3status" for documentation.
+# https://i3wm.org/docs/i3status.html
 
 # It is important that this file is edited as UTF-8.
 # The following line should contain a sharp s:
@@ -8,7 +9,7 @@
 
 general {
         colors = true
-        interval = 5
+        interval = 1
 }
 
 order += "ipv6"
@@ -35,7 +36,10 @@ battery all {
 }
 
 disk "/" {
-        format = "%avail"
+        format = "/ %used/%avail"
+        format_below_threshold = "/ %used/%avail"
+        low_threshold = 10
+        threshold_type = percentage_avail
 }
 
 load {
