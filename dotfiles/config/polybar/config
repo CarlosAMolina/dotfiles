@@ -123,7 +123,7 @@ format-prefix-foreground = ${colors.foreground-alt}
 [module/memoryram]
 inherit = memory
 format-prefix = "mem "
-label = %gb_used%%/%gb_total%
+label = %gb_used%/%gb_total%
 
 [module/memoryswap]
 inherit = memory
