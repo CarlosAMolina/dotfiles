@@ -1,7 +1,6 @@
-# General
-$HOME/.config/rofi/powermenu/powermenu.sh
-
-# Arch linux
 # https://wiki.archlinux.org/title/Rofi
 # https://github.com/jluttine/rofi-power-menu
-#rofi -show power-menu -modi power-menu:$HOME/Software/rofi/rofi-power-menu/rofi-power-menu
+rofi -show power-menu -modi power-menu:$HOME/Software/rofi/rofi-power-menu/rofi-power-menu
+
+# Option 2
+#$HOME/.config/rofi/powermenu/powermenu.sh
