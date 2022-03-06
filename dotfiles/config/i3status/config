@@ -25,16 +25,25 @@ order += "tztime local"
 battery all {
         format = "%status %percentage %remaining"
         format_down = ""
+        format_percentage = "%.00f%s"
+        status_chr = "⚡ CHR"
+        status_bat = "BAT"
+        status_unk = "? UNK"
+        status_full = "☻ FULL"
+        low_threshold = 20
+        threshold_type = "percentage"
 }
 
 cpu_temperature 0 {
         format = "%degrees ºC"
         path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
+        #path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp2_input"
         max_threshold = 75
 }
 
 cpu_usage {
         format = "cpu (%usage) %cpu0 %cpu1 %cpu2 %cpu3"
+        #format = "cpu (%usage) %cpu0 %cpu1"
         max_threshold = 75
 }
 
