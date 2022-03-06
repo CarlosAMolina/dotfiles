@@ -1,0 +1,24 @@
+# Run this script without sudo:
+# ```bash
+# create-symlink # ok
+# sudo create-symlink # wrong
+# ```
+# In order to not modify the $HOME value
+# Insert the sudo pawssword when the script asks for it
+
+function create_symlink(){
+    if [ -L /usr/local/bin/$1 ]
+    then
+        echo "$1 omitting. Already exists"
+    else
+        sudo ln -s $2 /usr/local/bin/$1
+        echo "$1 created"
+    fi
+}
+
+create_symlink "firefox" $HOME/Software/firefox/firefox/firefox
+create_symlink "keepassxc" $HOME/Software/keepassxc/KeePassXC-2.6.6-x86_64.AppImage
+create_symlink "lockscreen" $HOME/.config/i3lock/lockscreen
+create_symlink "powermenu" $HOME/.config/rofi/powermenu/powermenu.sh
+create_symlink "thunderbird" $HOME/Software/thunderbird/thunderbird/thunderbird
+
