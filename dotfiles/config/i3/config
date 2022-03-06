@@ -177,6 +177,7 @@ bar {
 }
 
 # Applications
+# Mod1 = Alt key
 bindsym Control+Mod1+b exec protonmail-bridge
 bindsym Control+Mod1+e exec $HOME/Software/thunderbird/thunderbird/thunderbird
 bindsym Control+Mod1+f exec $HOME/Software/firefox/firefox/firefox
@@ -185,4 +186,6 @@ bindsym Control+Mod1+l exec $HOME/.config/i3lock/lockscreen
 # start rofi (a program launcher)
 bindsym Control+Mod1+r exec rofi -show drun
 bindsym Control+Mod1+s exec /usr/bin/subl
+# keysym 0xffc1 = F4 key
+bindsym Mod1+0xffc1 exec ~/.config/rofi/powermenu/powermenu.sh
 
