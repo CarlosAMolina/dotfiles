@@ -183,5 +183,10 @@ bar {
 
 # Applications
 bindsym Control+Mod1+b exec protonmail-bridge
-bindsym Control+Mod1+f exec ~/Software/firefox/firefox/firefox
+bindsym Control+Mod1+e exec $HOME/Software/thunderbird/thunderbird/thunderbird
+bindsym Control+Mod1+f exec $HOME/Software/firefox/firefox/firefox
+bindsym Control+Mod1+k exec $HOME/Software/keepass/KeePassXC-2.6.6-x86_64.AppImage
+bindsym Control+Mod1+l exec $HOME/.config/i3lock/lockscreen
+bindsym Control+Mod1+r exec rofi -show run
 bindsym Control+Mod1+s exec /usr/bin/subl
+
