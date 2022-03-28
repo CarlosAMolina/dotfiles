@@ -37,7 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id dunst
 
 # detect new devices
-exec --no-startup-id usb-monitor
+exec --no-startup-id $HOME/Software/usb-linux/src/bash/monitor
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
