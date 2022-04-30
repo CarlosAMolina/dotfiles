@@ -1,0 +1,10 @@
+# If not exist, add the following lines to the `~/.bashrc file`:
+# ```bash
+# if [ -f ~/.bash_config ]; then
+#     . ~/.bash_config
+# fi
+# ```
+
+# https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
+set -o vi
+
