@@ -22,4 +22,6 @@ alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
+# Vi
+alias vi='~/Software/neovim/nvim.appimage'
 
