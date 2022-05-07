@@ -17,6 +17,8 @@ alias gc='git commit -m'
 alias gd='git diff'
 alias gl='git log'
 alias gs='git status -s'
+# Open files/folders
+alias o='xdg-open'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
 # Trash-cli
