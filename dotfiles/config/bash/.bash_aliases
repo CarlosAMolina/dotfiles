@@ -17,11 +17,11 @@ alias gc='git commit -m'
 alias gd='git diff'
 alias gl='git log'
 alias gs='git status -s'
+# Python programs
+alias toc='python ~/Software/toc-markdown/src/main.py'
 # Trash-cli
 alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
-# Python programs
-alias toc='python ~/Software/toc-markdown/src/main.py'
 # Vi
 alias vi='~/Software/neovim/nvim.appimage'
 
