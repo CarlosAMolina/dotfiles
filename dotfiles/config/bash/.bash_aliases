@@ -22,7 +22,9 @@
 #   source ~/.bashrc
 #   ```
 
-
+# Backlight
+# https://wiki.archlinux.org/title/Backlight#Backlight_utilities
+alias b='xrandr --output eDP-1 --brightness $1'
 # Git
 alias ga='git add'
 alias gb='git branch'
