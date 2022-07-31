@@ -25,6 +25,10 @@
 # Backlight
 # https://wiki.archlinux.org/title/Backlight#Backlight_utilities
 alias b='xrandr --output eDP-1 --brightness $1'
+# Clipboard
+# https://stackoverflow.com/questions/5130968/how-can-i-copy-the-output-of-a-command-directly-into-my-clipboard
+alias c='xclip' # Example: pwd | c
+alias v='xclip -o' # Example: cd `v`
 # Git
 alias ga='git add'
 alias gb='git branch'
