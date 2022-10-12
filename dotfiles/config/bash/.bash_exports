@@ -1,0 +1,16 @@
+# If not exist, add the following lines to the `~/.bashrc file`:
+# ```bash
+# # Exports definitions.
+# # You may want to put all your additions into a separate file like
+# # ~/.bash_exports, instead of adding them here directly.
+# # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+#
+# if [ -f ~/.bash_exports ]; then
+#     . ~/.bash_exports
+# fi
+# ```
+
+# VPS
+export VPS_DEV_PORT=123
+export VPS_DEV_IP=1.2.3.4
+export VPS_DEV_USER=foo
