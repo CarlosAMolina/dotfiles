@@ -40,6 +40,8 @@ alias gs='git status -s'
 alias o='xdg-open'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
+# Tmux
+alias t='tmux'
 # Trash-cli
 alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
