@@ -38,6 +38,9 @@ alias gl='git log'
 alias gs='git status -s'
 # Open files/folders
 alias o='xdg-open'
+# Screen
+# https://unix.stackexchange.com/questions/3773/how-to-pass-parameters-to-an-alias
+alias screen='f(){ xrandr --output eDP-1 --auto && xrandr --output $1 --auto && xrandr --output eDP-1 --left-of $1;  unset -f f; }; f'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
 # Tmux
