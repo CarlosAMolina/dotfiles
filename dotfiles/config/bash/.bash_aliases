@@ -32,6 +32,7 @@ alias v='xclip -o' # Example: cd `v`
 # Git
 alias ga='git add'
 alias gb='git branch'
+alias gbc='git branch --show-current'
 alias gc='git commit -m'
 alias gd='git diff'
 alias gl='git log'
