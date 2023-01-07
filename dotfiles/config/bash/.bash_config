@@ -5,6 +5,10 @@
 # fi
 # ```
 
+# terminal
+PS1='[\u@\h \W]\$ '
+
+# vi
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
 
