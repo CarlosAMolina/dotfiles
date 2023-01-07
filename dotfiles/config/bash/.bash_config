@@ -5,6 +5,10 @@
 # fi
 # ```
 
+# git
+# https://wiki.archlinux.org/title/Git
+source ~/.git-completion.bash
+
 # terminal
 PS1='[\u@\h \W]\$ '
 
