@@ -50,5 +50,5 @@ alias t='tmux'
 alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
 # Vi
-alias vi='~/Software/neovim/nvim.appimage'
+alias vi='nvim'
 
