@@ -29,6 +29,10 @@ alias b='xrandr --output eDP-1 --brightness $1'
 # https://stackoverflow.com/questions/5130968/how-can-i-copy-the-output-of-a-command-directly-into-my-clipboard
 alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
+# Color output
+# https://wiki.archlinux.org/title/Color_output_in_console
+alias grep='grep --color=auto'
+alias ls='ls --color=auto'
 # Git
 alias ga='git add'
 alias gb='git branch'
@@ -37,8 +41,6 @@ alias gc='git commit -m'
 alias gd='git diff'
 alias gl='git log'
 alias gs='git status -s'
-# ls
-alias ls='ls --color=auto'
 # Open files/folders
 alias o='xdg-open'
 # Screen
