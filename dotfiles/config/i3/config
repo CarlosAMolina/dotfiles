@@ -62,8 +62,7 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-# Commented to avoid conflicts with firefox shortcut
-#bindsym $mod+Left focus left
+#bindsym $mod+Left focus left # Commented to avoid conflicts with firefox shortcut
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
