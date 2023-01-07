@@ -37,6 +37,8 @@ alias gc='git commit -m'
 alias gd='git diff'
 alias gl='git log'
 alias gs='git status -s'
+# ls
+alias ls='ls --color=auto'
 # Open files/folders
 alias o='xdg-open'
 # Screen
