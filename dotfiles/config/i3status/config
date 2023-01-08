@@ -57,7 +57,7 @@ disk "/" {
 ethernet _first_ {
         format_up = "eth"
         format_down = "eth"
-        color_good = "#dfdfdf"
+        color_good = "#ffffff"
         color_bad = "#555555"
 }
 
@@ -79,7 +79,7 @@ volume master {
 wireless _first_ {
         format_up = "wlan"
         format_down = "wlan"
-        color_good = "#dfdfdf"
+        color_good = "#ffffff"
         color_bad = "#555555"
 }
 
