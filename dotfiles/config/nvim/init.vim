@@ -1,3 +1,4 @@
+" Neovim configuration
 set clipboard+=unnamedplus
 set nu
 "https://vi.stackexchange.com/questions/6950/how-to-enable-spell-check-for-certain-file-types
@@ -8,6 +9,7 @@ augroup markdownSpell
 augroup END
 set spelllang=es
 
+" Vim-plug configuration
 " https://github.com/junegunn/vim-plug#neovim
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
