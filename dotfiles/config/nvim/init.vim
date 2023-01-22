@@ -13,6 +13,7 @@ set spelllang=es
 " https://github.com/junegunn/vim-plug#neovim
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-tree/nvim-tree.lua'
 call plug#end()
 
 " Coc configuration
@@ -49,3 +50,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 " Show commands
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+
+" nvim-tree configuration
+lua require'nvim-tree'.setup {}
