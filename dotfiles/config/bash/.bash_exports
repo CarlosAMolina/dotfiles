@@ -10,6 +10,10 @@
 # fi
 # ```
 
+# Command line
+# https://wiki.archlinux.org/title/Bash/Prompt_customization
+PS1='[\u@\h \W]\$ '
+
 # VPS
 export VPS_DEV_PORT=123
 export VPS_DEV_IP=1.2.3.4
