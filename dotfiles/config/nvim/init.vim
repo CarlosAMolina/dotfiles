@@ -8,6 +8,14 @@ augroup markdownSpell
     autocmd BufRead,BufNewFile *.md setlocal spell
 augroup END
 set spelllang=es
+" Indentation
+" https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
+" https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set autoindent
 
 " Vim-plug configuration
 " https://github.com/junegunn/vim-plug#neovim
