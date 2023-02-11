@@ -12,3 +12,8 @@ fi
 if [ -f ~/.bash_config ]; then
     . ~/.bash_config
 fi
+
+if [ -f ~/.bash_exports ]; then
+    . ~/.bash_exports
+fi
+
