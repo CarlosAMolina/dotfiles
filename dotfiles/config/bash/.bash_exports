@@ -15,5 +15,6 @@ export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 
 # VPS
 export VPS_DEV_PORT=123
+export VPS_DEV_IDENTITY_FILE=~/.ssh/id_rsa
 export VPS_DEV_IP=1.2.3.4
 export VPS_DEV_USER=foo
