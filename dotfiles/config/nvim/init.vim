@@ -1,3 +1,11 @@
+" Vim-plug configuration
+" https://github.com/junegunn/vim-plug#neovim
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'EdenEast/nightfox.nvim'
+call plug#end()
+
 " Neovim configuration
 set clipboard+=unnamedplus
 set nu
@@ -16,13 +24,9 @@ set shiftwidth=4
 set expandtab
 set smartindent
 set autoindent
-
-" Vim-plug configuration
-" https://github.com/junegunn/vim-plug#neovim
-call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'nvim-tree/nvim-tree.lua'
-call plug#end()
+" Color
+" https://github.com/EdenEast/nightfox.nvim
+colorscheme nightfox
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
