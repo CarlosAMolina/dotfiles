@@ -13,7 +13,7 @@ set nu
 augroup markdownSpell
     autocmd!
     autocmd FileType markdown setlocal spell
-    autocmd BufRead,BufNewFile *.md setlocal spell
+    autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
 set spelllang=es
 " Indentation
