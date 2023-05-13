@@ -1,14 +1,25 @@
 " Vim-plug configuration
 " https://github.com/junegunn/vim-plug#neovim
 call plug#begin()
+" coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" nvim-tree
 Plug 'nvim-tree/nvim-tree.lua'
+" nightfox
 Plug 'EdenEast/nightfox.nvim'
+" telescope
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
 " Neovim configuration
 set clipboard+=unnamedplus
-set nu
+" View
+" Number of lines to start scrolling before reaching the top or bottom of the page.
+set scrolloff=8
+set number
+set relativenumber
 "https://vi.stackexchange.com/questions/6950/how-to-enable-spell-check-for-certain-file-types
 augroup markdownSpell
     autocmd!
@@ -63,5 +74,14 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 " Show commands
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 
+" Telescope configuration
+" https://github.com/nvim-telescope/telescope.nvim
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 " nvim-tree configuration
+nnoremap <leader>t <cmd>NvimTreeToggle<cr>
+
 lua require'nvim-tree'.setup {}
