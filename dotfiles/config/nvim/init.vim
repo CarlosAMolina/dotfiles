@@ -1,3 +1,7 @@
+" To apply changes you can close and open this file or execute:
+" :so %
+" :so = source, % = current buffer file.
+
 " Vim-plug configuration
 " https://github.com/junegunn/vim-plug#neovim
 call plug#begin()
@@ -38,6 +42,25 @@ set autoindent
 " Color
 " https://github.com/EdenEast/nightfox.nvim
 colorscheme nightfox
+
+" Remaps
+" mapleader: expected key to press when `<leader>` is used.
+" Default mapleader is ctrl + \
+let mapleader = " "
+" How to remap:
+" First character indicates when the remap must be executed:
+" n: the current mode you are in
+" i: insert mode
+" v: visual mode
+" c: command mode
+" t: terminal mode
+" Other characters:
+" nore: no recursive execution. To avoid the remap can execute more remaps.
+" map: the map command.
+
+" Source vimrc
+" <CR> = enter
+nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
