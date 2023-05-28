@@ -37,7 +37,7 @@ battery all {
 cpu_temperature 0 {
         format = "%degrees ºC"
         path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
-        #path = "/sys/devices/platform/coretemp.0/hwmon/hwmon6/temp2_input"
+        #path = "/sys/devices/platform/coretemp.0/hwmon/hwmon5/temp2_input"
         max_threshold = 75
 }
 
@@ -48,8 +48,8 @@ cpu_usage {
 }
 
 disk "/" {
-        format = "/ %used/%avail"
-        format_below_threshold = "/ %used/%avail"
+        format = "/ %used/%total"
+        format_below_threshold = "/ %used/%total"
         low_threshold = 10
         threshold_type = percentage_avail
 }
