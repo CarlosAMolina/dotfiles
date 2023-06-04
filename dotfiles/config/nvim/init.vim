@@ -62,6 +62,11 @@ let mapleader = " "
 " Source vimrc
 " <CR> = enter
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
+" Close other vim windows
+nnoremap <leader>o :only<CR>
+" Split
+nnoremap <leader>s :split<CR>
+nnoremap <leader>vs :vsplit<CR>
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
