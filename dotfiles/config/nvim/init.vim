@@ -58,6 +58,7 @@ let mapleader = " "
 " Other characters:
 " nore: no recursive execution. To avoid the remap can execute more remaps.
 " map: the map command.
+" Table of key notation: type `:help keycodes`
 
 " Source vimrc
 " <CR> = enter
@@ -67,6 +68,10 @@ nnoremap <leader>o :only<CR>
 " Split
 nnoremap <leader>s :split<CR>
 nnoremap <leader>vs :vsplit<CR>
+" Sort
+nnoremap <leader>so <C-v>G:sort<CR>
+" Sort and unique
+nnoremap <leader>u <C-v>G:sort u<CR>
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
