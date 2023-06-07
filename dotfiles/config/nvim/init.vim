@@ -65,6 +65,7 @@ let mapleader = " "
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 " Close other vim windows
 nnoremap <leader>o :only<CR>
+" nnoremap <leader>o <C-w>o
 " Split
 nnoremap <leader>s :split<CR>
 nnoremap <leader>vs :vsplit<CR>
