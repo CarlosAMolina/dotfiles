@@ -65,7 +65,7 @@ let mapleader = " "
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 " Close other vim windows
 nnoremap <leader>o :only<CR>
-" nnoremap <leader>o <C-w>o
+" nnoremap <leader>o <C-w>o " Alternative command.
 " Split
 nnoremap <leader>s :split<CR>
 nnoremap <leader>vs :vsplit<CR>
@@ -108,6 +108,12 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 " Show commands
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+
+" coc-sql configuration
+" https://github.com/fannheyward/coc-sql
+" To install: `:CocInstall coc-sql`
+" Format sql commands (they must be in a `.sql` file):
+nnoremap <leader>f :CocCommand sql.Format<cr>
 
 " Telescope configuration
 " https://github.com/nvim-telescope/telescope.nvim
