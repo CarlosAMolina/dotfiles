@@ -18,6 +18,11 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
+" Coc extensions
+" Install automatically
+" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#use-vims-plugin-manager-for-coc-extension
+let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright']
+
 " Neovim configuration
 set clipboard+=unnamedplus
 " View
@@ -111,7 +116,6 @@ nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 
 " coc-sql configuration
 " https://github.com/fannheyward/coc-sql
-" To install: `:CocInstall coc-sql`
 " Format sql commands (they must be in a `.sql` file):
 nnoremap <leader>f :CocCommand sql.Format<cr>
 
