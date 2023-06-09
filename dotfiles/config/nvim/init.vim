@@ -65,6 +65,10 @@ let mapleader = " "
 " map: the map command.
 " Table of key notation: type `:help keycodes`
 
+" Quit
+nnoremap <leader>q :quit<CR>
+nnoremap <leader>qa :qa<CR>
+
 " Source vimrc
 " <CR> = enter
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
