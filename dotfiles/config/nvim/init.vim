@@ -128,5 +128,7 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " nvim-tree configuration
 nnoremap <leader>t <cmd>NvimTreeToggle<cr>
+" Open tree and focus on current file
+nnoremap <leader>tf <cmd>NvimTreeFindFile<cr>
 
 lua require'nvim-tree'.setup {}
