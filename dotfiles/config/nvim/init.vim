@@ -75,6 +75,12 @@ nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 " Close other vim windows
 nnoremap <leader>o :only<CR>
 " nnoremap <leader>o <C-w>o " Alternative command.
+" Move line(s)
+" https://vimtricks.com/p/vimtrick-moving-lines/
+nnoremap <c-j> :m .+1<CR>==
+nnoremap <c-k> :m .-2<CR>==
+vnoremap <c-j> :m '>+1<CR>gv=gv
+vnoremap <c-k> :m '<-2<CR>gv=gv
 " Split
 nnoremap <leader>s :split<CR>
 nnoremap <leader>vs :vsplit<CR>
