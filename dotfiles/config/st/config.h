@@ -1,5 +1,13 @@
 /* See LICENSE file for copyright and license details. */
 
+/* How this works
+ * 1. Download st: https://st.suckless.org/
+ * 2. Unzip and access the directory.
+ * 3. Copy this file tho the accessed folder.
+ * 4. Compile st (explained in README): make clean install
+ * Example: https://github.com/LukeSmithxyz/st/blob/master/config.h
+ */
+
 /*
  * appearance
  *
@@ -203,8 +211,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
-	{ ControlMask,          XK_j,           zoom,           {.f = +1} },
-	{ ControlMask,          XK_k,           zoom,           {.f = -1} },
+	{ TERMMOD,              XK_K,           zoom,           {.f = +1} },
+	{ TERMMOD,              XK_J,           zoom,           {.f = -1} },
 	{ ControlMask,          XK_u,           kscrollup,      {.i = -1} },
 	{ ControlMask,          XK_n,           kscrolldown,    {.i = -1} },
 };
