@@ -7,6 +7,8 @@
 call plug#begin()
 " coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" git
+Plug 'https://github.com/tpope/vim-fugitive.git'
 " nvim-tree
 Plug 'nvim-tree/nvim-tree.lua'
 " nightfox
@@ -128,6 +130,17 @@ nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " https://github.com/fannheyward/coc-sql
 " Format sql commands (they must be in a `.sql` file):
 nnoremap <leader>f :CocCommand sql.Format<cr>
+
+" Fugitive Conflict Resolution
+" https://medium.com/prodopsio/solving-git-merge-conflicts-with-vim-c8a8617e3633
+" Open three-way split screen
+nnoremap <leader>gd :Gvdiffsplit!<CR>
+" Get the changes from the buffer with //2 in its name (left screen).
+nnoremap gdh :diffget //2<CR>
+" Get the changes from the buffer with //2 in its name (right screen).
+nnoremap gdl :diffget //3<CR>
+" Go to previous conflict: [c
+" Go to next conflict: ]c
 
 " Telescope configuration
 " https://github.com/nvim-telescope/telescope.nvim
