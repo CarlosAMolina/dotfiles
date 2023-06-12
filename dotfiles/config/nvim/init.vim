@@ -115,7 +115,7 @@ function! CheckBackspace() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 " GoTo code navigation
-nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gde <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -134,7 +134,7 @@ nnoremap <leader>f :CocCommand sql.Format<cr>
 " Fugitive Conflict Resolution
 " https://medium.com/prodopsio/solving-git-merge-conflicts-with-vim-c8a8617e3633
 " Open three-way split screen
-nnoremap <leader>gd :Gvdiffsplit!<CR>
+nnoremap <leader>gdi :Gvdiffsplit!<CR>
 " Get the changes from the buffer with //2 in its name (left screen).
 nnoremap gdh :diffget //2<CR>
 " Get the changes from the buffer with //2 in its name (right screen).
