@@ -74,6 +74,8 @@ nnoremap <leader>qa :qa<CR>
 " Source vimrc
 " <CR> = enter
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
+" Reload file
+nnoremap <leader>e :e<CR>
 " Close other vim windows
 nnoremap <leader>o :only<CR>
 " nnoremap <leader>o <C-w>o " Alternative command.
@@ -86,10 +88,14 @@ vnoremap <c-k> :m '<-2<CR>gv=gv
 " Split
 nnoremap <leader>sh :split<CR>
 nnoremap <leader>sv :vsplit<CR>
-" Sort
-nnoremap <leader>so <C-v>G:sort<CR>
-" Sort and unique
-nnoremap <leader>u <C-v>G:sort u<CR>
+" Sort the selection.
+vnoremap <leader>sos :sort<CR>
+" Sort all from current line to the end of the file.
+nnoremap <leader>soa <C-v>G:sort<CR>
+" Sort and unique the selection.
+vnoremap <leader>us :sort u<CR>
+" Sort and unique from current line to the end of the file.
+nnoremap <leader>ua <C-v>G:sort u<CR>
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
