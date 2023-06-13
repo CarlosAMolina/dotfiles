@@ -84,8 +84,8 @@ nnoremap <c-k> :m .-2<CR>==
 vnoremap <c-j> :m '>+1<CR>gv=gv
 vnoremap <c-k> :m '<-2<CR>gv=gv
 " Split
-nnoremap <leader>s :split<CR>
-nnoremap <leader>vs :vsplit<CR>
+nnoremap <leader>sh :split<CR>
+nnoremap <leader>sv :vsplit<CR>
 " Sort
 nnoremap <leader>so <C-v>G:sort<CR>
 " Sort and unique
