@@ -9,6 +9,15 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " git
 Plug 'https://github.com/tpope/vim-fugitive.git'
+" js
+" https://x-team.com/blog/neovim-javascript/
+" this will auto close ( [ {
+Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
+" these two plugins will add highlighting and indenting to JSX and TSX files.
+Plug 'yuezk/vim-js'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'maxmellon/vim-jsx-pretty'
+
 " nvim-tree
 Plug 'nvim-tree/nvim-tree.lua'
 " nightfox
@@ -23,7 +32,7 @@ call plug#end()
 " Coc extensions
 " Install automatically
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#use-vims-plugin-manager-for-coc-extension
-let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright']
+let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
 
 " Neovim configuration
 set clipboard+=unnamedplus
