@@ -32,7 +32,10 @@ call plug#end()
 " Coc extensions
 " Install automatically
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#use-vims-plugin-manager-for-coc-extension
-let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
+" coc-go
+" - https://github.com/josa42/coc-go
+" - https://pmihaylov.com/vim-for-go-development/
+let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-go']
 
 " Neovim configuration
 set clipboard+=unnamedplus
@@ -47,7 +50,7 @@ augroup markdownSpell
     autocmd FileType markdown setlocal spell
     autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
-set spelllang=es
+set spelllang=en
 " Indentation
 " https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
 " https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
