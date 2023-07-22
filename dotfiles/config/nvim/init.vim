@@ -4,6 +4,7 @@
 
 " Vim-plug configuration
 " https://github.com/junegunn/vim-plug#neovim
+" Default path: ~/.local/share/nvim/plugged/
 call plug#begin()
 " coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -50,7 +51,7 @@ augroup markdownSpell
     autocmd FileType markdown setlocal spell
     autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
-set spelllang=en
+set spelllang=es
 " Indentation
 " https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
 " https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
