@@ -12,8 +12,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'https://github.com/tpope/vim-fugitive.git'
 " js
 " https://x-team.com/blog/neovim-javascript/
-" this will auto close ( [ {
-Plug 'jiangmiao/auto-pairs' "this will auto close ( [ {
 " these two plugins will add highlighting and indenting to JSX and TSX files.
 Plug 'yuezk/vim-js'
 Plug 'HerringtonDarkholme/yats.vim'
