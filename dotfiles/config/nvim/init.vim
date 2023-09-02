@@ -49,7 +49,7 @@ augroup markdownSpell
     autocmd FileType markdown setlocal spell
     autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
-set spelllang=es
+set spelllang=en
 " Indentation
 " https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
 " https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
@@ -187,6 +187,6 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 " nvim-tree configuration
 nnoremap <leader>t <cmd>NvimTreeToggle<cr>
 " Open tree and focus on current file
-nnoremap <leader>tf <cmd>NvimTreeFindFile<cr>
+nnoremap <leader>p <cmd>NvimTreeFindFile<cr>
 
 lua require'nvim-tree'.setup {}
