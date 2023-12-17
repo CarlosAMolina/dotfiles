@@ -217,7 +217,7 @@ bindsym Control+Mod1+b exec protonmail-bridge
 bindsym Control+Mod1+e exec thunderbird
 bindsym Control+Mod1+f exec firefox
 bindsym Control+Mod1+k exec keepassxc
-bindsym Control+Mod1+l exec i3lock -i $HOME/Images/lockscreen.png
+bindsym Control+Mod1+l exec lockscreen
 # start rofi (a program launcher)
 bindsym Control+Mod1+r exec rofi -show drun
 bindsym Control+Mod1+s exec subl
