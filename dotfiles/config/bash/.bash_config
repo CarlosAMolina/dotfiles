@@ -18,12 +18,66 @@ PS1='[\u@\h \W]\$ '
 set -o vi
 
 # https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
-# command -v tmux &> /dev/null: check command existence
-# [ -n "$PS1" ]: check for interactive shell
-# [[ ! "$TERM" =~ screen ]]: check if does not contain `screen`
-# [[ ! "$TERM" =~ tmux ]]: check if does not contain `tmux`
-# [ -z "$TMUX" ]: check if it is empty
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
+
+log () {
+    TMUX_LOGS=false;
+    if "$TMUX_LOGS";
+    then
+        echo "$1"
+    fi
+}
+
+log "1) Check tmux command availability: command -v tmux &> /dev/null"
+if command -v tmux &> /dev/null;
+then
+    log ok
+
+    log
+    log "2) Check if does not contain 'screen': ! TERM =~ screen. TERM=$TERM"
+    if [[ ! "$TERM" =~ screen ]];
+    then
+        log ok
+
+        log
+        log "3) Check if does not contain 'tmux': ! TERM =~ tmux. TERM=$TERM"
+        if [[ ! "$TERM" =~ tmux ]];
+        then
+            log ok
+
+            log
+            log "4) Check if it is empty: -z TMUX. TMUX=$TMUX"
+            if [ -z "$TMUX" ];
+            then
+                log ok
+
+                log
+                # https://stackoverflow.com/questions/10475599/what-does-n-mean-in-bash
+                log "5) Check for interactive shell (PS1 is not empty): [ -n PS1 ]. PS1=$PS1"
+                if [ -n "$PS1" ];
+                then
+                    log ok, this shell is interactive
+
+                    exec tmux
+
+                else
+                    log ko, this shell is not interactive
+                fi
+
+
+            else
+                log ko
+            fi
+
+        else
+            log ko
+        fi
+
+    else
+        log ko
+    fi
+
+else
+    log ko
 fi
+
 
