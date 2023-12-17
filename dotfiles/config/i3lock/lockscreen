@@ -1,1 +1,10 @@
-i3lock -i $HOME/Imágenes/lockscreen.png
+#!/bin/bash
+
+file_name=lockscreen.png
+es_path=$HOME/Imágenes/$file_name
+en_path=$HOME/Images/$file_name
+if [[ -f "$es_path" ]]; then
+  i3lock -i $es_path
+elif [[ -f "$en_path" ]]; then
+  i3lock -i $en_path
+fi
