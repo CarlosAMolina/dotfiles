@@ -33,40 +33,31 @@ then
     log ok
 
     log
-    log "2) Check if does not contain 'screen': ! TERM =~ screen. TERM=$TERM"
-    if [[ ! "$TERM" =~ screen ]];
+    TERMINAL_TO_MODIFY=st-256color
+    log "2) Check if it is the desired terminal TERM==$TERMINAL_TO_MODIFY. TERM=$TERM"
+    if [[ "$TERM" == "$TERMINAL_TO_MODIFY" ]];
     then
         log ok
 
         log
-        log "3) Check if does not contain 'tmux': ! TERM =~ tmux. TERM=$TERM"
-        if [[ ! "$TERM" =~ tmux ]];
+        log "3) Check if it is empty: -z TMUX. TMUX=$TMUX"
+        if [ -z "$TMUX" ];
         then
             log ok
 
             log
-            log "4) Check if it is empty: -z TMUX. TMUX=$TMUX"
-            if [ -z "$TMUX" ];
+            # https://stackoverflow.com/questions/10475599/what-does-n-mean-in-bash
+            log "4) Check for interactive shell (PS1 is not empty): [ -n PS1 ]. PS1=$PS1"
+            if [ -n "$PS1" ];
             then
-                log ok
+                log ok, this shell is interactive
 
-                log
-                # https://stackoverflow.com/questions/10475599/what-does-n-mean-in-bash
-                log "5) Check for interactive shell (PS1 is not empty): [ -n PS1 ]. PS1=$PS1"
-                if [ -n "$PS1" ];
-                then
-                    log ok, this shell is interactive
-
-                    exec tmux
-
-                else
-                    log ko, this shell is not interactive
-                fi
-
+                exec tmux
 
             else
-                log ko
+                log ko, this shell is not interactive
             fi
+
 
         else
             log ko
@@ -79,5 +70,4 @@ then
 else
     log ko
 fi
-
 
