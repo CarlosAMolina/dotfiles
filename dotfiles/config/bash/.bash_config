@@ -5,10 +5,6 @@
 # fi
 # ```
 
-# git
-# https://wiki.archlinux.org/title/Git
-source ~/.git-completion.bash
-
 # terminal
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 PS1='[\u@\h \W]\$ '
