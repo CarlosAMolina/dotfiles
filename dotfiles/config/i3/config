@@ -48,7 +48,10 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ && $refr
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle && $refresh_i3status
 
-# Use Mouse+$mod to drag floating windows to their wanted position
+# https://i3wm.org/docs/userguide.html#floating_modifier
+# - Set floating window: shift + $mod + bar.
+# - Move floating window with the mouse: press the floating_modifier, click into the window using the left mouse button and drag it to the position you want.
+# - Resize a floating window with the mouse: hold the floating_modifier, press the right mouse button on it and move the mouse. Hold the shift button as well and the resize will be proportional.
 floating_modifier $mod
 
 # start a terminal
