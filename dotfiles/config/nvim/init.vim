@@ -24,7 +24,7 @@ Plug 'EdenEast/nightfox.nvim'
 " telescope
 " After installation run `:checkhealth telescope`
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.1' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
@@ -50,6 +50,7 @@ augroup markdownSpell
     autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
 set spelllang=en
+"set spelllang=es
 " Indentation
 " https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
 " https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
