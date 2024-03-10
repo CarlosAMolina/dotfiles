@@ -24,7 +24,7 @@ Plug 'EdenEast/nightfox.nvim'
 " telescope
 " After installation run `:checkhealth telescope`
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+Plug 'nvim-telescope/telescope.nvim', { 'branch': 'master' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 call plug#end()
 
