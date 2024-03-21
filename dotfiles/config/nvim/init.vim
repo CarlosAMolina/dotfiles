@@ -26,6 +26,9 @@ Plug 'EdenEast/nightfox.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'branch': 'master' }
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" csv files
+" https://github.com/mechatroner/rainbow_csv
+Plug 'mechatroner/rainbow_csv'
 call plug#end()
 
 " Coc extensions
