@@ -38,6 +38,8 @@ alias ga='git add'
 alias gb='git branch'
 alias gbc='git branch --show-current'
 alias gc='git commit -m'
+# Commmit without running pre-commit
+alias gcn='git commit -nm'
 alias gca='git commit --amend'
 alias gd='git diff'
 alias gdc='git diff --cached'
