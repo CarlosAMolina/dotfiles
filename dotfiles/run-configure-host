@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo [DEBUG] Start host configuration
+
+echo [DEBUG] Configuring the Software folder
+if [ -d ~/Software ]; then
+  echo [DEBUG] The main Software folder already exists
+else
+  echo [DEBUG] The main Software folder does not exists. Start creating the folder
+  mkdir ~/Software
+fi
+echo [DEBUG] Changing directory to ~/Software
+cd ~/Software
+
+echo [DEBUG] Start git configuration
+echo [DEBUG] Installing git
+sudo apt install git
+
+echo [DEBUG] Cloning the dotfiles project
+git clone git@github.com:CarlosAMolina/dotfiles
