@@ -8,22 +8,23 @@ echo [DEBUG] Start host configuration
 echo [DEBUG] Updating apt
 sudo apt update
 
-echo [DEBUG] Configuring the Software folder
+echo [DEBUG] Creating the Software folder
 if [ -d ~/Software ]; then
   echo [DEBUG] The main Software folder already exists
 else
   echo [DEBUG] The main Software folder does not exists. Start creating the folder
   mkdir ~/Software
 fi
-echo [DEBUG] Changing directory to ~/Software
-cd ~/Software
 
 echo [DEBUG] Start git configuration
 echo [DEBUG] Installing git
 sudo apt install git
 
+echo [DEBUG] Downloading project toc-markdown
+# TODO git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+
 echo [DEBUG] Cloning the dotfiles project
-# TODO git clone git@github.com:CarlosAMolina/dotfiles
+# TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
 
 echo [DEBUG] Installing neovim
 mkdir -p ~/.local/bin
@@ -33,3 +34,4 @@ tar -xf nvim.tar.gz
 install nvim-linux64/bin/nvim ~/.local/bin
 rm -rf nvim-linux64 nvim.tar.gz
 cd -
+
