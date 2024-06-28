@@ -27,6 +27,11 @@
 # TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
 # TODO 
+# TODO echo [DEBUG] Installing nvm
+# TODO # https://github.com/nvm-sh/nvm
+# TODO wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+# TODO nvm install --lts --latest-npm
+# TODO 
 # TODO echo [DEBUG] Installing software using source files
 # TODO mkdir -p ~/.local/bin
 # TODO cd /tmp
@@ -47,4 +52,3 @@
 # TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
 # TODO # https://unix.stackexchange.com/a/66607
 # TODO tmux source ~/.tmux.conf
-
