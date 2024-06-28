@@ -27,9 +27,10 @@
 # TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
 # TODO 
-# TODO echo [DEBUG] Installing neovim
+# TODO echo [DEBUG] Installing software using source files
 # TODO mkdir -p ~/.local/bin
 # TODO cd /tmp
+# TODO echo [DEBUG] Installing neovim
 # TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
 # TODO tar -xf nvim.tar.gz
 # TODO install nvim-linux64/bin/nvim ~/.local/bin
