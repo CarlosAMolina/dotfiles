@@ -41,11 +41,14 @@
 # TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
 # TODO tar -xf nvim.tar.gz
 # TODO sudo install nvim-linux64/bin/nvim /usr/local/bin/nvim
+# TODO # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
+# TODO sudo mkdir -p /usr/local/share/nvim/
+# TODO sudo cp -r nvim-linux64/share/nvim/runtime/ /usr/local/share/nvim/
 # TODO rm -rf nvim-linux64 nvim.tar.gz
 # TODO cd -
 # TODO sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-mkdir -p ~/.config/nvim
-cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
+# TODO mkdir -p ~/.config/nvim
+# TODO cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
 # TODO 
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
