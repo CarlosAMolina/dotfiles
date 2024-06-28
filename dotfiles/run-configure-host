@@ -44,4 +44,7 @@
 # TODO cp ~/.bashrc ~/.bashrc.backup
 # TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
 # TODO cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+# TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
+# TODO # https://unix.stackexchange.com/a/66607
+# TODO tmux source ~/.tmux.conf
 
