@@ -16,9 +16,11 @@ else
   mkdir ~/Software
 fi
 
-echo [DEBUG] Start git configuration
 echo [DEBUG] Installing git
-sudo apt install git
+sudo apt install -y git
+
+echo [DEBUG] Installing tmux
+sudo apt install -y tmux
 
 echo [DEBUG] Downloading project toc-markdown
 # TODO git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
@@ -35,3 +37,5 @@ install nvim-linux64/bin/nvim ~/.local/bin
 rm -rf nvim-linux64 nvim.tar.gz
 cd -
 
+echo [DEBUG] Uninstalling unrequired packages
+sudo apt autoremove
