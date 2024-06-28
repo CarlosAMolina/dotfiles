@@ -63,6 +63,5 @@ alias t='tmux'
 alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
 # Vi
-#alias vi='nvim'
-alias vi=~/.local/bin/nvim
+alias vi='nvim'
 

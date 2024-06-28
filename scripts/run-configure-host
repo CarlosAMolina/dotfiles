@@ -40,7 +40,7 @@
 # TODO echo [DEBUG] Installing and configuring neovim
 # TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
 # TODO tar -xf nvim.tar.gz
-# TODO install nvim-linux64/bin/nvim ~/.local/bin
+# TODO sudo install nvim-linux64/bin/nvim /usr/local/bin/nvim
 # TODO rm -rf nvim-linux64 nvim.tar.gz
 # TODO cd -
 # TODO sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
