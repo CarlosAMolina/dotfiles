@@ -39,3 +39,8 @@
 # TODO 
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
+# TODO 
+# TODO echo [DEBUG] Configuring bash
+# TODO cp ~/.bashrc ~/.bashrc.backup
+# TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+
