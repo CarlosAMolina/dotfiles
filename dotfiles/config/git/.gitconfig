@@ -2,7 +2,7 @@
 	name = CarlosAMolina 
 	email = 15368012+CarlosAMolina@users.noreply.github.com
 [merge]
-  tool = meld
+	tool = meld
 [init]
 	defaultBranch = main
 [core]
