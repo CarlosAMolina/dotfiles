@@ -3,38 +3,38 @@
 # Other projects example:
 # https://github.com/basecamp/omakub/tree/master
 
-echo [DEBUG] Start host configuration
-
-echo [DEBUG] Creating the Software folder
-if [ -d ~/Software ]; then
-  echo [DEBUG] The main Software folder already exists
-else
-  echo [DEBUG] The main Software folder does not exists. Start creating the folder
-  mkdir ~/Software
-fi
-
-echo [DEBUG] Updating apt
-sudo apt update
-
-echo [DEBUG] Installing software using apt
-sudo apt install -y git
-sudo apt install -y tmux
-sudo apt install -y trash-cli
-
-echo [DEBUG] Downloading project toc-markdown
+# TODO echo [DEBUG] Start host configuration
+# TODO 
+# TODO echo [DEBUG] Creating the Software folder
+# TODO if [ -d ~/Software ]; then
+# TODO   echo [DEBUG] The main Software folder already exists
+# TODO else
+# TODO   echo [DEBUG] The main Software folder does not exists. Start creating the folder
+# TODO   mkdir ~/Software
+# TODO fi
+# TODO 
+# TODO echo [DEBUG] Updating apt
+# TODO sudo apt update
+# TODO 
+# TODO echo [DEBUG] Installing software using apt
+# TODO sudo apt install -y git
+# TODO sudo apt install -y tmux
+# TODO sudo apt install -y trash-cli
+# TODO 
+# TODO echo [DEBUG] Downloading project toc-markdown
 # TODO git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
-
-echo [DEBUG] Cloning the dotfiles project
+# TODO 
+# TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-
-echo [DEBUG] Installing neovim
-mkdir -p ~/.local/bin
-cd /tmp
-wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
-tar -xf nvim.tar.gz
-install nvim-linux64/bin/nvim ~/.local/bin
-rm -rf nvim-linux64 nvim.tar.gz
-cd -
-
-echo [DEBUG] Uninstalling unrequired packages
-sudo apt autoremove
+# TODO 
+# TODO echo [DEBUG] Installing neovim
+# TODO mkdir -p ~/.local/bin
+# TODO cd /tmp
+# TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
+# TODO tar -xf nvim.tar.gz
+# TODO install nvim-linux64/bin/nvim ~/.local/bin
+# TODO rm -rf nvim-linux64 nvim.tar.gz
+# TODO cd -
+# TODO 
+# TODO echo [DEBUG] Uninstalling unrequired packages
+# TODO sudo apt autoremove
