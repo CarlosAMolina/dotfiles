@@ -5,9 +5,6 @@
 
 echo [DEBUG] Start host configuration
 
-echo [DEBUG] Updating apt
-sudo apt update
-
 echo [DEBUG] Creating the Software folder
 if [ -d ~/Software ]; then
   echo [DEBUG] The main Software folder already exists
@@ -16,13 +13,12 @@ else
   mkdir ~/Software
 fi
 
-echo [DEBUG] Installing git
+echo [DEBUG] Updating apt
+sudo apt update
+
+echo [DEBUG] Installing software using apt
 sudo apt install -y git
-
-echo [DEBUG] Installing tmux
 sudo apt install -y tmux
-
-echo [DEBUG] Installing trash-cli
 sudo apt install -y trash-cli
 
 echo [DEBUG] Downloading project toc-markdown
