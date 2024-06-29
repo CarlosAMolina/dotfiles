@@ -35,15 +35,25 @@ fi
 # TODO   cd ~/Software/toc-markdown
 # TODO   git checkout main
 # TODO   git pull origin main
+# TODO   cd -
 # TODO else
 # TODO   echo [DEBUG] The ~/Software/toc-markdown does not exists. Downloading
-# TODO   cd ~/Software/
 # TODO   git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
 # TODO fi
-# TODO cd -
 # TODO 
 # TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+# TODO 
+if [ -d ~/Software/dotfiles ]; then
+  echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
+  cd ~/Software/dotfiles
+  git checkout main
+  git pull origin main
+  cd -
+else
+  echo [DEBUG] The ~/Software/dotfiles does not exists. Downloading
+  git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+fi
 # TODO 
 # TODO echo [DEBUG] Installing and configuring nvm
 # TODO # https://github.com/nvm-sh/nvm
