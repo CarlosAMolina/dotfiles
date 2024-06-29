@@ -5,12 +5,18 @@
 
 # TODO echo [DEBUG] Start host configuration
 # TODO 
-# TODO echo [DEBUG] Creating the Software folder
+# TODO echo [DEBUG] Creating folders
 # TODO if [ -d ~/Software ]; then
-# TODO   echo [DEBUG] The main Software folder already exists
+# TODO   echo [DEBUG] The ~/Software folder already exists
 # TODO else
-# TODO   echo [DEBUG] The main Software folder does not exists. Start creating the folder
+# TODO   echo [DEBUG] The ~/Software folder does not exists. Start creating the folder
 # TODO   mkdir ~/Software
+# TODO fi
+# TODO if [ -d ~/.local/bin ]; then
+# TODO   echo [DEBUG] The main ~/.local/bin folder already exists
+# TODO else
+# TODO   echo [DEBUG] The main ~/.local/bin folder does not exists. Start creating the folder
+# TODO   mkdir -p ~/.local/bin
 # TODO fi
 # TODO 
 # TODO echo [DEBUG] Updating apt
@@ -49,6 +55,9 @@
 # TODO sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 # TODO mkdir -p ~/.config/nvim
 # TODO cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
+# TODO echo [DEBUG] Installing and configuring keepassxc
+# TODO wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
+# TODO chmod +x ~/.local/bin/KeePassXC.AppImage
 # TODO 
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
@@ -60,3 +69,4 @@
 # TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
 # TODO # https://unix.stackexchange.com/a/66607
 # TODO tmux source ~/.tmux.conf
+
