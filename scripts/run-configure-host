@@ -78,9 +78,6 @@ fi
 # TODO wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
 # TODO chmod +x ~/.local/bin/KeePassXC.AppImage
 # TODO 
-# TODO echo [DEBUG] Uninstalling unrequired packages
-# TODO sudo apt autoremove
-# TODO 
 # TODO echo [DEBUG] Configuring dotfiles
 # TODO cp ~/.bashrc ~/.bashrc.backup
 # TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
@@ -88,4 +85,6 @@ fi
 # TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
 # TODO # https://unix.stackexchange.com/a/66607
 # TODO tmux source ~/.tmux.conf
-
+# TODO 
+# TODO echo [DEBUG] Uninstalling unrequired packages
+# TODO sudo apt autoremove
