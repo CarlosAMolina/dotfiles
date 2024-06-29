@@ -28,6 +28,8 @@ fi
 # TODO sudo apt install -y trash-cli
 # TODO sudo apt install -y curl
 # TODO 
+# TODO echo [DEBUG] Installing software using source files
+# TODO 
 # TODO if [ -d ~/Software/toc-markdown ]; then
 # TODO   echo [DEBUG] The ~/Software/toc-markdown folder already exists. Updating
 # TODO   cd ~/Software/toc-markdown
@@ -47,10 +49,8 @@ fi
 # TODO # https://github.com/nvm-sh/nvm
 # TODO wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 # TODO nvm install --lts --latest-npm
-# TODO npm config set prefix '~/.local/' # Run npm install without sudo
+# TODO npm config set prefix '~/.local/' # This enables run npm install without sudo
 # TODO 
-# TODO echo [DEBUG] Installing software using source files
-# TODO mkdir -p ~/.local/bin
 # TODO cd /tmp
 # TODO echo [DEBUG] Installing and configuring neovim
 # TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
