@@ -44,16 +44,16 @@ fi
 # TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
 # TODO 
-if [ -d ~/Software/dotfiles ]; then
-  echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
-  cd ~/Software/dotfiles
-  git checkout main
-  git pull origin main
-  cd -
-else
-  echo [DEBUG] The ~/Software/dotfiles does not exists. Downloading
-  git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-fi
+# TODO if [ -d ~/Software/dotfiles ]; then
+# TODO   echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
+# TODO   cd ~/Software/dotfiles
+# TODO   git checkout main
+# TODO   git pull origin main
+# TODO   cd -
+# TODO else
+# TODO   echo [DEBUG] The ~/Software/dotfiles does not exists. Downloading
+# TODO   git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+# TODO fi
 # TODO 
 # TODO echo [DEBUG] Installing and configuring nvm
 # TODO # https://github.com/nvm-sh/nvm
@@ -84,14 +84,19 @@ fi
 # TODO echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 # TODO sudo apt-get update
 # TODO sudo apt-get install sublime-text
-# TODO 
-# TODO echo [DEBUG] Configuring dotfiles
-# TODO cp ~/.bashrc ~/.bashrc.backup
-# TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
-# TODO cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
-# TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
-# TODO # https://unix.stackexchange.com/a/66607
-# TODO tmux source ~/.tmux.conf
-# TODO 
+
+echo [DEBUG] Configuring dotfiles
+if [ -f ~/.bashrc.backup ]; then
+    echo [DEBUG] File ~/.bashrc.backup already exists
+else
+    echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
+    cp ~/.bashrc ~/.bashrc.backup
+fi
+cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
+# https://unix.stackexchange.com/a/66607
+tmux source ~/.tmux.conf
+
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
