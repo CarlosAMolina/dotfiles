@@ -7,3 +7,7 @@ Configure git ssh to allow the script to clone projects.
 ```bash
 ./scripts/run-configure-host && source ~/.bashrc
 ```
+
+## Final steps
+
+Execute `vi` and run `:PlugInstall`.
