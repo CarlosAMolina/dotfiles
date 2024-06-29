@@ -19,109 +19,117 @@ else
   mkdir -p ~/.local/bin
 fi
 
-# TODO echo [DEBUG] Updating apt
-# TODO sudo apt update
+echo [DEBUG] Updating apt
+sudo apt update
 
-# TODO echo [DEBUG] Installing software using apt
-# TODO sudo apt install -y git
-# TODO sudo apt install -y tmux
-# TODO sudo apt install -y trash-cli
-# TODO sudo apt install -y curl
-# TODO 
-# TODO echo [DEBUG] Installing software using source files
-# TODO 
-# TODO if [ -d ~/Software/toc-markdown ]; then
-# TODO   echo [DEBUG] The ~/Software/toc-markdown folder already exists. Updating
-# TODO   cd ~/Software/toc-markdown
-# TODO   git checkout main
-# TODO   git pull origin main
-# TODO   cd -
-# TODO else
-# TODO   echo [DEBUG] The ~/Software/toc-markdown does not exists. Downloading
-# TODO   git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
-# TODO fi
-# TODO 
-# TODO echo [DEBUG] Cloning the dotfiles project
-# TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-# TODO 
-# TODO if [ -d ~/Software/dotfiles ]; then
-# TODO   echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
-# TODO   cd ~/Software/dotfiles
-# TODO   git checkout main
-# TODO   git pull origin main
-# TODO   cd -
-# TODO else
-# TODO   echo [DEBUG] The ~/Software/dotfiles does not exists. Downloading
-# TODO   git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-# TODO fi
-# TODO 
-# TODO echo [DEBUG] Installing and configuring nvm
-# TODO # https://github.com/nvm-sh/nvm
-# TODO wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-# TODO nvm install --lts --latest-npm
-# TODO npm config set prefix '~/.local/' # This enables run npm install without sudo
-# TODO 
-# TODO cd /tmp
-# TODO echo [DEBUG] Installing and configuring neovim
-# TODO wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
-# TODO tar -xf nvim.tar.gz
-# TODO sudo install nvim-linux64/bin/nvim /usr/local/bin/nvim
-# TODO # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
-# TODO sudo mkdir -p /usr/local/share/nvim/
-# TODO sudo cp -r nvim-linux64/share/nvim/runtime/ /usr/local/share/nvim/
-# TODO rm -rf nvim-linux64 nvim.tar.gz
-# TODO cd -
-# TODO sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-# TODO mkdir -p ~/.config/nvim
-# TODO cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
-# TODO echo [DEBUG] Installing and configuring keepassxc
-# TODO wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
-# TODO chmod +x ~/.local/bin/KeePassXC.AppImage
-# TODO 
-# TODO echo [DEBUG] Installing sublime text
-# TODO # https://www.sublimetext.com/docs/linux_repositories.html#apt
-# TODO wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
-# TODO echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-# TODO sudo apt-get update
-# TODO sudo apt-get install sublime-text
+echo [DEBUG] Installing software using apt
+sudo apt install -y git
+sudo apt install -y tmux
+sudo apt install -y trash-cli
+sudo apt install -y curl
 
-# TODO echo [DEBUG] Configuring dotfiles
-# TODO if [ -f ~/.bashrc.backup ]; then
-# TODO     echo [DEBUG] File ~/.bashrc.backup already exists
-# TODO else
-# TODO     echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
-# TODO     cp ~/.bashrc ~/.bashrc.backup
-# TODO fi
-# TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
-# TODO cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
-# TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
-# TODO # https://unix.stackexchange.com/a/66607
-# TODO tmux source ~/.tmux.conf
+echo [DEBUG] Installing software using source files
 
-# TODO # Add Docker's official GPG key:
-# TODO echo [DEBUG] Installing Docker
-# TODO sudo apt-get update
-# TODO sudo apt-get install -y ca-certificates curl
-# TODO sudo install -m 0755 -d /etc/apt/keyrings
-# TODO sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-# TODO sudo chmod a+r /etc/apt/keyrings/docker.asc
-# TODO echo \
-# TODO   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-# TODO   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-# TODO   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-# TODO sudo apt-get update
-# TODO sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-# TODO sudo docker run --rm hello-world
-# TODO sudo docker rmi hello-world
-# TODO echo [DEBUG] Configuring Docker rootless
-# TODO # https://docs.docker.com/engine/security/rootless/
-# TODO sudo apt-get install -y dbus-user-session
-# TODO sudo apt-get install -y fuse-overlayfs
-# TODO sudo apt-get install -y slirp4netns
-# TODO sudo apt-get install -y uidmap
-# TODO /usr/bin/dockerd-rootless-setuptool.sh install
-# TODO docker run --rm hello-world
-# TODO docker rmi hello-world
+if [ -d ~/Software/toc-markdown ]; then
+  echo [DEBUG] The ~/Software/toc-markdown folder already exists. Updating
+  cd ~/Software/toc-markdown
+  git checkout main
+  git pull origin main
+  cd -
+else
+  echo [DEBUG] The ~/Software/toc-markdown folder does not exists. Downloading
+  git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+fi
+if [ ! -d ~/Software/toc-markdown ]; then
+  echo [ERROR] The ~/Software/toc-markdown folder has not been downloaded 
+  exit 1
+fi
 
-# TODO echo [DEBUG] Uninstalling unrequired packages
-# TODO sudo apt autoremove
+echo [DEBUG] Cloning the dotfiles project
+git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+
+if [ -d ~/Software/dotfiles ]; then
+  echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
+  cd ~/Software/dotfiles
+  git checkout main
+  git pull origin main
+  cd -
+else
+  echo [DEBUG] The ~/Software/dotfiles folder does not exists. Downloading
+  git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+fi
+if [ ! -d ~/Software/dotfiles ]; then
+  echo [ERROR] The ~/Software/dotfiles has not been downloaded 
+  exit 1
+fi
+
+echo [DEBUG] Installing and configuring nvm
+# https://github.com/nvm-sh/nvm
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts --latest-npm
+npm config set prefix '~/.local/' # This enables run npm install without sudo
+
+cd /tmp
+echo [DEBUG] Installing and configuring neovim
+wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
+tar -xf nvim.tar.gz
+sudo install nvim-linux64/bin/nvim /usr/local/bin/nvim
+# https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
+sudo mkdir -p /usr/local/share/nvim/
+sudo cp -r nvim-linux64/share/nvim/runtime/ /usr/local/share/nvim/
+rm -rf nvim-linux64 nvim.tar.gz
+cd -
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+mkdir -p ~/.config/nvim
+cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
+echo [DEBUG] Installing and configuring keepassxc
+wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
+chmod +x ~/.local/bin/KeePassXC.AppImage
+
+echo [DEBUG] Installing sublime text
+# https://www.sublimetext.com/docs/linux_repositories.html#apt
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+sudo apt-get update
+sudo apt-get install sublime-text
+
+echo [DEBUG] Configuring dotfiles
+if [ -f ~/.bashrc.backup ]; then
+    echo [DEBUG] File ~/.bashrc.backup already exists
+else
+    echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
+    cp ~/.bashrc ~/.bashrc.backup
+fi
+cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
+# https://unix.stackexchange.com/a/66607
+tmux source ~/.tmux.conf
+
+# Add Docker's official GPG key:
+echo [DEBUG] Installing Docker
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo docker run --rm hello-world
+sudo docker rmi hello-world
+echo [DEBUG] Configuring Docker rootless
+# https://docs.docker.com/engine/security/rootless/
+sudo apt-get install -y dbus-user-session
+sudo apt-get install -y fuse-overlayfs
+sudo apt-get install -y slirp4netns
+sudo apt-get install -y uidmap
+/usr/bin/dockerd-rootless-setuptool.sh install
+docker run --rm hello-world
+docker rmi hello-world
+
+echo [DEBUG] Uninstalling unrequired packages
+sudo apt autoremove
