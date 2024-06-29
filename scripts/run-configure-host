@@ -85,18 +85,33 @@ fi
 # TODO sudo apt-get update
 # TODO sudo apt-get install sublime-text
 
-echo [DEBUG] Configuring dotfiles
-if [ -f ~/.bashrc.backup ]; then
-    echo [DEBUG] File ~/.bashrc.backup already exists
-else
-    echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
-    cp ~/.bashrc ~/.bashrc.backup
-fi
-cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
-cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
-cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
-# https://unix.stackexchange.com/a/66607
-tmux source ~/.tmux.conf
+# TODO echo [DEBUG] Configuring dotfiles
+# TODO if [ -f ~/.bashrc.backup ]; then
+# TODO     echo [DEBUG] File ~/.bashrc.backup already exists
+# TODO else
+# TODO     echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
+# TODO     cp ~/.bashrc ~/.bashrc.backup
+# TODO fi
+# TODO cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+# TODO cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+# TODO cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
+# TODO # https://unix.stackexchange.com/a/66607
+# TODO tmux source ~/.tmux.conf
+
+# TODO # Add Docker's official GPG key:
+# TODO echo [DEBUG] Installing and configuring Docker
+# TODO sudo apt-get update
+# TODO sudo apt-get install -y ca-certificates curl
+# TODO sudo install -m 0755 -d /etc/apt/keyrings
+# TODO sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+# TODO sudo chmod a+r /etc/apt/keyrings/docker.asc
+# TODO echo \
+# TODO   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+# TODO   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+# TODO   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# TODO sudo apt-get update
+# TODO sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# TODO sudo docker run hello-world
 
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
