@@ -3,33 +3,42 @@
 # Other projects example:
 # https://github.com/basecamp/omakub/tree/master
 
-# TODO echo [DEBUG] Start host configuration
-# TODO 
-# TODO echo [DEBUG] Creating folders
-# TODO if [ -d ~/Software ]; then
-# TODO   echo [DEBUG] The ~/Software folder already exists
-# TODO else
-# TODO   echo [DEBUG] The ~/Software folder does not exists. Start creating the folder
-# TODO   mkdir ~/Software
-# TODO fi
-# TODO if [ -d ~/.local/bin ]; then
-# TODO   echo [DEBUG] The main ~/.local/bin folder already exists
-# TODO else
-# TODO   echo [DEBUG] The main ~/.local/bin folder does not exists. Start creating the folder
-# TODO   mkdir -p ~/.local/bin
-# TODO fi
-# TODO 
+echo [DEBUG] Start host configuration
+
+echo [DEBUG] Creating folders
+if [ -d ~/Software ]; then
+  echo [DEBUG] The ~/Software folder already exists
+else
+  echo [DEBUG] The ~/Software folder does not exists. Start creating the folder
+  mkdir ~/Software
+fi
+if [ -d ~/.local/bin ]; then
+  echo [DEBUG] The ~/.local/bin folder already exists
+else
+  echo [DEBUG] The ~/.local/bin folder does not exists. Start creating the folder
+  mkdir -p ~/.local/bin
+fi
+
 # TODO echo [DEBUG] Updating apt
 # TODO sudo apt update
-# TODO 
+
 # TODO echo [DEBUG] Installing software using apt
 # TODO sudo apt install -y git
 # TODO sudo apt install -y tmux
 # TODO sudo apt install -y trash-cli
 # TODO sudo apt install -y curl
 # TODO 
-# TODO echo [DEBUG] Downloading project toc-markdown
-# TODO git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+# TODO if [ -d ~/Software/toc-markdown ]; then
+# TODO   echo [DEBUG] The ~/Software/toc-markdown folder already exists. Updating
+# TODO   cd ~/Software/toc-markdown
+# TODO   git checkout main
+# TODO   git pull origin main
+# TODO else
+# TODO   echo [DEBUG] The ~/Software/toc-markdown does not exists. Downloading
+# TODO   cd ~/Software/
+# TODO   git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+# TODO fi
+# TODO cd -
 # TODO 
 # TODO echo [DEBUG] Cloning the dotfiles project
 # TODO git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
