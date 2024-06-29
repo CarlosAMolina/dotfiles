@@ -99,7 +99,7 @@ fi
 # TODO tmux source ~/.tmux.conf
 
 # TODO # Add Docker's official GPG key:
-# TODO echo [DEBUG] Installing and configuring Docker
+# TODO echo [DEBUG] Installing Docker
 # TODO sudo apt-get update
 # TODO sudo apt-get install -y ca-certificates curl
 # TODO sudo install -m 0755 -d /etc/apt/keyrings
@@ -111,7 +111,17 @@ fi
 # TODO   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 # TODO sudo apt-get update
 # TODO sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-# TODO sudo docker run hello-world
+# TODO sudo docker run --rm hello-world
+# TODO sudo docker rmi hello-world
+# TODO echo [DEBUG] Configuring Docker rootless
+# TODO # https://docs.docker.com/engine/security/rootless/
+# TODO sudo apt-get install -y dbus-user-session
+# TODO sudo apt-get install -y fuse-overlayfs
+# TODO sudo apt-get install -y slirp4netns
+# TODO sudo apt-get install -y uidmap
+# TODO /usr/bin/dockerd-rootless-setuptool.sh install
+# TODO docker run --rm hello-world
+# TODO docker rmi hello-world
 
 # TODO echo [DEBUG] Uninstalling unrequired packages
 # TODO sudo apt autoremove
