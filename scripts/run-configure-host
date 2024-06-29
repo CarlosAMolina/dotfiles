@@ -3,6 +3,8 @@
 # Other projects example:
 # https://github.com/basecamp/omakub/tree/master
 
+set -e # Exit if any command fails.
+
 echo [DEBUG] Start host configuration
 
 echo [DEBUG] Creating folders
@@ -45,9 +47,6 @@ if [ ! -d ~/Software/toc-markdown ]; then
   exit 1
 fi
 
-echo [DEBUG] Cloning the dotfiles project
-git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-
 if [ -d ~/Software/dotfiles ]; then
   echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
   cd ~/Software/dotfiles
@@ -67,6 +66,8 @@ echo [DEBUG] Installing and configuring nvm
 # https://github.com/nvm-sh/nvm
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install --lts --latest-npm
+node -v # Check command works
+npm -v # Check command works
 npm config set prefix '~/.local/' # This enables run npm install without sudo
 
 cd /tmp
