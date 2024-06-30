@@ -38,6 +38,11 @@ alias ga='git add'
 alias gb='git branch'
 alias gbc='git branch --show-current'
 alias gc='git commit -m'
+# https://stackoverflow.com/questions/70349068/shell-remove-space-before-variable-in-alias
+# Run example: gclone CarlosAMolina/cmoli.es
+gclone () {
+    echo git clone git@github.com:"$1"
+}
 # Commmit without running pre-commit
 alias gcn='git commit -nm'
 alias gca='git commit --amend'
