@@ -16,10 +16,11 @@ function create_symlink(){
     fi
 }
 
-create_symlink "firefox" $HOME/Software/firefox/firefox/firefox
+#create_symlink "firefox" $HOME/Software/firefox/firefox/firefox
 #create_symlink "keepassxc" $HOME/Software/keepassxc/KeePassXC-2.6.6-x86_64.AppImage
-create_symlink "lockscreen" $HOME/.config/i3lock/lockscreen
-create_symlink "powermenu" $HOME/Software/dotfiles/dotfiles/config/rofi/powermenu
-create_symlink "thunderbird" $HOME/Software/thunderbird/thunderbird/thunderbird
-create_symlink "usb" $HOME/Software/usb-linux/src/usb/target/debug/usb
+#create_symlink "lockscreen" $HOME/.config/i3lock/lockscreen
+#create_symlink "powermenu" $HOME/Software/dotfiles/dotfiles/config/rofi/powermenu
+#create_symlink "thunderbird" $HOME/Software/thunderbird/thunderbird/thunderbird
+#create_symlink "usb" $HOME/Software/usb-linux/src/usb/target/debug/usb
+create_symlink "vim" /usr/local/bin/nvim
 
