@@ -32,6 +32,7 @@ sudo apt install -y tmux
 sudo apt install -y trash-cli
 sudo apt install -y htop
 sudo apt install -y build-essential # installs: make
+sudo apt install -y xclip
 
 echo [DEBUG] Installing software using source files
 
