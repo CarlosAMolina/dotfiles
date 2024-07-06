@@ -25,13 +25,14 @@ echo [DEBUG] Updating apt
 sudo apt update
 
 echo [DEBUG] Installing software using apt
+sudo apt install -y build-essential # installs: make
 sudo apt install -y curl
 sudo apt install -y git
+sudo apt install -y htop
 sudo apt install -y meld
+sudo apt install -y ripgrep # Required by telescope nvim extension.
 sudo apt install -y tmux
 sudo apt install -y trash-cli
-sudo apt install -y htop
-sudo apt install -y build-essential # installs: make
 sudo apt install -y xclip
 
 echo [DEBUG] Installing software using source files
