@@ -34,6 +34,7 @@ sudo apt install -y ripgrep # Required by telescope nvim extension.
 sudo apt install -y tmux
 sudo apt install -y trash-cli
 sudo apt install -y xclip
+sudo apt install -y zip
 
 echo [DEBUG] Installing software using source files
 
