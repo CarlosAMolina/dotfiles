@@ -74,4 +74,9 @@ alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
 # Vi
 alias vi='nvim'
-
+# Change nvim spell check language
+# Run example: vispell en
+# Run example: vispell es
+vispell () {
+    sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' /tmp/test/init.vim
+}
