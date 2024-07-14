@@ -78,5 +78,5 @@ alias vi='nvim'
 # Run example: vispell en
 # Run example: vispell es
 vispell () {
-    sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' /tmp/test/init.vim
+    sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
 }
