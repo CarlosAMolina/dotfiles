@@ -20,6 +20,12 @@ else
   echo [DEBUG] The ~/.local/bin folder does not exists. Start creating the folder
   mkdir -p ~/.local/bin
 fi
+if [ -d ~/.ssh ]; then
+  echo [DEBUG] The ~/.ssh folder already exists
+else
+  echo [DEBUG] The ~/.ssh folder does not exists. Start creating the folder
+  mkdir ~/.ssh
+fi
 
 echo [DEBUG] Updating apt
 sudo apt update
@@ -35,6 +41,26 @@ sudo apt install -y tmux
 sudo apt install -y trash-cli
 sudo apt install -y xclip
 sudo apt install -y zip
+
+echo [DEBUG] Start github ssh configuration
+if [ -f ~/.ssh/id_ed25519 ]; then
+  echo [DEBUG] The ~/.ssh/id_ed25519 file already exists
+else
+  echo [DEBUG] The ~/.ssh/id_ed25519 file does not exists. Start creating the file
+  # https://linuxconfig.org/handling-user-input-in-bash-scripts
+  read -p "[DEBUG] Enter your email to create a new SSH key for GitHub: " email
+  if [[ -z "$email" ]]; then
+    echo "[ERROR] Email cannot be empty"
+    exit 1
+  fi
+  ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
+fi
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+# https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
+echo "[DEBUG] Copy the following prasshprase and save it in yout GitHub account (https://github.com/login, https://github.com/settings/keys)"
+cat ~/.ssh/id_ed25519.pub
+read -p "[DEBUG] Press Enter to continue when the passhprase is stored" </dev/tty
 
 echo [DEBUG] Installing software using source files
 
@@ -89,6 +115,7 @@ cd -
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 mkdir -p ~/.config/nvim
 cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
+nvim -c 'PlugInstall'
 echo [DEBUG] Installing and configuring keepassxc
 wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
 chmod +x ~/.local/bin/KeePassXC.AppImage
@@ -111,7 +138,7 @@ cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
 cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
 # https://unix.stackexchange.com/a/66607
-tmux source ~/.tmux.conf
+#tmux source ~/.tmux.conf
 
 # Add Docker's official GPG key:
 echo [DEBUG] Installing Docker
