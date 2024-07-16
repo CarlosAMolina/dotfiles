@@ -177,3 +177,7 @@ echo [DEBUG] Installing github cli
 
 echo [DEBUG] Uninstalling unrequired packages
 sudo apt autoremove
+
+echo "[DEBUG] Some manual steps are required"
+read -p "[DEBUG] Open \`vi\` and execute \`:PlugInstall\`. Press Enter to continue when done" </dev/tty
+cp ~/Software/dotfiles/dotfiles/config/nvim/plugins/coc/coc-pyright/coc-settings.json ~/.config/nvim/
