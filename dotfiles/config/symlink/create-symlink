@@ -22,5 +22,6 @@ function create_symlink(){
 #create_symlink "powermenu" $HOME/Software/dotfiles/dotfiles/config/rofi/powermenu
 #create_symlink "thunderbird" $HOME/Software/thunderbird/thunderbird/thunderbird
 #create_symlink "usb" $HOME/Software/usb-linux/src/usb/target/debug/usb
+create_symlink "python" /usr/bin/python3.11
 create_symlink "vim" /usr/local/bin/nvim
 
