@@ -175,6 +175,8 @@ echo [DEBUG] Installing github cli
 && sudo apt update \
 && sudo apt install gh -y
 
+./install/dbeaver
+
 echo [DEBUG] Uninstalling unrequired packages
 sudo apt autoremove
 
