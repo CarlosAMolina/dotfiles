@@ -42,7 +42,7 @@ sudo apt install -y trash-cli
 sudo apt install -y xclip
 sudo apt install -y zip
 
-./config/ssh-github
+./configure/ssh-github
 
 echo [DEBUG] Installing software using source files
 
@@ -87,7 +87,7 @@ else
 fi
 cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
 cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
-./config/tmux
+./configure/tmux
 
 # Add Docker's official GPG key:
 echo [DEBUG] Installing Docker
