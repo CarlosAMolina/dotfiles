@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e # Exit if any command fails.
+
+if [ -d ~/Software/toc-markdown ]; then
+  echo [DEBUG] The ~/Software/toc-markdown folder already exists. Updating
+  cd ~/Software/toc-markdown
+  git checkout main
+  git pull origin main
+  cd -
+else
+  echo [DEBUG] The ~/Software/toc-markdown folder does not exists. Downloading
+  git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+fi
+if [ ! -d ~/Software/toc-markdown ]; then
+  echo [ERROR] The ~/Software/toc-markdown folder has not been downloaded
+  exit 1
+fi
