@@ -64,13 +64,7 @@ else
 ./install/sublime-text
 
 echo [DEBUG] Configuring dotfiles
-if [ -f ~/.bashrc.backup ]; then
-    echo [DEBUG] File ~/.bashrc.backup already exists
-else
-    echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
-    cp ~/.bashrc ~/.bashrc.backup
-fi
-cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+./configure/bash
 cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 ./configure/tmux
 
