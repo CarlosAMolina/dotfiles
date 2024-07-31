@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e # Exit if any command fails.
+
+cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~

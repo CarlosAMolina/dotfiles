@@ -65,7 +65,7 @@ else
 
 echo [DEBUG] Configuring dotfiles
 ./configure/bash
-cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+./configure/git
 ./configure/tmux
 
 ./install/docker
