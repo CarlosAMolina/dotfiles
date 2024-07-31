@@ -89,31 +89,7 @@ cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
 cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 ./configure/tmux
 
-# Add Docker's official GPG key:
-echo [DEBUG] Installing Docker
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo docker run --rm hello-world
-sudo docker rmi hello-world
-echo [DEBUG] Configuring Docker rootless
-# https://docs.docker.com/engine/security/rootless/
-sudo apt-get install -y dbus-user-session
-sudo apt-get install -y fuse-overlayfs
-sudo apt-get install -y slirp4netns
-sudo apt-get install -y uidmap
-/usr/bin/dockerd-rootless-setuptool.sh install
-docker run --rm hello-world
-docker rmi hello-world
-
+./install/docker
 ./install/github-cli
 ./install/dbeaver
 
