@@ -42,7 +42,7 @@ sudo apt install -y trash-cli
 sudo apt install -y xclip
 sudo apt install -y zip
 
-./configure/ssh-github
+./configure/github-ssh
 
 echo [DEBUG] Installing software using source files
 
