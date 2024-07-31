@@ -56,6 +56,7 @@ else
 ./install/nvm
 ./install/neovim
 
+./install/docker
 ./install/github-cli
 ./install/dbeaver
 ./configure/neovim
@@ -64,7 +65,6 @@ else
 ./configure/bash
 ./configure/git
 ./configure/tmux
-./install/docker
 
 echo [DEBUG] Uninstalling unrequired packages
 sudo apt autoremove
