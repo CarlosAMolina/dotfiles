@@ -56,12 +56,12 @@ else
 ./install/nvm
 ./install/neovim
 
+./install/sublime-text
 ./install/docker
 ./install/github-cli
 ./install/dbeaver
 ./configure/neovim
 ./install/keepassxc
-./install/sublime-text
 ./configure/bash
 ./configure/git
 ./configure/tmux
