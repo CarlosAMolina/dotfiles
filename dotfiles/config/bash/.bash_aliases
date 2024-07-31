@@ -51,8 +51,7 @@ alias gdc='git diff --cached'
 alias gl='git log'
 alias gpull='git pull origin $(gbc)'
 alias gs='git status -s'
-# KeepassXC
-alias k='~/.local/bin/KeePassXC.AppImage & &> /dev/null'
+alias k='keepassxc > /dev/null 2>&1 &'
 # Open files/folders
 alias o='xdg-open'
 # Replace

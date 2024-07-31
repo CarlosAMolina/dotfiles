@@ -40,6 +40,7 @@ sudo apt install -y tmux
 sudo apt install -y trash-cli
 sudo apt install -y xclip
 sudo apt install -y zip
+sudo apt install -y keepassxc
 
 ./configure/github-ssh
 
@@ -57,7 +58,6 @@ fi
 
 ./install/nvm
 ./install/neovim
-./install/keepassxc
 ./install/sublime-text
 ./install/docker
 ./install/github-cli
