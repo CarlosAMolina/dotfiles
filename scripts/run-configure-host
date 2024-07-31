@@ -55,6 +55,7 @@ else
 
 ./install/nvm
 ./install/neovim
+./install/dbeaver
 ./configure/neovim
 ./install/keepassxc
 ./install/sublime-text
@@ -63,7 +64,6 @@ else
 ./configure/tmux
 ./install/docker
 ./install/github-cli
-./install/dbeaver
 
 echo [DEBUG] Uninstalling unrequired packages
 sudo apt autoremove
