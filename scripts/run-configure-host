@@ -44,8 +44,6 @@ sudo apt install -y zip
 
 ./configure/github-ssh
 
-echo [DEBUG] Installing software using source files
-
 if [ -d ~/Software/toc-markdown ]; then
   ./update/toc-markdown
 else
