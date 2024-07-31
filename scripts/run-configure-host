@@ -63,7 +63,7 @@ if [ ! -d ~/Software/dotfiles ]; then
   exit 1
 fi
 
-echo [DEBUG] Installing and configuring nvm
+echo [DEBUG] Installing nvm
 # https://github.com/nvm-sh/nvm
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.nvm/nvm.sh
