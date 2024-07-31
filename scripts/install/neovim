@@ -2,6 +2,7 @@
 
 set -e # Exit if any command fails.
 
+sudo apt install -y ripgrep # Required by telescope nvim extension.
 cd /tmp
 echo [DEBUG] Installing neovim
 wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"

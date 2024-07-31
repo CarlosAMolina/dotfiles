@@ -36,7 +36,6 @@ sudo apt install -y curl
 sudo apt install -y git
 sudo apt install -y htop
 sudo apt install -y meld
-sudo apt install -y ripgrep # Required by telescope nvim extension.
 sudo apt install -y tmux
 sudo apt install -y trash-cli
 sudo apt install -y xclip
@@ -55,16 +54,13 @@ else
   ./install/dotfiles
 
 ./install/nvm
-
 ./install/neovim
 ./configure/neovim
 ./install/keepassxc
 ./install/sublime-text
-
 ./configure/bash
 ./configure/git
 ./configure/tmux
-
 ./install/docker
 ./install/github-cli
 ./install/dbeaver
