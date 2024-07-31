@@ -58,17 +58,10 @@ else
 
 ./install/nvm
 
-cd /tmp
-echo [DEBUG] Installing and configuring neovim
-wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz"
-tar -xf nvim.tar.gz
-sudo install nvim-linux64/bin/nvim /usr/local/bin/nvim
-# https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
-sudo mkdir -p /usr/local/share/nvim/
-sudo cp -r nvim-linux64/share/nvim/runtime/ /usr/local/share/nvim/
-rm -rf nvim-linux64 nvim.tar.gz
-cd -
+./install/neovim
+echo [DEBUG] Installing vim-plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+echo [DEBUG] Configuring neovim
 mkdir -p ~/.config/nvim
 cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
 nvim -c 'PlugInstall'
