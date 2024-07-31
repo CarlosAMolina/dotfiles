@@ -8,5 +8,5 @@ cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
 nvim -c 'PlugInstall'
 
 echo "[DEBUG] Some manual steps are required"
-read -p "[DEBUG] Open \`vi\` and execute \`:PlugInstall\`. Press Enter to continue when done" </dev/tty
+read -p "[DEBUG] Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done" </dev/tty
 cp ~/Software/dotfiles/dotfiles/config/nvim/plugins/coc/coc-pyright/coc-settings.json ~/.config/nvim/

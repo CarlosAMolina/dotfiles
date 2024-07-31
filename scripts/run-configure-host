@@ -47,11 +47,13 @@ if [ -d ~/Software/toc-markdown ]; then
   ./update/toc-markdown
 else
   ./install/toc-markdown
+fi
 
 if [ -d ~/Software/dotfiles ]; then
   ./update/dotfiles
 else
   ./install/dotfiles
+fi
 
 ./install/nvm
 ./install/neovim
