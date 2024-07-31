@@ -59,10 +59,7 @@ else
 ./install/nvm
 
 ./install/neovim
-echo [DEBUG] Configuring neovim
-mkdir -p ~/.config/nvim
-cp ~/Software/dotfiles/dotfiles/config/nvim/init.vim ~/.config/nvim/
-nvim -c 'PlugInstall'
+./configure/neovim
 echo [DEBUG] Installing and configuring keepassxc
 wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
 chmod +x ~/.local/bin/KeePassXC.AppImage
@@ -86,9 +83,5 @@ cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 
 echo [DEBUG] Uninstalling unrequired packages
 sudo apt autoremove
-
-echo "[DEBUG] Some manual steps are required"
-read -p "[DEBUG] Open \`vi\` and execute \`:PlugInstall\`. Press Enter to continue when done" </dev/tty
-cp ~/Software/dotfiles/dotfiles/config/nvim/plugins/coc/coc-pyright/coc-settings.json ~/.config/nvim/
 
 echo "[DEBUG] Configuration done :)"
