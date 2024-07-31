@@ -34,12 +34,12 @@ echo [DEBUG] Installing software using apt
 sudo apt install -y build-essential # installs: make
 sudo apt install -y curl
 ./install/git
-./install/htop
-./install/meld
-./install/tmux
-./install/trash-cli
-./install/xclip
-./install/zip
+sudo apt install -y htop
+sudo apt install -y meld
+sudo apt install -y tmux
+sudo apt install -y trash-cli
+sudo apt install -y xclip
+sudo apt install -y zip
 
 ./configure/github-ssh
 
