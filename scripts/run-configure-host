@@ -60,10 +60,7 @@ else
 
 ./install/neovim
 ./configure/neovim
-echo [DEBUG] Installing keepassxc
-wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
-chmod +x ~/.local/bin/KeePassXC.AppImage
-
+./install/keepassxc
 ./install/sublime-text
 
 echo [DEBUG] Configuring dotfiles
