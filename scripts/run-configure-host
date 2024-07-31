@@ -76,12 +76,7 @@ echo [DEBUG] Installing and configuring keepassxc
 wget https://github.com/keepassxreboot/keepassxc/releases/download/2.7.9/KeePassXC-2.7.9-x86_64.AppImage -O ~/.local/bin/KeePassXC.AppImage 
 chmod +x ~/.local/bin/KeePassXC.AppImage
 
-echo [DEBUG] Installing sublime text
-# https://www.sublimetext.com/docs/linux_repositories.html#apt
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-sudo apt-get update
-sudo apt-get install sublime-text
+./install/sublime-text
 
 echo [DEBUG] Configuring dotfiles
 if [ -f ~/.bashrc.backup ]; then
