@@ -63,7 +63,6 @@ else
 ./install/keepassxc
 ./install/sublime-text
 
-echo [DEBUG] Configuring dotfiles
 ./configure/bash
 ./configure/git
 ./configure/tmux

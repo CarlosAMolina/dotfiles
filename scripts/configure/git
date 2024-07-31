@@ -2,4 +2,5 @@
 
 set -e # Exit if any command fails.
 
+echo [DEBUG] Configuring git dotfiles
 cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
