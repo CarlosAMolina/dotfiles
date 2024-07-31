@@ -33,7 +33,7 @@ sudo apt update
 echo [DEBUG] Installing software using apt
 sudo apt install -y build-essential # installs: make
 sudo apt install -y curl
-sudo apt install -y git
+./install/git
 sudo apt install -y htop
 sudo apt install -y meld
 sudo apt install -y tmux
