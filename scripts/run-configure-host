@@ -52,11 +52,7 @@ else
   ./install/toc-markdown
 
 if [ -d ~/Software/dotfiles ]; then
-  echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
-  cd ~/Software/dotfiles
-  git checkout main
-  git pull origin main
-  cd -
+  ./update/dotfiles
 else
   ./install/dotfiles
 
