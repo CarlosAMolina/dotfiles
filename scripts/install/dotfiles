@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e # Exit if any command fails.
+
+echo [DEBUG] Downloading ~/Software/dotfiles
+git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+if [ ! -d ~/Software/dotfiles ]; then
+  echo [ERROR] The ~/Software/dotfiles has not been downloaded
+  exit 1
+fi
