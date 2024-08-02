@@ -189,8 +189,18 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " nvim-tree configuration
+" https://github.com/nvim-tree/nvim-tree.lua
 nnoremap <leader>t <cmd>NvimTreeToggle<cr>
 " Open tree and focus on current file
 nnoremap <leader>p <cmd>NvimTreeFindFile<cr>
-
-lua require'nvim-tree'.setup {}
+" https://neovim.io/doc/user/lua-guide.html
+" https://www.reddit.com/r/neovim/comments/12a1a81/nvimtree_close_on_open_file_confused_on_how_to/?rdt=40062
+lua << EOF
+  require('nvim-tree').setup({
+    actions = {
+      open_file = {
+        quit_on_open = true,
+      },
+    },
+  })
+EOF
