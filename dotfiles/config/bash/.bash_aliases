@@ -50,6 +50,7 @@ alias gd='git diff'
 alias gdc='git diff --cached'
 alias gl='git log'
 alias gpull='git pull origin $(gbc)'
+alias gpush='git push origin $(gbc)'
 alias gs='git status -s'
 alias k='keepassxc > /dev/null 2>&1 &'
 # Open files/folders
