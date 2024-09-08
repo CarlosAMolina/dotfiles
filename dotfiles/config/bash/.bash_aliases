@@ -63,8 +63,6 @@ alias replace='f(){ grep -rlZe "$1" --exclude-dir={env,.git,node_modules,__pycac
 alias screen='f(){ xrandr --output eDP-1 --auto && xrandr --output $1 --auto && xrandr --output eDP-1 --left-of $1;  unset -f f; }; f'
 # Screenshot
 alias screenshot='flameshot &'
-# Sublime text
-alias s='subl'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
 # Tmux
