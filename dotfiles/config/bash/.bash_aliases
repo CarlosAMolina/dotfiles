@@ -78,3 +78,5 @@ alias vi='nvim'
 vispell () {
     sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
 }
+# Change current user session state
+alias off='systemctl poweroff'
