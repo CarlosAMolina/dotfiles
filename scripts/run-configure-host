@@ -2,6 +2,7 @@
 
 set -e # Exit if any command fails.
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 dry_run="0"
 
 while [[ $# -gt 0 ]]; do
@@ -67,14 +68,12 @@ execute sudo apt install -y keepassxc
 
 execute ./configure/github-ssh
 
-execute ./install/toc-markdown
-execute ./install/dotfiles
-execute ./install/nvm
-execute ./install/neovim
-execute ./install/sublime-text
-execute ./install/docker
-execute ./install/github-cli
-execute ./install/dbeaver
+runs_dir=`find $script_dir/install -mindepth 1 -maxdepth 1 -executable`
+
+for script in $runs_dir; do
+    execute $script
+done
+
 execute ./configure/neovim
 execute ./configure/bash
 execute ./configure/git
