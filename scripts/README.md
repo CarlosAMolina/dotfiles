@@ -12,6 +12,10 @@ Configure git ssh to allow the script to clone projects.
 
 Execute `vi` and run `:PlugInstall`.
 
+## Script options:
+
+- `--dry`: to not execute orders, only show what it should do.
+
 ## References
 
 [ThePrimeagen. Frontend Masters. Developer Productivity 2](https://frontendmasters.github.io/dev-prod-2/)
