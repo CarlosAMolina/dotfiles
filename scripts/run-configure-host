@@ -2,32 +2,36 @@
 
 set -e # Exit if any command fails.
 
-echo [DEBUG] Start host configuration
+log(){
+    echo "[DEBUG] $@"
+}
 
-echo [DEBUG] Creating folders
+log Start host configuration
+
+log Creating folders
 if [ -d ~/Software ]; then
-  echo [DEBUG] The ~/Software folder already exists
+  log The ~/Software folder already exists
 else
-  echo [DEBUG] The ~/Software folder does not exists. Start creating the folder
+  log The ~/Software folder does not exists. Start creating the folder
   mkdir ~/Software
 fi
 if [ -d ~/.local/bin ]; then
-  echo [DEBUG] The ~/.local/bin folder already exists
+  log The ~/.local/bin folder already exists
 else
-  echo [DEBUG] The ~/.local/bin folder does not exists. Start creating the folder
+  log The ~/.local/bin folder does not exists. Start creating the folder
   mkdir -p ~/.local/bin
 fi
 if [ -d ~/.ssh ]; then
-  echo [DEBUG] The ~/.ssh folder already exists
+  log The ~/.ssh folder already exists
 else
-  echo [DEBUG] The ~/.ssh folder does not exists. Start creating the folder
+  log The ~/.ssh folder does not exists. Start creating the folder
   mkdir ~/.ssh
 fi
 
-echo [DEBUG] Updating apt
+log Updating apt
 sudo apt update
 
-echo [DEBUG] Installing software using apt
+log Installing software using apt
 sudo apt install -y build-essential # installs: make
 sudo apt install -y curl
 sudo apt install -y git
@@ -64,7 +68,7 @@ fi
 ./configure/git
 ./configure/tmux
 
-echo [DEBUG] Uninstalling unrequired packages
+log Uninstalling unrequired packages
 sudo apt autoremove
 
-echo "[DEBUG] Configuration done :)"
+log Configuration done :)
