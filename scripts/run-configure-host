@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Other projects example:
-# https://github.com/basecamp/omakub/tree/master
-
 set -e # Exit if any command fails.
 
 echo [DEBUG] Start host configuration
