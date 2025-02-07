@@ -2,8 +2,30 @@
 
 set -e # Exit if any command fails.
 
-log(){
-    echo "[DEBUG] $@"
+dry_run="0"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
 }
 
 log Start host configuration
@@ -13,62 +35,62 @@ if [ -d ~/Software ]; then
   log The ~/Software folder already exists
 else
   log The ~/Software folder does not exists. Start creating the folder
-  mkdir ~/Software
+  execute mkdir ~/Software
 fi
 if [ -d ~/.local/bin ]; then
   log The ~/.local/bin folder already exists
 else
   log The ~/.local/bin folder does not exists. Start creating the folder
-  mkdir -p ~/.local/bin
+  execute mkdir -p ~/.local/bin
 fi
 if [ -d ~/.ssh ]; then
   log The ~/.ssh folder already exists
 else
   log The ~/.ssh folder does not exists. Start creating the folder
-  mkdir ~/.ssh
+  execute mkdir ~/.ssh
 fi
 
 log Updating apt
-sudo apt update
+execute sudo apt update
 
 log Installing software using apt
-sudo apt install -y build-essential # installs: make
-sudo apt install -y curl
-sudo apt install -y git
-sudo apt install -y htop
-sudo apt install -y meld
-sudo apt install -y tmux
-sudo apt install -y trash-cli
-sudo apt install -y xclip
-sudo apt install -y zip
-sudo apt install -y keepassxc
+execute sudo apt install -y build-essential # installs: make
+execute sudo apt install -y curl
+execute sudo apt install -y git
+execute sudo apt install -y htop
+execute sudo apt install -y meld
+execute sudo apt install -y tmux
+execute sudo apt install -y trash-cli
+execute sudo apt install -y xclip
+execute sudo apt install -y zip
+execute sudo apt install -y keepassxc
 
-./configure/github-ssh
+execute ./configure/github-ssh
 
 if [ -d ~/Software/toc-markdown ]; then
-  ./update/toc-markdown
+  execute ./update/toc-markdown
 else
-  ./install/toc-markdown
+  execute ./install/toc-markdown
 fi
 
 if [ -d ~/Software/dotfiles ]; then
-  ./update/dotfiles
+  execute ./update/dotfiles
 else
-  ./install/dotfiles
+  execute ./install/dotfiles
 fi
 
-./install/nvm
-./install/neovim
-./install/sublime-text
-./install/docker
-./install/github-cli
-./install/dbeaver
-./configure/neovim
-./configure/bash
-./configure/git
-./configure/tmux
+execute ./install/nvm
+execute ./install/neovim
+execute ./install/sublime-text
+execute ./install/docker
+execute ./install/github-cli
+execute ./install/dbeaver
+execute ./configure/neovim
+execute ./configure/bash
+execute ./configure/git
+execute ./configure/tmux
 
 log Uninstalling unrequired packages
-sudo apt autoremove
+execute sudo apt autoremove
 
-log Configuration done :)
+log "Configuration done :)"
