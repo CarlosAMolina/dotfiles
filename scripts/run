@@ -68,8 +68,8 @@ execute sudo apt install -y keepassxc
 
 execute ./configure/github-ssh
 
-runs_dir=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
-for script in $runs_dir; do
+scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
+for script in $scripts; do
     execute $script
 done
 
