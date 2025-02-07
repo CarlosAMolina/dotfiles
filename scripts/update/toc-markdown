@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -e # Exit if any command fails.
-
-echo [DEBUG] Updating ~/Software/toc-markdown
-cd ~/Software/toc-markdown
-git checkout main
-git pull origin main
-cd -

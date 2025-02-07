@@ -2,9 +2,17 @@
 
 set -e # Exit if any command fails.
 
-echo [DEBUG] Downloading ~/Software/dotfiles
-git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
-if [ ! -d ~/Software/dotfiles ]; then
-  echo [ERROR] The ~/Software/dotfiles has not been downloaded
-  exit 1
+if [ -d ~/Software/dotfiles ]; then
+    echo [DEBUG] The ~/Software/dotfiles folder already exists. Updating
+    cd ~/Software/dotfiles
+    git checkout main
+    git pull origin main
+    cd -
+else
+    echo [DEBUG] Downloading ~/Software/dotfiles
+    git clone git@github.com:CarlosAMolina/dotfiles ~/Software/dotfiles
+    if [ ! -d ~/Software/dotfiles ]; then
+      echo [ERROR] The ~/Software/dotfiles has not been downloaded
+      exit 1
+    fi
 fi

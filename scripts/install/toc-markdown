@@ -2,9 +2,18 @@
 
 set -e # Exit if any command fails.
 
-echo [DEBUG] Downloading ~/Software/toc-markdown
-git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
-if [ ! -d ~/Software/toc-markdown ]; then
-  echo [ERROR] The ~/Software/toc-markdown folder has not been downloaded
-  exit 1
+if [ -d ~/Software/toc-markdown ]; then
+  echo [DEBUG] Updating ~/Software/toc-markdown
+  cd ~/Software/toc-markdown
+  git checkout main
+  git pull origin main
+  cd -
+else
+  echo [DEBUG] Downloading ~/Software/toc-markdown
+  git clone git@github.com:CarlosAMolina/toc-markdown ~/Software/toc-markdown
+  if [ ! -d ~/Software/toc-markdown ]; then
+    echo [ERROR] The ~/Software/toc-markdown folder has not been downloaded
+    exit 1
+  fi
 fi
+

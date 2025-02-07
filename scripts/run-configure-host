@@ -67,18 +67,8 @@ execute sudo apt install -y keepassxc
 
 execute ./configure/github-ssh
 
-if [ -d ~/Software/toc-markdown ]; then
-  execute ./update/toc-markdown
-else
-  execute ./install/toc-markdown
-fi
-
-if [ -d ~/Software/dotfiles ]; then
-  execute ./update/dotfiles
-else
-  execute ./install/dotfiles
-fi
-
+execute ./install/toc-markdown
+execute ./install/dotfiles
 execute ./install/nvm
 execute ./install/neovim
 execute ./install/sublime-text
