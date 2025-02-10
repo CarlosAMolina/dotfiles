@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Example of usage:
+# Dry run and only script that contains `fzf`:
+# ```
+# ./scripts/run --dry fzf
+# ```
+
 set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -9,6 +15,8 @@ while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
+    else
+        filter="$1"
     fi
     shift
 done
@@ -70,6 +78,10 @@ execute ./configure/github-ssh
 
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
+    if echo "$script" | grep -qv "$filter"; then
+        log "filtered: $filter -- $script"
+        continue
+    fi
     execute $script
 done
 
