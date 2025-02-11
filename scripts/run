@@ -82,10 +82,8 @@ for script in $scripts; do
     execute $script
 done
 
-execute ./configure/neovim
 execute ./configure/bash
 execute ./configure/git
-execute ./configure/tmux
 
 log Uninstalling unrequired packages
 execute sudo apt autoremove
