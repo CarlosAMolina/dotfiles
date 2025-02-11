@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Example of usage:
+# Usage example.
 # Dry run and only script that contains `fzf`:
 # ```
 # ./scripts/run --dry fzf
@@ -37,8 +37,6 @@ execute() {
     "$@"
 }
 
-log Start host configuration
-
 create_dir() {
     if [ -d "$@" ]; then
         log The "$@" folder already exists
@@ -47,6 +45,10 @@ create_dir() {
         execute mkdir -p "$@"
     fi
 }
+
+log Start host configuration
+
+# First, run software required by other software executed later.
 
 if echo "dir" | grep -qv "$filter"; then
     log "filtered: $filter -- dir"
@@ -57,7 +59,6 @@ else
     create_dir ~/.ssh
 fi
 
-# First, install software required by other software installed later.
 if echo "$script_dir/runs-no-loop/apt" | grep -qv "$filter"; then
     log "filtered: $filter -- $script_dir/runs-no-loop/apt"
 else
