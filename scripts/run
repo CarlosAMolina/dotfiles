@@ -48,10 +48,10 @@ create_dir() {
     fi
 }
 
-log Creating directories
 if echo "dir" | grep -qv "$filter"; then
     log "filtered: $filter -- dir"
 else
+    log Creating directories
     create_dir ~/Software
     create_dir ~/.local/bin
     create_dir ~/.ssh
