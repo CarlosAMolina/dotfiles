@@ -3,12 +3,13 @@
 set -e # Exit if any command fails.
 
 execute() {
-    echo "[DEBUG go] execute $@"
+    echo "[DEBUG][go] execute $@"
     "$@"
 }
 
 path=~/.local/bin
 file_name=go1.24.0.linux-amd64.tar.gz
+# https://go.dev/doc/install
 if [ -d $path/go ]; then
     execute rm -rf $path/go
 fi
@@ -17,6 +18,5 @@ if [ ! -f /tmp/$file_name ]; then
     execute wget https://go.dev/dl/$file_name -P /tmp/
 fi
 execute mkdir -p $path/go
-# https://go.dev/doc/install
 execute tar -C $path -xzf /tmp/$file_name
 execute go version
