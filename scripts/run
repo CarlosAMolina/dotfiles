@@ -39,7 +39,7 @@ execute() {
 
 log Start host configuration
 
-create_folder() {
+create_dir() {
     if [ -d "$@" ]; then
         log The "$@" folder already exists
     else
@@ -48,13 +48,13 @@ create_folder() {
     fi
 }
 
-log Creating folders
-if echo "folder" | grep -qv "$filter"; then
-    log "filtered: $filter -- folder"
+log Creating directories
+if echo "dir" | grep -qv "$filter"; then
+    log "filtered: $filter -- dir"
 else
-    create_folder ~/Software
-    create_folder ~/.local/bin
-    create_folder ~/.ssh
+    create_dir ~/Software
+    create_dir ~/.local/bin
+    create_dir ~/.ssh
 fi
 
 # First, install software required by other software installed later.
