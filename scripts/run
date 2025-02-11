@@ -39,25 +39,19 @@ execute() {
 
 log Start host configuration
 
+create_folder() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
+    else
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
+    fi
+}
+
 log Creating folders
-if [ -d ~/Software ]; then
-  log The ~/Software folder already exists
-else
-  log The ~/Software folder does not exists. Start creating the folder
-  execute mkdir ~/Software
-fi
-if [ -d ~/.local/bin ]; then
-  log The ~/.local/bin folder already exists
-else
-  log The ~/.local/bin folder does not exists. Start creating the folder
-  execute mkdir -p ~/.local/bin
-fi
-if [ -d ~/.ssh ]; then
-  log The ~/.ssh folder already exists
-else
-  log The ~/.ssh folder does not exists. Start creating the folder
-  execute mkdir ~/.ssh
-fi
+create_folder ~/Software
+create_folder ~/.local/bin
+create_folder ~/.ssh
 
 # First, install software required by other software installed later.
 if echo "$script_dir/runs-no-loop/apt" | grep -qv "$filter"; then
