@@ -2,12 +2,8 @@
 
 set -e # Exit if any command fails.
 
-log() {
-    echo "[DEBUG][bash] $@"
-}
-
 execute() {
-    log "execute $@"
+    echo "[DEBUG][bash] execute $@"
     "$@"
 }
 
