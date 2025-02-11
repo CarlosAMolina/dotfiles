@@ -73,12 +73,12 @@ else
     done
 fi
 
-scripts=(
+script_names=(
     apt
     git
     dotfiles
 )
-for script_name in "${scripts[@]}"; do
+for script_name in "${script_names[@]}"; do
     script="$script_dir/runs-in-order/$script_name"
     execute_script $script
 done
@@ -86,11 +86,7 @@ done
 # Install software whose installation order is not important.
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
-    if echo "$script" | grep -qv "$filter"; then
-        log "filtered: $filter -- $script"
-        continue
-    fi
-    execute $script
+    execute_script $script
 done
 
 # Final software to run.
