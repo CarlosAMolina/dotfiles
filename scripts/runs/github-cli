@@ -2,6 +2,31 @@
 
 set -e # Exit if any command fails.
 
+execute sudo apt install -y git
+
+echo [DEBUG] Start github ssh configuration
+if [ -f ~/.ssh/id_ed25519 ]; then
+  echo [DEBUG] The ~/.ssh/id_ed25519 file already exists
+else
+  echo [DEBUG] The ~/.ssh/id_ed25519 file does not exists. Start creating the file
+  # https://linuxconfig.org/handling-user-input-in-bash-scripts
+  read -p "[DEBUG] Enter your email to create a new SSH key for GitHub: " email
+  if [[ -z "$email" ]]; then
+    echo "[ERROR] Email cannot be empty"
+    exit 1
+  fi
+  ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
+fi
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+# https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
+echo "[DEBUG] Copy the following prasshprase and save it in yout GitHub account (https://github.com/login, https://github.com/settings/keys)"
+cat ~/.ssh/id_ed25519.pub
+read -p "[DEBUG] Press Enter to continue when the passhprase is stored" </dev/tty
+
+echo [DEBUG] Configuring git dotfiles
+cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
+
 echo [DEBUG] Installing github cli
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \

@@ -65,8 +65,6 @@ execute sudo apt update
 log Installing software using apt
 execute sudo apt install -y build-essential # installs: make
 execute sudo apt install -y curl
-execute sudo apt install -y git
-execute ./configure/github-ssh
 
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
