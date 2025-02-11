@@ -63,9 +63,60 @@ vispell () {
 # Change current user session state
 alias off='systemctl poweroff'
 
-if [ -f ~/.bash_config ]; then
-    . ~/.bash_config
+###########################
+# Terminal configuration
+###########################
+# https://wiki.archlinux.org/title/Bash/Prompt_customization
+PS1='[\u@\h \W]\$ '
+
+# https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
+set -o vi
+
+# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
+log () {
+    TMUX_LOGS=false;
+    if "$TMUX_LOGS";
+    then
+        echo "$1"
+    fi
+}
+
+log "1) Check tmux command availability: command -v tmux &> /dev/null"
+if command -v tmux &> /dev/null;
+then
+    log ok
+    log
+    log "2) Check if it is the desired terminal TERM=$TERM"
+    if [[ "$TERM" == "st-256color" ]] || [[ "$TERM" == "xterm-256color" ]];
+    then
+        log ok
+        log
+        log "3) Check if it is empty: -z TMUX. TMUX=$TMUX"
+        if [ -z "$TMUX" ];
+        then
+            log ok
+            log
+            # https://stackoverflow.com/questions/10475599/what-does-n-mean-in-bash
+            log "4) Check for interactive shell (PS1 is not empty): [ -n PS1 ]. PS1=$PS1"
+            if [ -n "$PS1" ];
+            then
+                log ok, this shell is interactive
+                exec tmux
+            else
+                log ko, this shell is not interactive
+            fi
+        else
+            log ko
+        fi
+    else
+        log ko
+    fi
+else
+    log ko
 fi
+
+# https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
+source ~/.nvm/nvm.sh
 
 if [ -f ~/.bash_exports ]; then
     . ~/.bash_exports
