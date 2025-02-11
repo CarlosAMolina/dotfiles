@@ -49,9 +49,13 @@ create_folder() {
 }
 
 log Creating folders
-create_folder ~/Software
-create_folder ~/.local/bin
-create_folder ~/.ssh
+if echo "folder" | grep -qv "$filter"; then
+    log "filtered: $filter -- folder"
+else
+    create_folder ~/Software
+    create_folder ~/.local/bin
+    create_folder ~/.ssh
+fi
 
 # First, install software required by other software installed later.
 if echo "$script_dir/runs-no-loop/apt" | grep -qv "$filter"; then
