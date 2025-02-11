@@ -71,6 +71,12 @@ else
     execute runs-no-loop/git
 fi
 
+if echo "$script_dir/runs-no-loop/dotfiles" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-no-loop/dotfiles"
+else
+    execute runs-no-loop/dotfiles
+fi
+
 # Install software whose installation order is not important.
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
