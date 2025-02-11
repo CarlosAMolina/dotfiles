@@ -46,6 +46,15 @@ create_dir() {
     fi
 }
 
+execute_script() {
+    script=$1
+    if echo "$script" | grep -qv "$filter"; then
+        log "filtered: $filter -- $script"
+    else
+        execute $script
+    fi
+}
+
 log Start host configuration
 
 # First, run software required by other software executed later.
@@ -71,11 +80,7 @@ scripts=(
 )
 for script_name in "${scripts[@]}"; do
     script="$script_dir/runs-in-order/$script_name"
-    if echo "$script" | grep -qv "$filter"; then
-        log "filtered: $filter -- $script"
-        continue
-    fi
-    execute $script
+    execute_script $script
 done
 
 # Install software whose installation order is not important.
