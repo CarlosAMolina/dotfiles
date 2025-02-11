@@ -59,12 +59,12 @@ else
   execute mkdir ~/.ssh
 fi
 
-log Updating apt
-execute sudo apt update
-
-log Installing software using apt
-execute sudo apt install -y build-essential # installs: make
-execute sudo apt install -y curl
+# First, install software required by other software installed later.
+if echo "$script_dir/runs-no-loop/apt" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-no-loop/apt"
+else
+    execute runs-no-loop/apt
+fi
 
 if echo "$script_dir/runs-no-loop/git" | grep -qv "$filter"; then
     log "filtered: $filter -- $script_dir/runs-no-loop/git"
@@ -72,6 +72,7 @@ else
     execute runs-no-loop/git
 fi
 
+# Install software whose installation order is not important.
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
     if echo "$script" | grep -qv "$filter"; then
@@ -81,6 +82,7 @@ for script in $scripts; do
     execute $script
 done
 
+# Final software to run.
 log Uninstalling unrequired packages
 execute sudo apt autoremove
 
