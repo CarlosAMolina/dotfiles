@@ -14,3 +14,4 @@
 export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 # https://stackoverflow.com/questions/18088372/how-to-npm-install-global-not-as-root
 export PATH=~/.local/bin/:$PATH
+export PATH=~/.local/pipx/venvs/poetry/bin/poetry:$PATH
