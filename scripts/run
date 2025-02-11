@@ -69,7 +69,6 @@ execute sudo apt install -y git
 execute sudo apt install -y htop
 execute sudo apt install -y meld
 execute sudo apt install -y trash-cli
-execute sudo apt install -y zip
 
 execute ./configure/github-ssh
 
