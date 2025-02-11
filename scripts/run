@@ -59,22 +59,22 @@ else
     create_dir ~/.ssh
 fi
 
-if echo "$script_dir/runs-no-loop/apt" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-no-loop/apt"
+if echo "$script_dir/runs-in-order/apt" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-in-order/apt"
 else
-    execute runs-no-loop/apt
+    execute runs-in-order/apt
 fi
 
-if echo "$script_dir/runs-no-loop/git" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-no-loop/git"
+if echo "$script_dir/runs-in-order/git" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-in-order/git"
 else
-    execute runs-no-loop/git
+    execute runs-in-order/git
 fi
 
-if echo "$script_dir/runs-no-loop/dotfiles" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-no-loop/dotfiles"
+if echo "$script_dir/runs-in-order/dotfiles" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-in-order/dotfiles"
 else
-    execute runs-no-loop/dotfiles
+    execute runs-in-order/dotfiles
 fi
 
 # Install software whose installation order is not important.
