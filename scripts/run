@@ -83,7 +83,11 @@ for script in $scripts; do
 done
 
 # Final software to run.
-log Uninstalling unrequired packages
-execute sudo apt autoremove
+if echo "autoremove" | grep -qv "$filter"; then
+    log "filtered: $filter -- autoremove"
+else
+    log Uninstalling unrequired packages
+    execute sudo apt autoremove
+fi
 
 log "Configuration done :)"
