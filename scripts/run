@@ -67,8 +67,6 @@ execute sudo apt install -y build-essential # installs: make
 execute sudo apt install -y curl
 execute sudo apt install -y git
 execute sudo apt install -y htop
-execute sudo apt install -y meld
-execute sudo apt install -y trash-cli
 
 execute ./configure/github-ssh
 
