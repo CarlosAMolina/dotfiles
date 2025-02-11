@@ -1,6 +1,6 @@
 # Backlight
 # https://wiki.archlinux.org/title/Backlight#Backlight_utilities
-alias b='xrandr --output eDP-1 --brightness $1'
+#alias b='xrandr --output eDP-1 --brightness $1'
 # Clipboard
 # https://stackoverflow.com/questions/5130968/how-can-i-copy-the-output-of-a-command-directly-into-my-clipboard
 alias c='xclip' # Example: pwd | c
@@ -42,7 +42,7 @@ alias screenshot='flameshot &'
 # Python programs
 alias toc='python ~/Software/toc-markdown/src/main.py'
 # Tmux
-alias t='tmux'
+#alias t='tmux'
 # Trash-cli
 alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
