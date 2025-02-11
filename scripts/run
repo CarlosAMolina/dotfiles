@@ -59,23 +59,19 @@ else
     create_dir ~/.ssh
 fi
 
-if echo "$script_dir/runs-in-order/apt" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-in-order/apt"
-else
-    execute runs-in-order/apt
-fi
-
-if echo "$script_dir/runs-in-order/git" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-in-order/git"
-else
-    execute runs-in-order/git
-fi
-
-if echo "$script_dir/runs-in-order/dotfiles" | grep -qv "$filter"; then
-    log "filtered: $filter -- $script_dir/runs-in-order/dotfiles"
-else
-    execute runs-in-order/dotfiles
-fi
+scripts=(
+    apt
+    git
+    dotfiles
+)
+for script_name in "${scripts[@]}"; do
+    script="$script_dir/runs-in-order/$script_name"
+    if echo "$script" | grep -qv "$filter"; then
+        log "filtered: $filter -- $script"
+        continue
+    fi
+    execute $script
+done
 
 # Install software whose installation order is not important.
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
