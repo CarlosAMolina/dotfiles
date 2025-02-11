@@ -77,8 +77,6 @@ for script in $scripts; do
     execute $script
 done
 
-execute ./configure/git
-
 log Uninstalling unrequired packages
 execute sudo apt autoremove
 
