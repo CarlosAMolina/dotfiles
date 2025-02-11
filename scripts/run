@@ -76,7 +76,7 @@ fi
 script_names=(
     apt
     git
-    dotfiles
+    dotfiles_
 )
 for script_name in "${script_names[@]}"; do
     script="$script_dir/runs-in-order/$script_name"
