@@ -64,6 +64,16 @@ vispell () {
 alias off='systemctl poweroff'
 
 ###########################
+# Exports
+###########################
+# Docker rootless
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+# https://stackoverflow.com/questions/18088372/how-to-npm-install-global-not-as-root
+export PATH=~/.local/bin/:$PATH
+export PATH=~/.local/pipx/venvs/poetry/bin/poetry:$PATH
+export PATH=$PATH:~/.local/bin/go/bin
+
+###########################
 # Terminal configuration
 ###########################
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
@@ -117,9 +127,5 @@ fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
 source ~/.nvm/nvm.sh
-
-if [ -f ~/.bash_exports ]; then
-    . ~/.bash_exports
-fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
