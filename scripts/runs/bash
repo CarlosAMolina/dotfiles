@@ -2,11 +2,16 @@
 
 set -e # Exit if any command fails.
 
-echo [DEBUG] Configuring bash dotfiles
-if [ -f ~/.bashrc.backup ]; then
-    echo [DEBUG] File ~/.bashrc.backup already exists
-else
-    echo [DEBUG] File ~/.bashrc.backup does not exist. Creating
-    cp ~/.bashrc ~/.bashrc.backup
+log() {
+    echo "[DEBUG][bash] $@"
+}
+
+execute() {
+    log "execute $@"
+    "$@"
+}
+
+if [ ! -f ~/.bashrc.backup ]; then
+    execute cp ~/.bashrc ~/.bashrc.backup
 fi
-cp ~/Software/dotfiles/dotfiles/config/bash/.bash* ~
+execute cp ~/Software/dotfiles/dotfiles/config/bash/.bashrc ~
