@@ -66,6 +66,12 @@ log Installing software using apt
 execute sudo apt install -y build-essential # installs: make
 execute sudo apt install -y curl
 
+if echo "$script_dir/runs-no-loop/git" | grep -qv "$filter"; then
+    log "filtered: $filter -- $script_dir/runs-no-loop/git"
+else
+    execute runs-no-loop/git
+fi
+
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
     if echo "$script" | grep -qv "$filter"; then
