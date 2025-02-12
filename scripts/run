@@ -112,7 +112,7 @@ if echo "config" | grep -qv "$filter"; then
     log "filtered: $filter -- config"
 else
     log Copying config folders from $script_dir/.config
-    copy_dir $script_dir/.config $HOME
+    copy_dir $script_dir/.config $HOME/.config
     log Copying config files from $script_dir/.config
     copy_files $script_dir/.config $HOME
 fi
