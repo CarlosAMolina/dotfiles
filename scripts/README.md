@@ -1,7 +1,3 @@
-## Previous steps
-
-Configure git ssh to allow the script to clone projects.
-
 ## Run
 
 ```bash

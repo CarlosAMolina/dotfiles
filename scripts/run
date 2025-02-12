@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO move the .config folder out of the scripts folder.
+
 # Usage example.
 # Dry run and only script that contains `fzf`:
 # ```
@@ -46,6 +48,35 @@ create_dir() {
     fi
 }
 
+copy_dir() {
+    pushd $1 > /dev/null
+    to=$2
+    dirs=$(find . -maxdepth 1 -mindepth 1 -type d)
+    for dir in $dirs; do
+        execute rm -rf $to/$dir
+        execute cp -r $dir $to/$dir
+    done
+    popd > /dev/null
+}
+
+copy_file() {
+    from=$1
+    to=$2
+    name=$(basename $from)
+    execute rm $to/$name
+    execute cp $from $to/$name
+}
+
+copy_files() {
+    pushd $1 > /dev/null
+    from=$1
+    files=$(find . -maxdepth 1 -mindepth 1 -type f)
+    for file_ in $files; do
+        copy_file $from $file_
+    done
+    popd > /dev/null
+}
+
 execute_script() {
     script=$1
     if echo "$script" | grep -qv "$filter"; then
@@ -67,10 +98,20 @@ else
         ~/Software
         ~/.local/bin
         ~/.ssh
+        ~/.config
     )
     for dir in "${dirs[@]}"; do
         create_dir $dir
     done
+fi
+
+if echo "config" | grep -qv "$filter"; then
+    log "filtered: $filter -- config"
+else
+    log Copying config folders from $script_dir/.config
+    copy_dir $script_dir/.config $HOME
+    log Copying config files from $script_dir/.config
+    copy_files $script_dir/.config
 fi
 
 script_names=(
