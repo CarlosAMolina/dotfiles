@@ -71,11 +71,11 @@ copy_file() {
 
 copy_files() {
     pushd $1 > /dev/null
-    from=$1
-    to=$2
+    from_dir=$1 # Don't call `from` to avoid change its value in `copy_file()`.
+    to_dir=$2
     files=$(find . -maxdepth 1 -mindepth 1 -type f)
     for file_ in $files; do
-        copy_file $from/$file_ $to
+        copy_file $from_dir/$file_ $to_dir
     done
     popd > /dev/null
 }
