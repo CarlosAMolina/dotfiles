@@ -63,7 +63,9 @@ copy_file() {
     from=$1
     to=$2
     name=$(basename $from)
-    execute rm $to/$name
+    if [ -f "$to/$name" ]; then
+        execute rm $to/$name
+    fi
     execute cp $from $to/$name
 }
 
@@ -73,7 +75,7 @@ copy_files() {
     to=$2
     files=$(find . -maxdepth 1 -mindepth 1 -type f)
     for file_ in $files; do
-        copy_file $from$file_ $to
+        copy_file $from/$file_ $to
     done
     popd > /dev/null
 }
