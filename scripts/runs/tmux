@@ -2,9 +2,7 @@
 
 set -e # Exit if any command fails.
 
-execute sudo apt install -y tmux
+sudo apt install -y tmux
 
-echo [DEBUG] Configuring tmux dotfiles
-cp ~/Software/dotfiles/dotfiles/config/tmux/.tmux.conf ~
 # https://unix.stackexchange.com/a/66607
 #tmux source ~/.tmux.conf
