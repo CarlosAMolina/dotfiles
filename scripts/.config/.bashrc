@@ -91,6 +91,16 @@ log () {
     fi
 }
 
+# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
+# command -v tmux &> /dev/null: check command existence
+# [ -n "$PS1" ]: check for interactive shell
+# [[ ! "$TERM" =~ screen ]]: check if does not contain `screen`
+# [[ ! "$TERM" =~ tmux ]]: check if does not contain `tmux`
+# [ -z "$TMUX" ]: check if it is empty
+#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#  exec tmux
+#fi
+
 log "1) Check tmux command availability: command -v tmux &> /dev/null"
 if command -v tmux &> /dev/null;
 then
