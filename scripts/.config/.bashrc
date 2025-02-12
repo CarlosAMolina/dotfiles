@@ -42,7 +42,7 @@ alias o='xdg-open'
 alias replace='f(){ grep -rlZe "$1" --exclude-dir={env,.git,node_modules,__pycache__} . | xargs -0 sed -i \''s/$1/$2/g\'' && echo Done. Replaced -$1- with -$2-;  unset -f f; }; f'
 # Screen
 # https://unix.stackexchange.com/questions/3773/how-to-pass-parameters-to-an-alias
-alias screen='f(){ xrandr --output eDP-1 --auto && xrandr --output $1 --auto && xrandr --output eDP-1 --left-of $1;  unset -f f; }; f'
+#alias screen='f(){ xrandr --output eDP-1 --auto && xrandr --output $1 --auto && xrandr --output eDP-1 --left-of $1;  unset -f f; }; f'
 # Screenshot
 alias screenshot='flameshot &'
 # Python programs
