@@ -77,7 +77,8 @@ export PATH=$PATH:~/.local/bin/go/bin
 # Terminal configuration
 ###########################
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
-PS1='[\u@\h \W]\$ '
+#PS1='[\u@\h \W]\$ '
+PS1='\$ '
 
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
