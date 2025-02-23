@@ -47,8 +47,6 @@ run_bsd() {
     # https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
     log Press Enter to continue when the passhprase is stored
     execute read -p "" </dev/tty
-    # TODO move .gitconfig to scripts/.config/
-    execute cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 }
 
 run_linux() {
@@ -73,9 +71,6 @@ run_linux() {
     echo "[DEBUG] Copy the following prasshprase and save it in yout GitHub account (https://github.com/login, https://github.com/settings/keys)"
     cat ~/.ssh/id_ed25519.pub
     read -p "[DEBUG] Press Enter to continue when the passhprase is stored" </dev/tty
-
-    echo [DEBUG] Configuring git dotfiles
-    cp ~/Software/dotfiles/dotfiles/config/git/.gitconfig ~
 
     echo [DEBUG] Installing github cli
     # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
