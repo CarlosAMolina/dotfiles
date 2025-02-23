@@ -51,7 +51,7 @@ run_bsd() {
 
 run_linux() {
     execute sudo apt install -y ripgrep # Required by telescope nvim extension.
-    execute cd /tmp
+    execute pushd /tmp > /dev/null
     log Installing neovim
     execute wget -O nvim.tar.gz "https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz"
     execute tar -xf nvim.tar.gz
@@ -60,7 +60,7 @@ run_linux() {
     execute sudo mkdir -p /usr/local/share/nvim/
     execute sudo cp -r nvim-linux-x86_64/share/nvim/runtime/ /usr/local/share/nvim/
     execute rm -rf nvim-linux-x86_64 nvim.tar.gz
-    execute cd -
+    execute popd > /dev/null
     log Installing vim-plug
     execute sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
