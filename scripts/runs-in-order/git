@@ -28,56 +28,28 @@ execute() {
     "$@"
 }
 
-run_bsd() {
-    execute sudo pkg install git
-    if [ ! -f ~/.ssh/id_ed25519 ]; then
-      log Enter your email to create a new SSH key for GitHub:
-      # https://linuxconfig.org/handling-user-input-in-bash-scripts
-      execute read -p "" email
-      if [[ -z "$email" ]]; then
-        echo "[ERROR] Email cannot be empty"
-        execute exit 1
-      fi
-      execute ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
-    fi
-    execute eval "$(ssh-agent -s)"
-    execute ssh-add ~/.ssh/id_ed25519
-    log Copy the following prasshprase and save it in yout GitHub account \(https://github.com/login, https://github.com/settings/keys\)
-    execute cat ~/.ssh/id_ed25519.pub
-    # https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
-    log Press Enter to continue when the passhprase is stored
-    execute read -p "" </dev/tty
-}
-
-run_linux() {
-    execute sudo apt install -y git
-    # TODO use log and execute
-    echo [DEBUG] Start github ssh configuration
-    if [ -f ~/.ssh/id_ed25519 ]; then
-      echo [DEBUG] The ~/.ssh/id_ed25519 file already exists
-    else
-      echo [DEBUG] The ~/.ssh/id_ed25519 file does not exists. Start creating the file
-      # https://linuxconfig.org/handling-user-input-in-bash-scripts
-      read -p "[DEBUG] Enter your email to create a new SSH key for GitHub: " email
-      if [[ -z "$email" ]]; then
-        echo "[ERROR] Email cannot be empty"
-        exit 1
-      fi
-      ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
-    fi
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_ed25519
-    # https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
-    echo "[DEBUG] Copy the following prasshprase and save it in yout GitHub account (https://github.com/login, https://github.com/settings/keys)"
-    cat ~/.ssh/id_ed25519.pub
-    read -p "[DEBUG] Press Enter to continue when the passhprase is stored" </dev/tty
-}
-
 case $(uname) in
   *BSD*)
-    run_bsd
+    execute sudo pkg install git
     ;;
   *)
-    run_linux
+    execute sudo apt install -y git
     ;;
 esac
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+    log Enter your email to create a new SSH key for GitHub:
+    # https://linuxconfig.org/handling-user-input-in-bash-scripts
+    execute read -p "" email
+    if [[ -z "$email" ]]; then
+        echo "[ERROR] Email cannot be empty"
+        execute exit 1
+    fi
+    execute ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
+fi
+execute eval "$(ssh-agent -s)"
+execute ssh-add ~/.ssh/id_ed25519
+log Copy the following prasshprase and save it in yout GitHub account \(https://github.com/login, https://github.com/settings/keys\)
+execute cat ~/.ssh/id_ed25519.pub
+# https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
+log Press Enter to continue when the passhprase is stored
+execute read -p "" </dev/tty
