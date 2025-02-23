@@ -61,7 +61,8 @@ vispell () {
     sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
 }
 # Change current user session state
-alias off='systemctl poweroff'
+alias off='systemctl poweroff' # Linux
+alias offb='sudo poweroff' # FreeBSD
 
 ###########################
 # Exports
