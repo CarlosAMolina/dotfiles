@@ -52,8 +52,7 @@ run_bsd() {
 run_linux() {
     execute sudo apt install -y ripgrep # Required by telescope nvim extension.
     execute pushd /tmp > /dev/null
-    log Installing neovim
-    execute wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz -P /tmp/
+    execute wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
     execute tar -xf nvim-linux-x86_64.tar.gz
     execute sudo install nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
     # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
