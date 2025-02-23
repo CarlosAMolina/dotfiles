@@ -45,6 +45,10 @@ run_bsd() {
     execute pushd $HOME/Software > /dev/null
     execute git clone --depth 1 --branch stable https://github.com/neovim/neovim
     execute cd neovim
+    # TODO try without CMAKE_INSTALL_PREFIX to check that:
+    # - /usr/... path is used
+    # - I can delete the downloaded folerd and all works ok
+    # TODO try: sudo pkg install neovim. If the last version is installed (10.4), all other code can be deleted
     execute gmake CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=$HOME/.local/bin/nvim install
     execute popd > /dev/null
 }
