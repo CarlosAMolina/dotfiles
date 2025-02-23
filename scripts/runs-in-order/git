@@ -71,16 +71,6 @@ run_linux() {
     echo "[DEBUG] Copy the following prasshprase and save it in yout GitHub account (https://github.com/login, https://github.com/settings/keys)"
     cat ~/.ssh/id_ed25519.pub
     read -p "[DEBUG] Press Enter to continue when the passhprase is stored" </dev/tty
-
-    echo [DEBUG] Installing github cli
-    # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-    (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-    && sudo mkdir -p -m 755 /etc/apt/keyrings \
-    && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-    && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && sudo apt update \
-    && sudo apt install gh -y
 }
 
 case $(uname) in
