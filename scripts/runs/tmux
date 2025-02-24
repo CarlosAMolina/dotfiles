@@ -1,8 +1,38 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e # Exit if any command fails.
 
-sudo apt install -y tmux
+dry_run="0"
 
-# https://unix.stackexchange.com/a/66607
-#tmux source ~/.tmux.conf
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+case $(uname) in
+  *BSD*)
+    execute sudo pkg install -y tmux
+    ;;
+  *)
+    execute sudo apt install -y tmux
+    ;;
+esac
