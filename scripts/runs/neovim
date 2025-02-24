@@ -39,7 +39,7 @@ create_dir() {
 
 run_bsd() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
-    execute sudo pkg install cmake gmake wget gettext curl git
+    execute sudo pkg -y install cmake gmake wget gettext curl git
     execute pushd /tmp > /dev/null
     execute git clone --depth 1 --branch stable https://github.com/neovim/neovim
     execute cd neovim

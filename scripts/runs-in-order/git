@@ -30,7 +30,7 @@ execute() {
 
 case $(uname) in
   *BSD*)
-    execute sudo pkg install git
+    execute sudo pkg install -y git
     ;;
   *)
     execute sudo apt install -y git
