@@ -75,27 +75,28 @@ set autoindent
 " https://github.com/EdenEast/nightfox.nvim
 colorscheme nightfox
 
-" Remaps
-" mapleader: expected key to press when `<leader>` is used.
-" Default mapleader is ctrl + \
 lua << EOF
+    -- Remaps
+    -- How to remap:
+    -- First character indicates when the remap must be executed:
+    -- n: the current mode you are in
+    -- i: insert mode
+    -- v: visual mode
+    -- c: command mode
+    -- t: terminal mode
+    -- Other characters:
+    -- nore: no recursive execution. To avoid the remap can execute more remaps.
+    -- map: the map command.
+    -- Table of key notation: type `:help keycodes`
+
+    -- mapleader: expected key to press when `<leader>` is used.
+    -- Default mapleader is ctrl + \
     -- Set <space> as the leader key
     -- See `:help mapleader`
     --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
 EOF
-" How to remap:
-" First character indicates when the remap must be executed:
-" n: the current mode you are in
-" i: insert mode
-" v: visual mode
-" c: command mode
-" t: terminal mode
-" Other characters:
-" nore: no recursive execution. To avoid the remap can execute more remaps.
-" map: the map command.
-" Table of key notation: type `:help keycodes`
 
 " Quit
 nnoremap <leader>q :quit<CR>
