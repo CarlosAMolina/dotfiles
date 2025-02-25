@@ -43,9 +43,11 @@ let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'c
 set clipboard+=unnamedplus
 " View
 " Number of lines to start scrolling before reaching the top or bottom of the page.
-set scrolloff=8
-set number
-set relativenumber
+lua << EOF
+    vim.opt.scrolloff = 8
+    vim.opt.number = true
+    vim.opt.relativenumber = true
+EOF
 "https://vi.stackexchange.com/questions/6950/how-to-enable-spell-check-for-certain-file-types
 augroup markdownSpell
     autocmd!
