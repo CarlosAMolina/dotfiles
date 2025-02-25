@@ -48,10 +48,9 @@ lua << EOF
     vim.schedule(function()
       vim.opt.clipboard = 'unnamedplus'
     end)
-EOF
-" View
-" Number of lines to start scrolling before reaching the top or bottom of the page.
-lua << EOF
+
+    -- View
+    -- Minimal number of screen lines to keep above and below the cursor.
     vim.opt.scrolloff = 8
     vim.opt.number = true
     vim.opt.relativenumber = true
