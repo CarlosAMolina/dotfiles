@@ -69,7 +69,13 @@ colorscheme nightfox
 " Remaps
 " mapleader: expected key to press when `<leader>` is used.
 " Default mapleader is ctrl + \
-let mapleader = " "
+lua << EOF
+    -- Set <space> as the leader key
+    -- See `:help mapleader`
+    --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+    vim.g.mapleader = ' '
+    vim.g.maplocalleader = ' '
+EOF
 " How to remap:
 " First character indicates when the remap must be executed:
 " n: the current mode you are in
