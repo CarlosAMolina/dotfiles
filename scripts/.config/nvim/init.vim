@@ -40,7 +40,15 @@ call plug#end()
 let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-go']
 
 " Neovim configuration
-set clipboard+=unnamedplus
+lua << EOF
+    -- Sync clipboard between OS and Neovim.
+    --  Schedule the setting after `UiEnter` because it can increase startup-time.
+    --  Remove this option if you want your OS clipboard to remain independent.
+    --  See `:help 'clipboard'`
+    vim.schedule(function()
+      vim.opt.clipboard = 'unnamedplus'
+    end)
+EOF
 " View
 " Number of lines to start scrolling before reaching the top or bottom of the page.
 lua << EOF
