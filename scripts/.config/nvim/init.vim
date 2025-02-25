@@ -54,6 +54,15 @@ lua << EOF
     vim.opt.scrolloff = 8
     vim.opt.number = true
     vim.opt.relativenumber = true
+
+    -- Coc configuration
+    -- https://github.com/neoclide/coc.nvim#example-vim-configuration
+    -- Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+    -- delays and poor user experience
+    vim.opt.updatetime = 250
+
+    -- Decrease mapped sequence wait time
+    vim.opt.timeoutlen = 300
 EOF
 "https://vi.stackexchange.com/questions/6950/how-to-enable-spell-check-for-certain-file-types
 augroup markdownSpell
@@ -96,43 +105,45 @@ lua << EOF
     --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
     vim.g.mapleader = ' '
     vim.g.maplocalleader = ' '
+
+    -- Quit
+    vim.keymap.set('n', '<leader>q', ':quit<CR>')
+    vim.keymap.set('n', '<leader>qa', ':qa<CR>')
+
+    -- Source vimrc
+    -- <CR> = enter
+    -- TODO change to init.lua when migrated.
+    vim.keymap.set('n', '<leader><CR>', ':so ~/.config/nvim/init.vim<CR>')
+
+    -- Reload file
+    vim.keymap.set('n', '<leader>e', ':e<CR>')
+
+    -- Close other vim windows
+    vim.keymap.set('n', '<leader>o', ':only<CR>')
+
+    -- Move line(s)
+    -- https://vimtricks.com/p/vimtrick-moving-lines/
+    vim.keymap.set('n', '<c-j>', ':m .+1<CR>==')
+    vim.keymap.set('n', '<c-k>', ':m .-2<CR>==')
+    vim.keymap.set('v', '<c-j>', ':m \'>+1<CR>gv==gv')
+    vim.keymap.set('v', '<c-k>', ':m \'<-2<CR>gv==gv')
+
+    -- Split
+    vim.keymap.set('n', '<leader>sh', ':split<CR>')
+    vim.keymap.set('n', '<leader>sv', ':vsplit<CR>')
+
+    -- Sort the selection.
+    vim.keymap.set('v', '<leader>sos', ':sort<CR>')
+    -- Sort all from current line to the end of the file.
+    vim.keymap.set('n', '<leader>soa <C-v>G', ':sort<CR>')
+    -- Sort and unique the selection.
+    vim.keymap.set('v', '<leader>us', ':sort u<CR>')
+    -- Sort and unique from current line to the end of the file.
+    vim.keymap.set('n', '<leader>ua <C-v>G', ':sort u<CR>')
 EOF
-
-" Quit
-nnoremap <leader>q :quit<CR>
-nnoremap <leader>qa :qa<CR>
-
-" Source vimrc
-" <CR> = enter
-nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
-" Reload file
-nnoremap <leader>e :e<CR>
-" Close other vim windows
-nnoremap <leader>o :only<CR>
-" nnoremap <leader>o <C-w>o " Alternative command.
-" Move line(s)
-" https://vimtricks.com/p/vimtrick-moving-lines/
-nnoremap <c-j> :m .+1<CR>==
-nnoremap <c-k> :m .-2<CR>==
-vnoremap <c-j> :m '>+1<CR>gv=gv
-vnoremap <c-k> :m '<-2<CR>gv=gv
-" Split
-nnoremap <leader>sh :split<CR>
-nnoremap <leader>sv :vsplit<CR>
-" Sort the selection.
-vnoremap <leader>sos :sort<CR>
-" Sort all from current line to the end of the file.
-nnoremap <leader>soa <C-v>G:sort<CR>
-" Sort and unique the selection.
-vnoremap <leader>us :sort u<CR>
-" Sort and unique from current line to the end of the file.
-nnoremap <leader>ua <C-v>G:sort u<CR>
 
 " Coc configuration
 " https://github.com/neoclide/coc.nvim#example-vim-configuration
-" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-" delays and poor user experience
-set updatetime=300
 " Use tab for trigger completion with characters ahead and navigate
 " NOTE: There's always complete item selected by default, you may want to enable
 " no select by `"suggest.noselect": true` in your configuration file
