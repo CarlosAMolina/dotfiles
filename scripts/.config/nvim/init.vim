@@ -208,14 +208,14 @@ nnoremap gdl :diffget //3<CR>
 " Go to previous conflict: [c
 " Go to next conflict: ]c
 
-" Telescope configuration
-" https://github.com/nvim-telescope/telescope.nvim
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
 lua << EOF
+  -- Telescope configuration
+  -- https://github.com/nvim-telescope/telescope.nvim
+  vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
+  vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
+  vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>')
+  vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>')
+
   -- nvim-tree configuration
   -- https://github.com/nvim-tree/nvim-tree.lua
   vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>')
