@@ -71,7 +71,7 @@ augroup markdownSpell
     autocmd BufRead,BufNewFile *.md,*.txt setlocal spell
 augroup END
 " Spell language check. Available options: en, es
-set spelllang=en
+set spelllang=es
 " Indentation
 " https://stackoverflow.com/questions/51995128/setting-autoindentation-to-spaces-in-neovim
 " https://vi.stackexchange.com/questions/5818/what-is-the-difference-between-autoindent-and-smartindent-in-vimrc
@@ -215,14 +215,14 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
-" nvim-tree configuration
-" https://github.com/nvim-tree/nvim-tree.lua
-nnoremap <leader>t <cmd>NvimTreeToggle<cr>
-" Open tree and focus on current file
-nnoremap <leader>p <cmd>NvimTreeFindFile<cr>
-" https://neovim.io/doc/user/lua-guide.html
-" https://www.reddit.com/r/neovim/comments/12a1a81/nvimtree_close_on_open_file_confused_on_how_to/?rdt=40062
 lua << EOF
+  -- nvim-tree configuration
+  -- https://github.com/nvim-tree/nvim-tree.lua
+  vim.keymap.set('n', '<leader>t', '<cmd>NvimTreeToggle<cr>')
+  -- Open tree and focus on current file
+  vim.keymap.set('n', '<leader>p', '<cmd>NvimTreeFindFile<cr>')
+  -- https://neovim.io/doc/user/lua-guide.html
+  -- https://www.reddit.com/r/neovim/comments/12a1a81/nvimtree_close_on_open_file_confused_on_how_to/?rdt=40062
   require('nvim-tree').setup({
     actions = {
       open_file = {
