@@ -69,12 +69,21 @@ copy_file() {
     execute cp $from $to/$name
 }
 
+backup_file() {
+    # Don't call as in `copy_file()` to avoid change variables with same name.
+    file_path=$1
+    if [ -f "$file_path" ] && [ ! -f "$file_path.bkp" ]; then
+        execute cp $file_path $file_path.bkp
+    fi
+}
+
 copy_files() {
     pushd $1 > /dev/null
     from_dir=$1 # Don't call `from` to avoid change its value in `copy_file()`.
     to_dir=$2
     files=$(find . -maxdepth 1 -mindepth 1 -type f)
     for file_ in $files; do
+        backup_file $to_dir/$file_
         copy_file $from_dir/$file_ $to_dir
     done
     popd > /dev/null
