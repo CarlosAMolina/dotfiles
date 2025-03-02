@@ -38,11 +38,19 @@ create_dir() {
 }
 
 install_from_source() {
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
     execute pushd /tmp > /dev/null
     execute git clone --depth 1 --branch stable https://github.com/neovim/neovim
     execute cd neovim
     execute gmake CMAKE_BUILD_TYPE=Release
-    execute sudo gmake install
+    case $(uname) in
+      *BSD*)
+        execute sudo gmake install
+        ;;
+      *)
+        execute sudo make install
+        ;;
+    esac
     execute popd > /dev/null
 }
 
@@ -57,11 +65,12 @@ install_nerd_fonts() {
     fi
     execute tar -xvf 3270.tar.xz --directory $HOME/.local/share/fonts
     execute popd > /dev/null
-    # You can verify that the fonts are available by running `fc-list | grep "3270"`
+    log Showing that the new fonts are available:
+    execute fc-list | grep 3270
 }
 
 run_bsd() {
-    # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
     execute sudo pkg install -y cmake gmake wget gettext curl git
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo pkg install -y ripgrep # Required by telescope.
@@ -70,24 +79,31 @@ run_bsd() {
 }
 
 run_linux() {
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
+    execute sudo apt install ninja-build gettext cmake curl build-essential
+    # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo apt install -y ripgrep # Required by telescope.
-    execute pushd /tmp > /dev/null
-    if [ ! -f "nvim-linux-x86_64.tar.gz" ]; then
-        # After installation, you can delete manually the downloaded/extracted files/folders. The script don't do that to avoid repeat steps when testing.
-        execute wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-        execute tar -xf nvim-linux-x86_64.tar.gz
-    fi
-    execute sudo install nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
-    # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
-    execute sudo rm -rf /usr/local/share/nvim/
-    execute sudo mkdir -p /usr/local/share/nvim/
-    execute sudo cp -r nvim-linux-x86_64/share/nvim/runtime/ /usr/local/share/nvim/
-    execute popd > /dev/null
-    # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
-    execute sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    execute nvim -c 'PlugInstall'
-    log Some manual steps are required. Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done
-    read -p "" </dev/tty
+    install_from_source
+    install_nerd_fonts
+
+    # TODO execute pushd /tmp > /dev/null
+    # TODO if [ ! -f "nvim-linux-x86_64.tar.gz" ]; then
+    # TODO     # After installation, you can delete manually the downloaded/extracted files/folders. The script don't do that to avoid repeat steps when testing.
+    # TODO     execute wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
+    # TODO     execute tar -xf nvim-linux-x86_64.tar.gz
+    # TODO fi
+    # TODO execute sudo install nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+    # TODO # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
+    # TODO execute sudo rm -rf /usr/local/share/nvim/
+    # TODO execute sudo mkdir -p /usr/local/share/nvim/
+    # TODO execute sudo cp -r nvim-linux-x86_64/share/nvim/runtime/ /usr/local/share/nvim/
+    # TODO execute popd > /dev/null
+
+    # TODO # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
+    # TODO execute sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    # TODO execute nvim -c 'PlugInstall'
+    # TODO log Some manual steps are required. Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done
+    # TODO read -p "" </dev/tty
 }
 
 case $(uname) in
