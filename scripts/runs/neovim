@@ -46,10 +46,25 @@ install_from_source() {
     execute popd > /dev/null
 }
 
+install_nerd_fonts() {
+    # https://www.youtube.com/watch?v=mQdB_kHyZn8
+    execute pushd /tmp > /dev/null
+    if [ ! -f 3270.tar.xz ]; then
+        execute wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/3270.tar.xz
+    fi
+    if [ ! -d $HOME/.local/share/fonts ]; then
+        execute mkdir $HOME/.local/share/fonts
+    fi
+    execute tar -xvf 3270.tar.xz --directory $HOME/.local/share/fonts
+    execute popd > /dev/null
+    # You can verify that the fonts are available by running `fc-list | grep "3270"`
+}
+
 run_bsd() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
     execute sudo pkg -y install cmake gmake wget gettext curl git
     install_from_source
+    install_nerd_fonts
 }
 
 run_linux() {
