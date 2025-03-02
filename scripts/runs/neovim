@@ -62,13 +62,15 @@ install_nerd_fonts() {
 
 run_bsd() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
-    execute sudo pkg -y install cmake gmake wget gettext curl git
+    execute sudo pkg install -y cmake gmake wget gettext curl git
+    # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
+    execute sudo pkg install -y ripgrep # Required by telescope.
     install_from_source
     install_nerd_fonts
 }
 
 run_linux() {
-    execute sudo apt install -y ripgrep # Required by telescope nvim extension.
+    execute sudo apt install -y ripgrep # Required by telescope.
     execute pushd /tmp > /dev/null
     if [ ! -f "nvim-linux-x86_64.tar.gz" ]; then
         # After installation, you can delete manually the downloaded/extracted files/folders. The script don't do that to avoid repeat steps when testing.
