@@ -73,7 +73,7 @@ backup_file() {
     # Don't call as in `copy_file()` to avoid change variables with same name.
     file_path=$1
     if [ -f "$file_path" ] && [ ! -f "$file_path.bkp" ]; then
-        execute cp $file_path $file_path.bkp
+        execute cp $file_path{,.bkp}
     fi
 }
 
