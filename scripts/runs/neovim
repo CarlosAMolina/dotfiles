@@ -74,6 +74,7 @@ run_bsd() {
     execute sudo pkg install -y cmake gmake wget gettext curl git
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo pkg install -y ripgrep # Required by telescope.
+    execute sudo pkg install -y xclip # To use clipboard.
     install_from_source
     install_nerd_fonts
 }
@@ -83,6 +84,7 @@ run_linux() {
     execute sudo apt install ninja-build gettext cmake curl build-essential
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo apt install -y ripgrep # Required by telescope.
+    execute sudo apt install -y xclip # To use clipboard.
     install_from_source
     install_nerd_fonts
 
