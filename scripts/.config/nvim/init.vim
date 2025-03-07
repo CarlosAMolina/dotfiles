@@ -31,16 +31,15 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mechatroner/rainbow_csv'
 call plug#end()
 
-" Coc extensions
-" Install automatically
-" https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#use-vims-plugin-manager-for-coc-extension
-" coc-go
-" - https://github.com/josa42/coc-go
-" - https://pmihaylov.com/vim-for-go-development/
-let g:coc_global_extensions = ['coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-go']
-
 " Neovim configuration
 lua << EOF
+    -- Coc extensions
+    -- Install automatically
+    -- https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#use-vims-plugin-manager-for-coc-extension
+    -- coc-go
+    -- - https://github.com/josa42/coc-go
+    -- - https://pmihaylov.com/vim-for-go-development/
+    vim.g.coc_global_extensions = {'coc-sql', 'coc-rust-analyzer', 'coc-pyright', 'coc-tslint-plugin', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-go'}
     -- Sync clipboard between OS and Neovim.
     --  Schedule the setting after `UiEnter` because it can increase startup-time.
     --  Remove this option if you want your OS clipboard to remain independent.
