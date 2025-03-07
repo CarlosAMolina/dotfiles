@@ -233,10 +233,12 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" coc-sql configuration
-" https://github.com/fannheyward/coc-sql
-" Format sql commands (they must be in a `.sql` file):
-nnoremap <leader>f :CocCommand sql.Format<cr>
+lua << EOF
+  -- coc-sql configuration
+  -- https://github.com/fannheyward/coc-sql
+  -- Format sql commands (they must be in a `.sql` file):
+  vim.keymap.set('n', '<leader>f', ':CocCommand sql.Format<cr>')
+EOF
 
 " Fugitive Conflict Resolution
 " https://medium.com/prodopsio/solving-git-merge-conflicts-with-vim-c8a8617e3633
