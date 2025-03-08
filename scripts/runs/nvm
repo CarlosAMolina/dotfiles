@@ -28,7 +28,6 @@ execute() {
     eval "$@"
 }
 
-log Installing nvm
 case $(uname) in
   *BSD*)
     execute sudo pkg install -y node
