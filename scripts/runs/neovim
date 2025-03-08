@@ -78,23 +78,16 @@ install_vim_plug() {
     execute read -p "" </dev/tty
 }
 
-run_bsd() {
-    # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
-    execute sudo pkg install -y cmake gmake gettext
-}
-
-run_linux() {
-    # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
-    execute sudo apt install -y ninja-build gettext cmake build-essential
-}
 
 case $(uname) in
   *BSD*)
-    run_bsd
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
+    execute sudo pkg install -y cmake gmake gettext
     install_command=pkg
     ;;
   *)
-    run_linux
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
+    execute sudo apt install -y ninja-build gettext cmake build-essential
     install_command=apt
     ;;
 esac
