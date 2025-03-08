@@ -127,7 +127,6 @@ else
 fi
 
 script_names=(
-    apt
     git
     dotfiles_
 )
