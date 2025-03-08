@@ -1,3 +1,6 @@
+" Other Neovim configurations:
+" - File URL: https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+
 " To apply changes you can close and open this file or execute:
 " :so %
 " :so = source, % = current buffer file.
