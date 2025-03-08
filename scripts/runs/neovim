@@ -80,12 +80,12 @@ install_vim_plug() {
 
 run_bsd() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
-    execute sudo pkg install -y cmake gmake wget gettext curl git
+    execute sudo pkg install -y cmake gmake gettext
 }
 
 run_linux() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
-    execute sudo apt install ninja-build gettext cmake curl build-essential
+    execute sudo apt install -y ninja-build gettext cmake build-essential
 }
 
 case $(uname) in
@@ -98,6 +98,7 @@ case $(uname) in
     install_command=apt
     ;;
 esac
+execute sudo $install_command install -y wget curl git
 # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
 execute sudo $install_command install -y ripgrep # Required by telescope.
 execute sudo $install_command install -y xclip # To use clipboard.
