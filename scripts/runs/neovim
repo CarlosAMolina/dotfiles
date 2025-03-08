@@ -96,5 +96,5 @@ execute sudo $install_command install -y wget curl git
 execute sudo $install_command install -y ripgrep # Required by telescope.
 execute sudo $install_command install -y xclip # To use clipboard.
 install_from_source
-install_nerd_fonts
 install_vim_plug
+install_nerd_fonts
