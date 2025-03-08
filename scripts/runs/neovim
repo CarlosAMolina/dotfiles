@@ -97,20 +97,6 @@ run_linux() {
     execute sudo apt install -y xclip # To use clipboard.
     install_from_source
     install_nerd_fonts
-
-    # TODO execute pushd /tmp > /dev/null
-    # TODO if [ ! -f "nvim-linux-x86_64.tar.gz" ]; then
-    # TODO     # After installation, you can delete manually the downloaded/extracted files/folders. The script don't do that to avoid repeat steps when testing.
-    # TODO     execute wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
-    # TODO     execute tar -xf nvim-linux-x86_64.tar.gz
-    # TODO fi
-    # TODO execute sudo install nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
-    # TODO # https://github.com/vscode-neovim/vscode-neovim/issues/597#issuecomment-1617282040
-    # TODO execute sudo rm -rf /usr/local/share/nvim/
-    # TODO execute sudo mkdir -p /usr/local/share/nvim/
-    # TODO execute sudo cp -r nvim-linux-x86_64/share/nvim/runtime/ /usr/local/share/nvim/
-    # TODO execute popd > /dev/null
-
     install_vim_plug
 }
 
