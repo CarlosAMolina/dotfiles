@@ -84,9 +84,6 @@ run_bsd() {
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo pkg install -y ripgrep # Required by telescope.
     execute sudo pkg install -y xclip # To use clipboard.
-    install_from_source
-    install_nerd_fonts
-    install_vim_plug
 }
 
 run_linux() {
@@ -95,9 +92,6 @@ run_linux() {
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo apt install -y ripgrep # Required by telescope.
     execute sudo apt install -y xclip # To use clipboard.
-    install_from_source
-    install_nerd_fonts
-    install_vim_plug
 }
 
 case $(uname) in
@@ -108,3 +102,6 @@ case $(uname) in
     run_linux
     ;;
 esac
+install_from_source
+install_nerd_fonts
+install_vim_plug
