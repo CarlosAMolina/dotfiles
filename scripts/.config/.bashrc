@@ -58,7 +58,15 @@ alias vi='nvim'
 # Run example: vispell en
 # Run example: vispell es
 vispell () {
-    sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
+    case $(uname) in
+      *BSD*)
+        # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
+        sed -i '' 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
+        ;;
+      *)
+        sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
+        ;;
+    esac
 }
 # Change current user session state
 alias off='systemctl poweroff' # Linux
@@ -138,7 +146,7 @@ else
 fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
-source ~/.nvm/nvm.sh
+[ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 
 [ -f ~/.bash_job ] && source ~/.bash_job
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
