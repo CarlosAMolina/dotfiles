@@ -29,19 +29,17 @@ execute() {
 }
 
 log Installing nvm
-# https://github.com/nvm-sh/nvm
-execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
 case $(uname) in
   *BSD*)
-    execute source $HOME/.config/nvm/nvm.sh
-    # https://github.com/nvm-sh/nvm/issues/1552
-    execute export CC=cc
-    execute export CXX=c++
+    execute sudo pkg install -y node
+    execute sudo pkg install -y npm
     ;;
   *)
+    # https://github.com/nvm-sh/nvm
+    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
     execute source $HOME/.nvm/nvm.sh
+    execute nvm install --lts --latest-npm
     ;;
 esac
-execute nvm install --lts --latest-npm
 execute node -v # Check command works
 execute npm -v # Check command works
