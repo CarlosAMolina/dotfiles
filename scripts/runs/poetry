@@ -25,12 +25,20 @@ execute() {
     if [[ $dry_run == "1" ]]; then
         return
     fi
-    "$@"
+    eval "$@"
 }
 
-# https://python-poetry.org/docs/#installing-with-pipx
-if command -v pipx 2>&1 >/dev/null; then
-    execute pipx install poetry
-else
-    log "pipx is not installed, install it and run the scrpt again"
-fi
+case $(uname) in
+  *BSD*)
+    # https://python-poetry.org/docs/#installing-with-the-official-installer
+    execute "curl -sSL https://install.python-poetry.org | python3.11 -"
+    ;;
+  *)
+    # https://python-poetry.org/docs/#installing-with-pipx
+    if command -v pipx 2>&1 >/dev/null; then
+        execute pipx install poetry
+    else
+        log pipx is not installed, install it and run the script again
+    fi
+    ;;
+esac
