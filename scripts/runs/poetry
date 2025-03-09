@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+dry_run="0"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+# https://python-poetry.org/docs/#installing-with-pipx
+if command -v pipx 2>&1 >/dev/null; then
+    execute pipx install poetry
+else
+    log "pipx is not installed, install it and run the scrpt again"
+fi
