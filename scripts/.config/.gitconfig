@@ -1,6 +1,8 @@
 [user]
 	name = CarlosAMolina 
 	email = 15368012+CarlosAMolina@users.noreply.github.com
+[includeIf "gitdir:~/Software/job/"]
+    path = ~/.gitconfig-job
 [merge]
 	tool = meld
 [init]
