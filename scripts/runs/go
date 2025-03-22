@@ -19,4 +19,4 @@ if [ ! -f /tmp/$file_name ]; then
 fi
 execute mkdir -p $path/go
 execute tar -C $path -xzf /tmp/$file_name
-execute go version
+execute ~/.local/bin/go/bin/go version
