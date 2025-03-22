@@ -35,7 +35,7 @@ case $(uname) in
     ;;
   *)
     # https://github.com/nvm-sh/nvm
-    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash"
+    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash"
     execute source $HOME/.nvm/nvm.sh
     execute nvm install --lts --latest-npm
     ;;
