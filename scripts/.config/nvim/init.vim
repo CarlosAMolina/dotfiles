@@ -276,4 +276,22 @@ lua << EOF
       },
     },
   })
+  -- Show only text, clean other screen information
+  vim.keymap.set('n', '<leader>0', function()
+    -- https://stackoverflow.com/questions/7770413/remove-vim-bottom-line-with-mode-line-column-etc
+    vim.opt.showmode = false
+    vim.opt.ruler = false
+    vim.opt.cmdheight = 0
+    -- Remove status bar: https://github.com/neovim/neovim/issues/8059
+    vim.opt.laststatus = 0
+    -- Remove line numbers
+    vim.opt.number = false
+    vim.opt.relativenumber = false
+    -- Not show which line your cursor is on
+    vim.opt.cursorline = false
+    -- Invisible cursor: https://github.com/neovim/neovim/issues/3688#issuecomment-574544618
+    -- https://neovim.io/doc/user/lua-guide.html, search highlight
+    vim.cmd.highlight({ 'Cursor', 'blend=100' })
+    vim.o.guicursor = 'a:Cursor/lCursor'
+  end)
 EOF
