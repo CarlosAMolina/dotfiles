@@ -4,5 +4,7 @@ set -e # Exit if any command fails.
 
 echo [DEBUG] Installing fzf
 # https://github.com/fuzzy-finder/fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+if [ ! -d ~/.fzf ]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+fi
 ~/.fzf/install
