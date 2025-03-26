@@ -10,13 +10,13 @@
     defaultBranch = main
 [core]
     editor = vi
-    # https://www.youtube.com/watch?v=91p1Fp7Db5c
-    # https://github.com/dandavison/delta?tab=readme-ov-file
     pager = delta
 [pull]
     rebase = false
 [interactive]
     diffFilter = delta --color-only
+# https://www.youtube.com/watch?v=91p1Fp7Db5c
+# https://github.com/dandavison/delta?tab=readme-ov-file
 [delta]
     navigate = true  # use n and N to move between diff sections
     dark = true      # or light = true, or omit for auto-detection
