@@ -1,13 +1,23 @@
 [user]
-	name = CarlosAMolina 
-	email = 15368012+CarlosAMolina@users.noreply.github.com
+    name = CarlosAMolina
+    email = 15368012+CarlosAMolina@users.noreply.github.com
 [includeIf "gitdir:~/Software/job/"]
     path = ~/.gitconfig-job
 [merge]
-	tool = meld
+    tool = meld
+    conflictstyle = zdiff3  # delta config
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [core]
-	editor = vi
+    editor = vi
+    # https://www.youtube.com/watch?v=91p1Fp7Db5c
+    # https://github.com/dandavison/delta?tab=readme-ov-file
+    pager = delta
 [pull]
-	rebase = false
+    rebase = false
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
+    line-numbers = true
