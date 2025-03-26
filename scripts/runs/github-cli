@@ -28,7 +28,6 @@ execute() {
     "$@"
 }
 
-execute sudo apt install -y wget
 echo [DEBUG] Installing github cli
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 (type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
