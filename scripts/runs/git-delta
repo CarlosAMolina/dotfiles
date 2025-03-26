@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+dry_run="0"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+# https://github.com/dandavison/delta?tab=readme-ov-file
+# https://www.youtube.com/watch?v=91p1Fp7Db5c
+# https://stackoverflow.com/questions/592620/how-can-i-check-if-a-program-exists-from-a-bash-script
+if ! command -v wget 2>&1 >/dev/null; then
+    execute sudo apt install -y wget
+fi
+execute pushd /tmp > /dev/null
+file_name=git-delta_0.18.2_amd64.deb
+if [ ! -f $file_name ]; then
+    execute wget https://github.com/dandavison/delta/releases/download/0.18.2/$file_name
+fi
+execute sudo dpkg -i $file_name
+execute popd > /dev/null
