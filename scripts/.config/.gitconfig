@@ -17,7 +17,9 @@
     diffFilter = delta --color-only
 # https://www.youtube.com/watch?v=91p1Fp7Db5c
 # https://github.com/dandavison/delta?tab=readme-ov-file
+# https://github.com/dandavison/delta/issues/678#issuecomment-902994979
 [delta]
+    true-color = always
     navigate = true  # use n and N to move between diff sections
     dark = true      # or light = true, or omit for auto-detection
     line-numbers = true
