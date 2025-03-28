@@ -85,9 +85,15 @@ export PATH=$PATH:~/.local/bin/go/bin
 ###########################
 # Terminal configuration
 ###########################
+# https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
+if [ -n "$SSH_TTY" ]; then
+    PS1='[ssh@'
+else
+    PS1='['
+fi
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 #PS1='[\u@\h \W]\$ '
-PS1='[\W]\$ '
+PS1="$PS1\W]\$ "
 
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
