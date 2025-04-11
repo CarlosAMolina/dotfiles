@@ -13,8 +13,9 @@ alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
 # Color output: https://wiki.archlinux.org/title/Color_output_in_console
 alias grep='grep --color=auto'
+exclude_dirs={env,.git,node_modules,__pycache__,src}
 function gre() {
-    grep $@ --color=auto --exclude-dir={env,.git,node_modules,__pycache__}
+    eval "grep $@ --color=auto --exclude-dir=$exclude_dirs"
 }
 alias ls='ls --color=auto'
 # Git
