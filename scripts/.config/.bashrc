@@ -11,9 +11,11 @@
 # https://stackoverflow.com/questions/5130968/how-can-i-copy-the-output-of-a-command-directly-into-my-clipboard
 alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
-# Color output
-# https://wiki.archlinux.org/title/Color_output_in_console
+# Color output: https://wiki.archlinux.org/title/Color_output_in_console
 alias grep='grep --color=auto'
+function gre() {
+    grep $@ --color=auto --exclude-dir={env,.git,node_modules,__pycache__}
+}
 alias ls='ls --color=auto'
 # Git
 alias ga='git add'
