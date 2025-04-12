@@ -13,7 +13,7 @@ alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
 # Color output: https://wiki.archlinux.org/title/Color_output_in_console
 alias grep='grep --color=auto'
-exclude_dirs={env,.git,node_modules,__pycache__,src}
+exclude_dirs={env,.git,node_modules,__pycache__}
 function gre() {
     eval "grep $@ --color=auto --exclude-dir=$exclude_dirs"
 }
@@ -42,10 +42,9 @@ alias k='keepassxc > /dev/null 2>&1 &'
 alias o='xdg-open'
 # Replace
 # Replaces all files recursively from the current directory.
-function replace(){
-    grep -rlZe "$1" --exclude-dir={env,.git,node_modules,__pycache__} . | xargs -0 sed -i 's/$1/$2/g'
-    # TODO eval "grep $@ --color=auto --exclude-dir=$exclude_dirs"
-    echo Done. Replaced -$1- with -$2-
+function replace() {
+    eval "grep -rlZe \"$1\" --exclude-dir=$exclude_dirs . | xargs -0 sed -i 's/$1/$2/g'"
+    echo "Done. Replaced '$1' with '$2'"
 }
 # Screen
 # https://unix.stackexchange.com/questions/3773/how-to-pass-parameters-to-an-alias
