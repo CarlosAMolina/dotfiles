@@ -85,6 +85,10 @@ case $(uname) in
     execute sudo pkg install -y cmake gmake gettext
     install_command=pkg
     ;;
+  Darwin)
+    execute brew install neovim
+    exit 0
+    ;;
   *)
     # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
     execute sudo apt install -y ninja-build gettext cmake build-essential
