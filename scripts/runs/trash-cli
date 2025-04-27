@@ -29,6 +29,9 @@ execute() {
 }
 
 case $(uname) in
+  Darwin)
+    execute brew install trash-cli
+    ;;
   *BSD*)
     execute sudo pkg install -y py311-trash-cli
     ;;
