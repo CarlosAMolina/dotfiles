@@ -160,5 +160,5 @@ fi
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
 [ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 
-[ -f ~/.bash_job ] && source ~/.bash_job
+[ -f ~/.bashrc-job ] && source ~/.bashrc-job
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
