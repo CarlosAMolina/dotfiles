@@ -57,13 +57,21 @@ install_from_source() {
 install_nerd_fonts() {
     # https://www.youtube.com/watch?v=mQdB_kHyZn8
     execute pushd /tmp > /dev/null
+    case $(uname) in
+      Darwin)
+        FONTS_PATH=$HOME/Library/Fonts/
+        ;;
+      *)
+        FONTS_PATH=$HOME/.local/share/fonts
+        ;;
+    esac
     if [ ! -f 3270.tar.xz ]; then
         execute wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/3270.tar.xz
     fi
-    if [ ! -d $HOME/.local/share/fonts ]; then
-        execute mkdir $HOME/.local/share/fonts
+    if [ ! -d $FONTS_PATH ]; then
+        execute mkdir $FONTS_PATH
     fi
-    execute tar -xvf 3270.tar.xz --directory $HOME/.local/share/fonts
+    execute tar -xvf 3270.tar.xz --directory $FONTS_PATH
     execute popd > /dev/null
     log Showing that the new fonts are available:
     execute fc-list | grep 3270
@@ -98,8 +106,8 @@ case $(uname) in
   Darwin)
     execute brew install ripgrep # Required by telescope.
     execute brew install neovim
-    # TODO? execute brew install xclip # To use clipboard.
     install_vim_plug
+    install_nerd_fonts
     ;;
   *)
     execute sudo $install_command install -y wget curl git
