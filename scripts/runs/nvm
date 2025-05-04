@@ -34,6 +34,11 @@ case $(uname) in
     execute sudo pkg install -y npm
     ;;
   *)
+    case $(uname) in
+      *Darwin*)
+        execute brew install wget
+        ;;
+    esac
     # https://github.com/nvm-sh/nvm
     execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash"
     execute source $HOME/.nvm/nvm.sh
