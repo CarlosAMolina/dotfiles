@@ -202,6 +202,16 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+lua << EOF
+  -- I have this problema in mac: https://stackoverflow.com/questions/65160481/neovim-on-windows-cant-find-python-provider
+  -- Get the path of python3 using the 'which' command
+  local handle = io.popen("which python3")
+  local python3_path = handle:read("*a"):gsub("%s+", "") -- Read the output and trim whitespace
+  handle:close()
+  vim.g.python3_host_prog = python3_path
+EOF
+
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
