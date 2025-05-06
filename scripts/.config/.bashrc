@@ -89,6 +89,11 @@ export PATH=~/.local/pipx/venvs/poetry/bin/poetry:$PATH
 export PATH=$PATH:~/.local/bin/go/bin
 
 ###########################
+# Other bashrc
+###########################
+[ -f ~/.bashrc-job ] && source ~/.bashrc-job
+
+###########################
 # Terminal configuration
 ###########################
 # https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
@@ -159,6 +164,4 @@ fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
 [ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
-
-[ -f ~/.bashrc-job ] && source ~/.bashrc-job
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
