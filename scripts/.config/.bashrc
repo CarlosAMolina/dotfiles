@@ -89,9 +89,12 @@ export PATH=~/.local/pipx/venvs/poetry/bin/poetry:$PATH
 export PATH=$PATH:~/.local/bin/go/bin
 
 ###########################
-# Other bashrc
+# Source
 ###########################
 [ -f ~/.bashrc-job ] && source ~/.bashrc-job
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
 
 ###########################
 # Terminal configuration
