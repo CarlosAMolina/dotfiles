@@ -81,8 +81,16 @@ alias offb='sudo poweroff' # FreeBSD
 ###########################
 # Exports
 ###########################
-# Docker rootless
-export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+case $(uname) in
+  Darwin)
+    # Docker using colima (https://stackoverflow.com/a/72560928)
+    export DOCKER_HOST=unix://$HOME/.colima/docker.sock
+    ;;
+  *)
+    # Docker rootless
+    export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+    ;;
+esac
 # https://stackoverflow.com/questions/18088372/how-to-npm-install-global-not-as-root
 export PATH=~/.local/bin/:$PATH
 export PATH=~/.local/pipx/venvs/poetry/bin/poetry:$PATH
