@@ -43,7 +43,11 @@ alias o='xdg-open'
 # Replace
 # Replaces all files recursively from the current directory.
 function replace() {
-    eval "grep -rlZe \"$1\" --exclude-dir=$exclude_dirs . | xargs -0 sed -i 's/$1/$2/g'"
+    mapfile -t file_paths < <(grep -rl $1 --exclude-dir=$exclude_dirs .)
+    for file_path in "${file_paths[@]}"; do
+        echo [DEBUG] Replacing $file_path
+        eval "sed -i 's/$1/$2/g' $file_path"
+    done
     echo "Done. Replaced '$1' with '$2'"
 }
 # Screen
