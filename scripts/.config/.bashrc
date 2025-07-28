@@ -111,6 +111,14 @@ fi
 ###########################
 # Terminal configuration
 ###########################
+get_short_dir() {
+    local dir_name=$(basename "$PWD")
+    if [ ${#dir_name} -gt 10 ]; then
+        echo "${dir_name:0:3}...${dir_name: -3}"
+    else
+        echo "$dir_name"
+    fi
+}
 # https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
 if [ -n "$SSH_TTY" ]; then
     PS1='[ssh@'
@@ -119,7 +127,8 @@ else
 fi
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 #PS1='[\u@\h \W]\$ '
-PS1="$PS1\W]\$ "
+# To call get_short_dir each time the path changes, we escape the '$' (https://wiki.archlinux.org/title/Bash/Prompt_customization)
+PS1="$PS1\$(get_short_dir)]\$ "
 
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
