@@ -119,16 +119,14 @@ get_short_dir() {
         echo "$dir_name"
     fi
 }
-# https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
-if [ -n "$SSH_TTY" ]; then
-    PS1='[ssh@'
-else
-    PS1='['
-fi
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 #PS1='[\u@\h \W]\$ '
 # To call get_short_dir each time the path changes, we escape the '$' (https://wiki.archlinux.org/title/Bash/Prompt_customization)
-PS1="$PS1\$(get_short_dir)]\$ "
+PS1="[$(get_short_dir)]\$ "
+# https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
+if [ -n "$SSH_TTY" ]; then
+    PS1="[ssh@${PS1:1}"
+fi
 
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
