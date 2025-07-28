@@ -40,13 +40,11 @@ alias gs='git status -s'
 alias k='keepassxc > /dev/null 2>&1 &'
 # Open files/folders
 alias o='xdg-open'
-# Replace
-# Replaces all files recursively from the current directory.
+# Replace. Replace all files recursively from the current directory.
 function replace() {
-    mapfile -t file_paths < <(grep -rl $1 --exclude-dir=$exclude_dirs .)
-    for file_path in "${file_paths[@]}"; do
+    for file_path in $(eval "grep -rl $1 --exclude-dir=$exclude_dirs ."); do
         echo [DEBUG] Replacing $file_path
-        eval "sed -i 's/$1/$2/g' $file_path"
+        eval "sed -i '' 's/$1/$2/g' $file_path"
     done
     echo "Done. Replaced '$1' with '$2'"
 }
