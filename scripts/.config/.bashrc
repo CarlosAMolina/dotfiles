@@ -44,7 +44,11 @@ alias o='xdg-open'
 function replace() {
     for file_path in $(eval "grep -rl $1 --exclude-dir=$exclude_dirs ."); do
         echo [DEBUG] Replacing $file_path
-        eval "sed -i '' 's/$1/$2/g' $file_path"
+        if [[ "${BASH_VERSION:0:1}" == "3" ]]; then
+            eval "sed -i '' 's/$1/$2/g' $file_path"
+        else
+            eval "sed -i 's/$1/$2/g' $file_path"
+        fi
     done
     echo "Done. Replaced '$1' with '$2'"
 }
