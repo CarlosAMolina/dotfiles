@@ -35,8 +35,11 @@ case $(uname) in
     ;;
   *)
     case $(uname) in
-      *Darwin*)
-        execute brew install wget
+      Darwin)
+        execute brew install curl
+        ;;
+      *)
+        execute sudo apt install -y curl
         ;;
     esac
     # https://github.com/nvm-sh/nvm
