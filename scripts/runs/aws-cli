@@ -31,6 +31,7 @@ execute() {
 # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 execute pushd /tmp > /dev/null
 if [ ! -f awscliv2.zip ]; then
+    execute sudo apt install curl;
     execute curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 fi
 if [ ! -d aws ]; then
