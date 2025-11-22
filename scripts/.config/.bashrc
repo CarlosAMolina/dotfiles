@@ -37,6 +37,7 @@ alias gl='git log'
 alias pull='git pull origin $(gbc)'
 alias push='git push origin $(gbc)'
 alias gs='git status -s'
+alias gsh='git show'
 alias k='keepassxc > /dev/null 2>&1 &'
 # Open files/folders
 alias o='xdg-open'
