@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+dry_run="0"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+# Steps to get the url:
+# 1. First go to <https://code.visualstudio.com/> and select `Download for Linux (.deb)`.
+# 2. You will be redirected to <https://code.visualstudio.com/docs/?dv=linux64_deb>, here you have a button with the download url.
+URL="https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+
+log The web page to download VSCode will be open automatically. Press Enter to start and press Enter to continue when done
+execute read -p "" </dev/tty
+execute firefox $URL
+execute read -p "" </dev/tty
+execute pushd $HOME/Downloads/
+file_name=$(find . -regex '.*code_.*_amd64\.deb')
+execute mv $file_name /tmp/;
+execute popd > /dev/null
+execute sudo dpkg -i /tmp/$file_name
