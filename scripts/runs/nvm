@@ -43,7 +43,7 @@ case $(uname) in
         ;;
     esac
     # https://github.com/nvm-sh/nvm
-    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash"
+    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"
     execute source $HOME/.config/nvm/nvm.sh
     execute nvm install --lts --latest-npm
     ;;
