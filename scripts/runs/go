@@ -7,16 +7,21 @@ execute() {
     "$@"
 }
 
-path=~/.local/bin
-file_name=go1.24.0.linux-amd64.tar.gz
-# https://go.dev/doc/install
-if [ -d $path/go ]; then
-    execute rm -rf $path/go
-fi
-if [ ! -f /tmp/$file_name ]; then
-    # Versions: https://go.dev/dl/
-    execute wget https://go.dev/dl/$file_name -P /tmp/
-fi
-execute mkdir -p $path/go
-execute tar -C $path -xzf /tmp/$file_name
-execute ~/.local/bin/go/bin/go version
+# arch linux: sudo pacman -S go
+case $(uname) in
+  Linux)
+    path=~/.local/bin
+    file_name=go1.25.5.linux-amd64.tar.gz
+    # https://go.dev/doc/install
+    if [ -d $path/go ]; then
+        execute rm -rf $path/go
+    fi
+    if [ ! -f /tmp/$file_name ]; then
+        # Versions: https://go.dev/dl/
+        execute wget https://go.dev/dl/$file_name -P /tmp/
+    fi
+    execute mkdir -p $path/go
+    execute tar -C $path -xzf /tmp/$file_name
+    execute ~/.local/bin/go/bin/go version
+    ;;
+esac
