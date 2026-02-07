@@ -189,5 +189,6 @@ fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
 [ -f ~/.config/nvm/nvm.sh ] && source ~/.config/nvm/nvm.sh
+[ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
