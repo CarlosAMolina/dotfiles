@@ -43,15 +43,44 @@ alias k='keepassxc > /dev/null 2>&1 &'
 alias o='xdg-open'
 # Replace. Replace all files recursively from the current directory.
 function replace() {
-    for file_path in $(eval "grep -rl $1 --exclude-dir=$exclude_dirs ."); do
-        echo [DEBUG] Replacing $file_path
-        if [[ "${BASH_VERSION:0:1}" == "3" ]]; then
-            eval "sed -i '' 's/$1/$2/g' $file_path"
-        else
-            eval "sed -i 's/$1/$2/g' $file_path"
-        fi
+    is_whole_word_match=false
+    if [ "$1" == "-w" ]; then
+        is_whole_word_match=true
+        shift  # Remove the first argument
+    fi
+    if [ $# -eq 2 ]; then
+        old_term="${@:$#-1:1}"  # Second to last argument
+        new_term="${!#}"   # Last argument
+    else
+        echo "[ERROR] At least two arguments are required"
+        return 1
+    fi
+    sed_command="sed -i"
+    sed_pattern="$old_term"
+    sed_replacement="$new_term"
+    case $(uname) in
+        Darwin)  # MacOS
+            sed_command="$sed_command ''"
+            ;;
+    esac
+    if [ "$is_whole_word_match" == true ]; then
+        sed_command="$sed_command -E"
+        case $(uname) in
+            Darwin)  # MacOS
+                sed_pattern="(^|[^[:alnum:]_])$sed_pattern([^[:alnum:]_]|$)"
+                sed_replacement="\1$sed_replacement\2"  # \1 and \2 are required to not lose word boundaries.
+                ;;
+            *)  # Linux.
+                sed_pattern="\<$sed_pattern\>"
+                ;;
+        esac
+    fi
+    for file_path in $(eval "grep -rl $old_term --exclude-dir=$exclude_dirs ."); do
+        echo "[DEBUG] Replacing $file_path"
+        #echo "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
+        eval "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
     done
-    echo "Done. Replaced '$1' with '$2'"
+    echo "[DEBUG] Done. Replaced '$old_term' with '$new_term'"
 }
 # Screen
 # https://unix.stackexchange.com/questions/3773/how-to-pass-parameters-to-an-alias
