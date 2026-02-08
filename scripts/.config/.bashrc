@@ -101,17 +101,11 @@ alias vi='nvim'
 # Run example: vispell es
 vispell () {
     case $(uname) in
-      *BSD*)
-        # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
-        sed -i '' 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
-        ;;
-      Darwin) # MacOS
-        sed -i '' 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
-        ;;
-      *)
-        sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
-        ;;
+      # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
+      *BSD*|Darwin)  SED_INPLACE=(-i '') ;;  # BSD or MacOS.
+      *)             SED_INPLACE=(-i)    ;;
     esac
+    sed "${SED_INPLACE[@]}" "s/set spelllang=.*/set spelllang=${1}/g" $HOME/.config/nvim/init.vim
 }
 # Change current user session state
 alias off='systemctl poweroff' # Linux
