@@ -105,6 +105,9 @@ vispell () {
         # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
         sed -i '' 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
         ;;
+      Darwin) # MacOS
+        sed -i '' 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
+        ;;
       *)
         sed -i 's/set spelllang=.*/set spelllang='"$1"'/g' ~/.config/nvim/init.vim
         ;;
