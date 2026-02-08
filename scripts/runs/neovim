@@ -56,6 +56,8 @@ install_from_source() {
 
 install_nerd_fonts() {
     # https://www.youtube.com/watch?v=mQdB_kHyZn8
+    FONT=JetBrainsMono
+    FONTS_FILE=$FONT.tar.xz
     execute pushd /tmp > /dev/null
     case $(uname) in
       Darwin)
@@ -65,16 +67,20 @@ install_nerd_fonts() {
         FONTS_PATH=$HOME/.local/share/fonts
         ;;
     esac
-    if [ ! -f 3270.tar.xz ]; then
-        execute wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/3270.tar.xz
+    if [ ! -f $FONTS_FILE ]; then
+        execute wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$FONTS_FILE
     fi
     if [ ! -d $FONTS_PATH ]; then
         execute mkdir $FONTS_PATH
     fi
-    execute tar -xvf 3270.tar.xz --directory $FONTS_PATH
+    execute tar -xvf $FONTS_FILE --directory $FONTS_PATH
     execute popd > /dev/null
     log Showing that the new fonts are available:
-    execute fc-list | grep 3270
+    execute fc-list | grep $FONT
+    # Configure the xfce4-terminal fonts family, to avoid incorrect icons in nvim-tree.
+    # Terminal menu: Edit > Preferences > Appearance > Font.
+    # There, uncheck `Use system font` and select `JetBrainsMono Nerd Font Regular`.
+    # If the fonts family does not appear, close and open the terminal and repeat the menu clicks.
 }
 
 install_vim_plug() {
