@@ -81,6 +81,8 @@ install_nerd_fonts() {
     # Terminal menu: Edit > Preferences > Appearance > Font.
     # There, uncheck `Use system font` and select `JetBrainsMono Nerd Font Regular`.
     # If the fonts family does not appear, close and open the terminal and repeat the menu clicks.
+    # To use a font without ligature (combines characters like `!=`, `==` into one), use
+    # a font that contains NL in its name, example: JetBrainsMonoNL Nerd Font Regular.
 }
 
 install_vim_plug() {
