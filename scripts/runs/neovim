@@ -2,6 +2,8 @@
 
 set -e # Exit if any command fails.
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 dry_run="0"
 
 while [[ $# -gt 0 ]]; do
@@ -94,6 +96,46 @@ install_vim_plug() {
     execute read -p "" </dev/tty
 }
 
+install_nvim_darwin() {
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/neovim/neovim/releases/tag/v0.12.4
+    opt_path="$HOME/.local/opt"
+    install_path="$HOME/.local/bin"
+    bin_name="nvim"
+
+    case $(uname -m) in
+      arm64|aarch64)
+        arch="arm64"
+        ;;
+      x86_64|amd64)
+        arch="x86_64"
+        ;;
+      *)
+        echo "[ERROR] Unsupported architecture: $(uname -m)"
+        exit 1
+        ;;
+    esac
+
+    tag="v0.12.4"
+    dir_name="nvim-macos-${arch}"
+    asset="${dir_name}.tar.gz"
+    url="https://github.com/neovim/neovim/releases/download/${tag}/${asset}"
+
+    execute pushd /tmp > /dev/null
+    execute curl -fL "$url" -o "$asset"
+    execute mkdir -p "$opt_path"
+    execute rm -rf "${opt_path:?}/${dir_name}"
+    execute tar -xzf "$asset" -C "$opt_path"
+    execute xattr -dr com.apple.quarantine "$opt_path/$dir_name"
+    execute rm -f "$asset"
+    execute popd > /dev/null
+
+    execute mkdir -p "$install_path"
+    execute ln -sf "$opt_path/$dir_name/bin/$bin_name" "$install_path/$bin_name"
+
+    execute "$install_path/$bin_name" --version
+}
+
 
 case $(uname) in
   *BSD*)
@@ -112,8 +154,8 @@ esac
 
 case $(uname) in
   Darwin)
-    execute brew install ripgrep # Required by telescope.
-    execute brew install neovim
+    execute "$script_dir/ripgrep" # Required by telescope.
+    install_nvim_darwin
     install_vim_plug
     install_nerd_fonts
     ;;
