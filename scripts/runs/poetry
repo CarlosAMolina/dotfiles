@@ -2,12 +2,21 @@
 
 set -e # Exit if any command fails.
 
+# Usage:
+#   ./runs/poetry             Install (or reinstall) poetry.
+#   ./runs/poetry --dry       Show what would be executed, without doing it.
+#   ./runs/poetry --uninstall Remove poetry installed via uv.
+
 dry_run="0"
+uninstall="0"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
     fi
     shift
 done
@@ -28,12 +37,62 @@ execute() {
     eval "$@"
 }
 
+uninstall_darwin() {
+    execute uv tool uninstall poetry
+}
+
+install_darwin() {
+    # Installed via "uv tool install", which manages poetry in an isolated
+    # environment under ~/.local/share/uv/tools/poetry and symlinks the
+    # entrypoint into ~/.local/bin/poetry (confirmed via
+    # ~/.local/share/uv/tools/poetry/uv-receipt.toml).
+    #
+    # Pinned to a fixed version (not "latest") for security/reproducibility.
+    # https://github.com/python-poetry/poetry/releases/tag/2.1.2
+    version="2.1.2"
+    execute uv tool install "poetry==${version}"
+}
+
+verify_installation() {
+    if [[ $dry_run == "1" ]]; then
+        log "Skipping installation verification"
+        return
+    fi
+
+    if ! command -v poetry >/dev/null 2>&1; then
+        echo "[ERROR] poetry was not found on PATH after installation"
+        exit 1
+    fi
+
+    if ! poetry --version >/dev/null 2>&1; then
+        echo "[ERROR] poetry --version failed after installation"
+        exit 1
+    fi
+    log "Installation verified: $(poetry --version)"
+}
+
 case $(uname) in
+  Darwin)
+    if [[ $uninstall == "1" ]]; then
+        uninstall_darwin
+    else
+        install_darwin
+        verify_installation
+    fi
+    ;;
   *BSD*)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
+    fi
     # https://python-poetry.org/docs/#installing-with-the-official-installer
     execute "curl -sSL https://install.python-poetry.org | python3.11 -"
     ;;
   *)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
+    fi
     # https://python-poetry.org/docs/#installing-with-pipx
     if command -v pipx 2>&1 >/dev/null; then
         execute pipx install poetry
