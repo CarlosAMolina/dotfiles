@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+# Usage:
+#   ./runs/uv             Install (or reinstall) uv.
+#   ./runs/uv --dry       Show what would be executed, without doing it.
+#   ./runs/uv --uninstall Remove uv/uvx from ~/.local/bin.
+
+dry_run="0"
+uninstall="0"
+install_path="$HOME/.local/bin"
+bin_names=(uv uvx)
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+backup_darwin_binaries() {
+    for bin_name in "${bin_names[@]}"; do
+        if [ -f "$install_path/$bin_name" ]; then
+            backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
+            log "Backing up current $bin_name to $backup_file"
+            execute cp -p "$install_path/$bin_name" "$backup_file"
+        else
+            log "No existing $bin_name binary found at $install_path, skipping backup"
+        fi
+    done
+}
+
+uninstall_darwin() {
+    backup_darwin_binaries
+    for bin_name in "${bin_names[@]}"; do
+        if [ -f "$install_path/$bin_name" ]; then
+            execute rm -f "$install_path/$bin_name"
+        else
+            log "$bin_name is not installed at $install_path"
+        fi
+    done
+}
+
+install_darwin() {
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/astral-sh/uv/releases/tag/0.11.29
+    version="0.11.29"
+    url="https://astral.sh/uv/${version}/install.sh"
+
+    backup_darwin_binaries
+
+    # UV_INSTALL_DIR: install into ~/.local/bin (the default, made explicit here).
+    # UV_NO_MODIFY_PATH: dotfiles already add ~/.local/bin to PATH, so don't let
+    # the installer touch shell profiles.
+    execute env UV_INSTALL_DIR="$install_path" UV_NO_MODIFY_PATH=1 sh -c "curl -LsSf $url | sh"
+}
+
+verify_installation() {
+    if [[ $dry_run == "1" ]]; then
+        log "Skipping installation verification"
+        return
+    fi
+
+    for bin_name in "${bin_names[@]}"; do
+        if [ ! -x "$install_path/$bin_name" ]; then
+            echo "[ERROR] $bin_name binary not found or not executable at $install_path/$bin_name"
+            exit 1
+        fi
+    done
+
+    if ! "$install_path/uv" --version >/dev/null 2>&1; then
+        echo "[ERROR] $install_path/uv --version failed after installation"
+        exit 1
+    fi
+    log "Installation verified: $("$install_path/uv" --version)"
+
+    # Sanity check: the installer receipt should record the same install_prefix
+    # we asked for, so future "uv self update" runs keep reinstalling here.
+    receipt="$HOME/.config/uv/uv-receipt.json"
+    if [ -f "$receipt" ]; then
+        receipt_prefix=$(jq -r '.install_prefix' "$receipt")
+        if [ "$receipt_prefix" != "$install_path" ]; then
+            echo "[ERROR] uv-receipt.json install_prefix ($receipt_prefix) does not match expected $install_path"
+            exit 1
+        fi
+        log "uv-receipt.json install_prefix matches $install_path"
+    else
+        echo "[ERROR] Expected receipt file not found at $receipt"
+        exit 1
+    fi
+}
+
+case $(uname) in
+  Darwin)
+    if [[ $uninstall == "1" ]]; then
+        uninstall_darwin
+    else
+        install_darwin
+        verify_installation
+    fi
+    ;;
+  *)
+    echo "[ERROR] Not implemented for $(uname)"
+    exit 1
+    ;;
+esac
