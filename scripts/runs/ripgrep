@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+# Usage:
+#   ./runs/ripgrep             Install (or reinstall) ripgrep.
+#   ./runs/ripgrep --dry       Show what would be executed, without doing it.
+#   ./runs/ripgrep --uninstall Remove rg from ~/.local/bin.
+
+dry_run="0"
+uninstall="0"
+install_path="$HOME/.local/bin"
+bin_name="rg"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+backup_darwin_binary() {
+    if [ -f "$install_path/$bin_name" ]; then
+        backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
+        log "Backing up current $bin_name to $backup_file"
+        execute cp -p "$install_path/$bin_name" "$backup_file"
+    else
+        log "No existing $bin_name binary found at $install_path, skipping backup"
+    fi
+}
+
+uninstall_darwin() {
+    backup_darwin_binary
+    if [ -f "$install_path/$bin_name" ]; then
+        execute rm -f "$install_path/$bin_name"
+    else
+        log "$bin_name is not installed at $install_path"
+    fi
+}
+
+install_darwin() {
+    case $(uname -m) in
+      arm64|aarch64)
+        arch="aarch64"
+        ;;
+      x86_64|amd64)
+        arch="x86_64"
+        ;;
+      *)
+        echo "[ERROR] Unsupported architecture: $(uname -m)"
+        exit 1
+        ;;
+    esac
+
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/BurntSushi/ripgrep/releases/tag/15.1.0
+    tag="15.1.0"
+    dir_name="ripgrep-${tag}-${arch}-apple-darwin"
+    asset="${dir_name}.tar.gz"
+    url="https://github.com/BurntSushi/ripgrep/releases/download/${tag}/${asset}"
+
+    backup_darwin_binary
+
+    execute pushd /tmp > /dev/null
+    execute curl -fL "$url" -o "$asset"
+    execute tar -xzf "$asset" "${dir_name}/${bin_name}"
+    execute mkdir -p "$install_path"
+    execute mv "${dir_name}/${bin_name}" "$install_path/$bin_name"
+    execute chmod +x "$install_path/$bin_name"
+    execute rm -rf "$asset" "$dir_name"
+    execute popd > /dev/null
+}
+
+verify_installation() {
+    # $1: explicit path to the rg binary to check, e.g. ~/.local/bin/rg.
+    local rg_bin="$1"
+
+    if [[ $dry_run == "1" ]]; then
+        log "Skipping installation verification"
+        return
+    fi
+
+    if [ ! -x "$rg_bin" ]; then
+        echo "[ERROR] rg binary not found or not executable at $rg_bin"
+        exit 1
+    fi
+
+    if ! "$rg_bin" --version >/dev/null 2>&1; then
+        echo "[ERROR] $rg_bin --version failed after installation"
+        exit 1
+    fi
+    log "Installation verified: $("$rg_bin" --version | head -1)"
+}
+
+case $(uname) in
+  Darwin)
+    if [[ $uninstall == "1" ]]; then
+        uninstall_darwin
+    else
+        install_darwin
+        verify_installation "$install_path/$bin_name"
+    fi
+    ;;
+  *)
+    echo "[ERROR] Not implemented for $(uname)"
+    exit 1
+    ;;
+esac
