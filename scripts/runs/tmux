@@ -2,12 +2,23 @@
 
 set -e # Exit if any command fails.
 
+# Usage:
+#   ./runs/tmux             Install (or reinstall) tmux.
+#   ./runs/tmux --dry       Show what would be executed, without doing it.
+#   ./runs/tmux --uninstall (Darwin only) Remove tmux from ~/.local/bin.
+
 dry_run="0"
+uninstall="0"
+install_path="$HOME/.local/bin"
+bin_name="tmux"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
     fi
     shift
 done
@@ -28,11 +39,108 @@ execute() {
     "$@"
 }
 
+backup_darwin_binary() {
+    if [ -f "$install_path/$bin_name" ]; then
+        backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
+        log "Backing up current $bin_name to $backup_file"
+        execute cp -p "$install_path/$bin_name" "$backup_file"
+    else
+        log "No existing $bin_name binary found at $install_path, skipping backup"
+    fi
+}
+
+uninstall_darwin() {
+    backup_darwin_binary
+    if [ -f "$install_path/$bin_name" ]; then
+        execute rm -f "$install_path/$bin_name"
+    else
+        log "$bin_name is not installed at $install_path"
+    fi
+}
+
+install_darwin() {
+    case $(uname -m) in
+      arm64|aarch64)
+        arch="arm64"
+        ;;
+      x86_64|amd64)
+        arch="x86_64"
+        ;;
+      *)
+        echo "[ERROR] Unsupported architecture: $(uname -m)"
+        exit 1
+        ;;
+    esac
+
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/tmux/tmux-builds/releases/tag/v3.7b
+    tag="v3.7b"
+    version="${tag#v}"
+    asset="tmux-${version}-macos-${arch}.tar.gz"
+    url="https://github.com/tmux/tmux-builds/releases/download/${tag}/${asset}"
+
+    backup_darwin_binary
+
+    execute pushd /tmp > /dev/null
+    execute curl -fL "$url" -o "$asset"
+    execute tar -xzf "$asset" tmux
+    execute mkdir -p "$install_path"
+    execute mv tmux "$install_path/$bin_name"
+    execute chmod +x "$install_path/$bin_name"
+    execute rm -f "$asset"
+    execute popd > /dev/null
+}
+
+verify_installation() {
+    # $1 (optional): explicit path to the tmux binary to check, e.g. ~/.local/bin/tmux.
+    # If not given, resolve tmux from PATH instead.
+    local tmux_bin="${1:-tmux}"
+
+    if [[ $dry_run == "1" ]]; then
+        log "Skipping installation verification"
+        return
+    fi
+
+    if [ -n "$1" ]; then
+        if [ ! -x "$tmux_bin" ]; then
+            echo "[ERROR] tmux binary not found or not executable at $tmux_bin"
+            exit 1
+        fi
+    elif ! command -v tmux >/dev/null 2>&1; then
+        echo "[ERROR] tmux was not found on PATH after installation"
+        exit 1
+    fi
+
+    if ! "$tmux_bin" -V >/dev/null 2>&1; then
+        echo "[ERROR] $tmux_bin -V failed after installation"
+        exit 1
+    fi
+    log "Installation verified: $("$tmux_bin" -V)"
+}
+
 case $(uname) in
+  Darwin)
+    if [[ $uninstall == "1" ]]; then
+        uninstall_darwin
+    else
+        install_darwin
+        verify_installation "$install_path/$bin_name"
+    fi
+    ;;
   *BSD*)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is only supported on Darwin"
+        exit 1
+    fi
     execute sudo pkg install -y tmux
+    verify_installation
     ;;
   *)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is only supported on Darwin"
+        exit 1
+    fi
     execute sudo apt install -y tmux
+    verify_installation
     ;;
 esac
