@@ -2,14 +2,23 @@
 
 set -e # Exit if any command fails.
 
+# Usage:
+#   ./runs/neovim             Install (or reinstall) tmux.
+#   ./runs/neovim --dry       Show what would be executed, without doing it.
+#   ./runs/neovim --uninstall Remove tmux.
+
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 dry_run="0"
+uninstall="0"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
     fi
     shift
 done
@@ -70,7 +79,7 @@ install_nerd_fonts() {
         ;;
     esac
     if [ ! -f $FONTS_FILE ]; then
-        execute wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$FONTS_FILE
+        execute curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$FONTS_FILE
     fi
     if [ ! -d $FONTS_PATH ]; then
         execute mkdir $FONTS_PATH
@@ -78,7 +87,15 @@ install_nerd_fonts() {
     execute tar -xvf $FONTS_FILE --directory $FONTS_PATH
     execute popd > /dev/null
     log Showing that the new fonts are available:
-    execute fc-list | grep $FONT
+    case $(uname) in
+      Darwin)
+        # fc-list (fontconfig) is not available on macOS by default.
+        execute ls "$FONTS_PATH" | grep $FONT
+        ;;
+      *)
+        execute fc-list | grep $FONT
+        ;;
+    esac
     # Configure the xfce4-terminal fonts family, to avoid incorrect icons in nvim-tree.
     # Terminal menu: Edit > Preferences > Appearance > Font.
     # There, uncheck `Use system font` and select `JetBrainsMono Nerd Font Regular`.
@@ -96,9 +113,7 @@ install_vim_plug() {
     execute read -p "" </dev/tty
 }
 
-install_nvim_darwin() {
-    # Pinned to a fixed release (not "latest") for security/reproducibility.
-    # https://github.com/neovim/neovim/releases/tag/v0.12.4
+nvim_darwin_paths() {
     opt_path="$HOME/.local/opt"
     install_path="$HOME/.local/bin"
     bin_name="nvim"
@@ -116,10 +131,46 @@ install_nvim_darwin() {
         ;;
     esac
 
-    tag="v0.12.4"
     dir_name="nvim-macos-${arch}"
+}
+
+backup_nvim_darwin() {
+    if [ -d "$opt_path/$dir_name" ]; then
+        backup_dir="$opt_path/$dir_name.bak.$(date +%Y%m%d%H%M%S)"
+        log "Backing up current $dir_name to $backup_dir"
+        execute cp -pR "$opt_path/$dir_name" "$backup_dir"
+    else
+        log "No existing $dir_name folder found at $opt_path, skipping backup"
+    fi
+}
+
+uninstall_nvim_darwin() {
+    nvim_darwin_paths
+    backup_nvim_darwin
+
+    if [ -d "$opt_path/$dir_name" ]; then
+        execute rm -rf "$opt_path/$dir_name"
+    else
+        log "$dir_name is not installed at $opt_path"
+    fi
+
+    if [ -e "$install_path/$bin_name" ] || [ -L "$install_path/$bin_name" ]; then
+        execute rm -f "$install_path/$bin_name"
+    else
+        log "$bin_name is not installed at $install_path"
+    fi
+}
+
+install_nvim_darwin() {
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/neovim/neovim/releases/tag/v0.12.4
+    nvim_darwin_paths
+
+    tag="v0.12.4"
     asset="${dir_name}.tar.gz"
     url="https://github.com/neovim/neovim/releases/download/${tag}/${asset}"
+
+    backup_nvim_darwin
 
     execute pushd /tmp > /dev/null
     execute curl -fL "$url" -o "$asset"
@@ -145,6 +196,19 @@ install_nvim_darwin() {
 }
 
 
+if [[ $uninstall == "1" ]]; then
+    case $(uname) in
+      Darwin)
+        uninstall_nvim_darwin
+        ;;
+      *)
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
+        ;;
+    esac
+    exit 0
+fi
+
 case $(uname) in
   *BSD*)
     # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
@@ -168,7 +232,7 @@ case $(uname) in
     install_nerd_fonts
     ;;
   *)
-    execute sudo $install_command install -y wget curl git
+    execute sudo $install_command install -y curl git
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo $install_command install -y ripgrep # Required by telescope.
     execute sudo $install_command install -y xclip # To use clipboard.

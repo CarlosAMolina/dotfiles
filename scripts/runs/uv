@@ -5,7 +5,7 @@ set -e # Exit if any command fails.
 # Usage:
 #   ./runs/uv             Install (or reinstall) uv.
 #   ./runs/uv --dry       Show what would be executed, without doing it.
-#   ./runs/uv --uninstall Remove uv/uvx from ~/.local/bin.
+#   ./runs/uv --uninstall Remove uv/uvx.
 
 dry_run="0"
 uninstall="0"

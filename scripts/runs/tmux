@@ -5,7 +5,7 @@ set -e # Exit if any command fails.
 # Usage:
 #   ./runs/tmux             Install (or reinstall) tmux.
 #   ./runs/tmux --dry       Show what would be executed, without doing it.
-#   ./runs/tmux --uninstall (Darwin only) Remove tmux from ~/.local/bin.
+#   ./runs/tmux --uninstall Remove tmux.
 
 dry_run="0"
 uninstall="0"
@@ -129,7 +129,7 @@ case $(uname) in
     ;;
   *BSD*)
     if [[ $uninstall == "1" ]]; then
-        echo "[ERROR] --uninstall is only supported on Darwin"
+        echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
     fi
     execute sudo pkg install -y tmux
@@ -137,7 +137,7 @@ case $(uname) in
     ;;
   *)
     if [[ $uninstall == "1" ]]; then
-        echo "[ERROR] --uninstall is only supported on Darwin"
+        echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
     fi
     execute sudo apt install -y tmux
