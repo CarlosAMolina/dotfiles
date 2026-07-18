@@ -126,7 +126,15 @@ install_nvim_darwin() {
     execute mkdir -p "$opt_path"
     execute rm -rf "${opt_path:?}/${dir_name}"
     execute tar -xzf "$asset" -C "$opt_path"
-    execute xattr -dr com.apple.quarantine "$opt_path/$dir_name"
+    # curl (unlike Safari/Finder) does not set com.apple.quarantine, so this
+    # should normally be a no-op. If it IS present, ask the user to remove it
+    # manually rather than running xattr from the script.
+    if [[ $dry_run != "1" ]] && xattr -p com.apple.quarantine "$opt_path/$dir_name" >/dev/null 2>&1; then
+        log "The extracted files are quarantined. Please run manually:"
+        log "    xattr -dr com.apple.quarantine \"$opt_path/$dir_name\""
+        log "Press Enter to continue when done"
+        execute read -p "" </dev/tty
+    fi
     execute rm -f "$asset"
     execute popd > /dev/null
 
