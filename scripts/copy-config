@@ -3,7 +3,8 @@
 set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-config_dir="$script_dir/.config"
+repo_root="$( cd "$script_dir/.." && pwd )"
+config_dir="$repo_root/.config"
 
 copy_dir() {
     pushd $1 > /dev/null

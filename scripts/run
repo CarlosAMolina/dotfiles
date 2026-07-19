@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO move the .config folder out of the scripts folder.
-
 # Usage example.
 # Dry run and only script that contains `fzf`:
 # ```
