@@ -164,7 +164,7 @@ case $(uname) in
     fi
     ;;
   *)
-    echo "[ERROR] Not implemented for $(uname)"
-    exit 1
+    log "uv is not supported on $(uname), skipping"
+    exit 0
     ;;
 esac
