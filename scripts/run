@@ -126,13 +126,7 @@ else
     copy_files $script_dir/.config $HOME
 fi
 
-script_names=(
-    dotfiles_
-)
-for script_name in "${script_names[@]}"; do
-    script="$script_dir/runs-in-order/$script_name"
-    execute_script $script
-done
+execute_script "$script_dir/clone-dotfiles"
 
 # Install software whose installation order is not important.
 scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
