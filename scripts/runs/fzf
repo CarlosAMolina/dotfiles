@@ -2,6 +2,10 @@
 
 set -e # Exit if any command fails.
 
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+"$script_dir/git"
+
 echo [DEBUG] Installing fzf
 # https://github.com/fuzzy-finder/fzf
 if [ ! -d ~/.fzf ]; then

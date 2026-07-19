@@ -209,7 +209,8 @@ case $(uname) in
     execute "$script_dir/nerd-fonts"
     ;;
   *)
-    execute sudo $install_command install -y curl git
+    execute sudo $install_command install -y curl
+    execute "$script_dir/git"
     # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
     execute sudo $install_command install -y ripgrep # Required by telescope.
     execute sudo $install_command install -y xclip # To use clipboard.

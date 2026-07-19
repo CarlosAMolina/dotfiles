@@ -52,13 +52,22 @@ configure_ssh_key() {
     execute read -p "" </dev/tty
 }
 
-case $(uname) in
-  *BSD*)
-    execute sudo pkg install -y git
-    ;;
-  *)
-    execute sudo apt install -y git
-    ;;
-esac
+install_git() {
+    if command -v git >/dev/null 2>&1; then
+        log git is already installed, skipping installation
+        return
+    fi
+
+    case $(uname) in
+      *BSD*)
+        execute sudo pkg install -y git
+        ;;
+      *)
+        execute sudo apt install -y git
+        ;;
+    esac
+}
+
+install_git
 
 configure_ssh_key
