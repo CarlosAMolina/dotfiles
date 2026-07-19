@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+# Usage:
+#   ./runs/vim-plug             Install.
+#   ./runs/vim-plug --dry       Show what would be executed, without doing it.
+
+dry_run="0"
+downloads_path="$HOME/.cache/dotfiles/downloads"
+plug_target="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+cached_plug_path="$downloads_path/plug.vim"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+create_dir() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
+    else
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
+    fi
+}
+
+install_vim_plug() {
+    # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
+    if [ -s "$cached_plug_path" ]; then
+        log "Found cached $cached_plug_path, skipping download"
+    else
+        log "No valid cached download found at $cached_plug_path, downloading"
+        create_dir "$downloads_path"
+        execute curl -fL "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" -o "$cached_plug_path"
+    fi
+    create_dir "$(dirname "$plug_target")"
+    execute cp "$cached_plug_path" "$plug_target"
+    # To run the following command the vim_plug must be configured in the config file in ~/.config/nvim/
+    execute nvim -c 'PlugInstall'
+    log Some manual steps are required. Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done
+    execute read -p "" </dev/tty
+}
+
+install_vim_plug

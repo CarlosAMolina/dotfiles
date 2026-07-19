@@ -3,14 +3,18 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/ripgrep             Install (or reinstall) ripgrep.
+#   ./runs/ripgrep             Install.
 #   ./runs/ripgrep --dry       Show what would be executed, without doing it.
-#   ./runs/ripgrep --uninstall Remove rg.
+#   ./runs/ripgrep --uninstall Remove.
 
 dry_run="0"
 uninstall="0"
 install_path="$HOME/.local/bin"
+downloads_path="$HOME/.cache/dotfiles/downloads"
 bin_name="rg"
+# Fixed release (not "latest") for security/reproducibility.
+# https://github.com/BurntSushi/ripgrep/releases/tag/15.1.0
+rg_tag="15.1.0"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
@@ -39,18 +43,16 @@ execute() {
     "$@"
 }
 
-backup_darwin_binary() {
-    if [ -f "$install_path/$bin_name" ]; then
-        backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
-        log "Backing up current $bin_name to $backup_file"
-        execute cp -p "$install_path/$bin_name" "$backup_file"
+create_dir() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
     else
-        log "No existing $bin_name binary found at $install_path, skipping backup"
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
     fi
 }
 
 uninstall_darwin() {
-    backup_darwin_binary
     if [ -f "$install_path/$bin_name" ]; then
         execute rm -f "$install_path/$bin_name"
     else
@@ -58,7 +60,7 @@ uninstall_darwin() {
     fi
 }
 
-install_darwin() {
+set_ripgrep_darwin_config() {
     case $(uname -m) in
       arm64|aarch64)
         arch="aarch64"
@@ -72,22 +74,56 @@ install_darwin() {
         ;;
     esac
 
-    # Pinned to a fixed release (not "latest") for security/reproducibility.
-    # https://github.com/BurntSushi/ripgrep/releases/tag/15.1.0
-    tag="15.1.0"
-    dir_name="ripgrep-${tag}-${arch}-apple-darwin"
+    dir_name="ripgrep-${rg_tag}-${arch}-apple-darwin"
     asset="${dir_name}.tar.gz"
-    url="https://github.com/BurntSushi/ripgrep/releases/download/${tag}/${asset}"
+    # Cache filename includes the tag so different pinned versions never
+    # collide or get reused by mistake.
+    cached_asset_path="$downloads_path/${asset}"
+}
 
-    backup_darwin_binary
+get_installed_ripgrep_version() {
+    "$install_path/$bin_name" --version 2>/dev/null | head -n 1 | awk '{print $2}'
+}
+
+is_ripgrep_darwin_installed() {
+    if [ ! -x "$install_path/$bin_name" ]; then
+        return 1
+    fi
+
+    local installed_version
+    installed_version="$(get_installed_ripgrep_version)"
+    [[ "$installed_version" == "$rg_tag" ]]
+}
+
+download_ripgrep_darwin() {
+    if [ -s "$cached_asset_path" ]; then
+        log "Found cached $cached_asset_path, skipping download"
+        return
+    fi
+    log "No valid cached download found at $cached_asset_path, downloading"
+    create_dir "$downloads_path"
+    url="https://github.com/BurntSushi/ripgrep/releases/download/${rg_tag}/${asset}"
+    execute curl -fL "$url" -o "$cached_asset_path"
+}
+
+install_darwin() {
+    set_ripgrep_darwin_config
+
+    if is_ripgrep_darwin_installed; then
+        log "$bin_name $rg_tag is already installed at $install_path, skipping install"
+        return 0
+    fi
+
+    download_ripgrep_darwin
+
+    uninstall_darwin
 
     execute pushd /tmp > /dev/null
-    execute curl -fL "$url" -o "$asset"
-    execute tar -xzf "$asset" "${dir_name}/${bin_name}"
+    execute tar -xzf "$cached_asset_path" "${dir_name}/${bin_name}"
     execute mkdir -p "$install_path"
     execute mv "${dir_name}/${bin_name}" "$install_path/$bin_name"
     execute chmod +x "$install_path/$bin_name"
-    execute rm -rf "$asset" "$dir_name"
+    execute rm -rf "$dir_name"
     execute popd > /dev/null
 }
 
@@ -109,7 +145,14 @@ verify_installation() {
         echo "[ERROR] $rg_bin --version failed after installation"
         exit 1
     fi
-    log "Installation verified: $("$rg_bin" --version | head -1)"
+
+    installed_version="$(get_installed_ripgrep_version)"
+    if [[ ! "$installed_version" == "$rg_tag" ]]; then
+        echo "[ERROR] $rg_bin --version failed after installation"
+        return 1
+    fi
+
+    log "Installation verified (rg): $installed_version"
 }
 
 case $(uname) in

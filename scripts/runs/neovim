@@ -3,9 +3,9 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/neovim             Install (or reinstall) tmux.
+#   ./runs/neovim             Install.
 #   ./runs/neovim --dry       Show what would be executed, without doing it.
-#   ./runs/neovim --uninstall Remove tmux.
+#   ./runs/neovim --uninstall Remove.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -65,58 +65,15 @@ install_from_source() {
     execute popd > /dev/null
 }
 
-install_nerd_fonts() {
-    # https://www.youtube.com/watch?v=mQdB_kHyZn8
-    FONT=JetBrainsMono
-    FONTS_FILE=$FONT.tar.xz
-    execute pushd /tmp > /dev/null
-    case $(uname) in
-      Darwin)
-        FONTS_PATH=$HOME/Library/Fonts/
-        ;;
-      *)
-        FONTS_PATH=$HOME/.local/share/fonts
-        ;;
-    esac
-    if [ ! -f $FONTS_FILE ]; then
-        execute curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$FONTS_FILE
-    fi
-    if [ ! -d $FONTS_PATH ]; then
-        execute mkdir $FONTS_PATH
-    fi
-    execute tar -xvf $FONTS_FILE --directory $FONTS_PATH
-    execute popd > /dev/null
-    log Showing that the new fonts are available:
-    case $(uname) in
-      Darwin)
-        # fc-list (fontconfig) is not available on macOS by default.
-        execute ls "$FONTS_PATH" | grep $FONT
-        ;;
-      *)
-        execute fc-list | grep $FONT
-        ;;
-    esac
-    # Configure the xfce4-terminal fonts family, to avoid incorrect icons in nvim-tree.
-    # Terminal menu: Edit > Preferences > Appearance > Font.
-    # There, uncheck `Use system font` and select `JetBrainsMono Nerd Font Regular`.
-    # If the fonts family does not appear, close and open the terminal and repeat the menu clicks.
-    # To use a font without ligature (combines characters like `!=`, `==` into one), use
-    # a font that contains NL in its name, example: JetBrainsMonoNL Nerd Font Regular.
-}
-
-install_vim_plug() {
-    # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
-    execute sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-    # To run the following command the vim_plug must be configured in the config file in ~/.config/nvim/
-    execute nvim -c 'PlugInstall'
-    log Some manual steps are required. Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done
-    execute read -p "" </dev/tty
-}
-
-nvim_darwin_paths() {
+set_nvim_darwin_config() {
     opt_path="$HOME/.local/opt"
     install_path="$HOME/.local/bin"
+    downloads_path="$HOME/.cache/dotfiles/downloads"
     bin_name="nvim"
+
+    # Pinned to a fixed release (not "latest") for security/reproducibility.
+    # https://github.com/neovim/neovim/releases/tag/v0.12.4
+    nvim_tag="v0.12.4"
 
     case $(uname -m) in
       arm64|aarch64)
@@ -132,21 +89,14 @@ nvim_darwin_paths() {
     esac
 
     dir_name="nvim-macos-${arch}"
-}
-
-backup_nvim_darwin() {
-    if [ -d "$opt_path/$dir_name" ]; then
-        backup_dir="$opt_path/$dir_name.bak.$(date +%Y%m%d%H%M%S)"
-        log "Backing up current $dir_name to $backup_dir"
-        execute cp -pR "$opt_path/$dir_name" "$backup_dir"
-    else
-        log "No existing $dir_name folder found at $opt_path, skipping backup"
-    fi
+    asset="${dir_name}.tar.gz"
+    # Cache filename includes the tag so different pinned versions never
+    # collide or get reused by mistake.
+    cached_asset_path="$downloads_path/${dir_name}-${nvim_tag}.tar.gz"
 }
 
 uninstall_nvim_darwin() {
-    nvim_darwin_paths
-    backup_nvim_darwin
+    set_nvim_darwin_config
 
     if [ -d "$opt_path/$dir_name" ]; then
         execute rm -rf "$opt_path/$dir_name"
@@ -161,22 +111,46 @@ uninstall_nvim_darwin() {
     fi
 }
 
+get_installed_neovim_version() {
+    "$opt_path/$dir_name/bin/$bin_name" --version 2>/dev/null | head -n 1 | awk '{print $2}'
+}
+
+is_nvim_darwin_installed() {
+    if [ ! -d "$opt_path/$dir_name" ]; then
+        return 1
+    fi
+    if [ ! -x "$opt_path/$dir_name/bin/$bin_name" ]; then
+        return 1
+    fi
+    installed_version="$(get_installed_neovim_version)"
+    [[ "$installed_version" == "$nvim_tag" ]]
+}
+
+download_nvim_darwin() {
+    if [ -s "$cached_asset_path" ]; then
+        log "Found cached $cached_asset_path, skipping download"
+        return
+    fi
+    log "No valid cached download found at $cached_asset_path, downloading"
+    create_dir "$downloads_path"
+    url="https://github.com/neovim/neovim/releases/download/${nvim_tag}/${asset}"
+    execute curl -fL "$url" -o "$cached_asset_path"
+}
+
 install_nvim_darwin() {
-    # Pinned to a fixed release (not "latest") for security/reproducibility.
-    # https://github.com/neovim/neovim/releases/tag/v0.12.4
-    nvim_darwin_paths
+    set_nvim_darwin_config
 
-    tag="v0.12.4"
-    asset="${dir_name}.tar.gz"
-    url="https://github.com/neovim/neovim/releases/download/${tag}/${asset}"
+    if is_nvim_darwin_installed; then
+        log "$dir_name $nvim_tag is already installed at $opt_path, skipping install"
+        return 0
+    fi
 
-    backup_nvim_darwin
+    download_nvim_darwin
 
-    execute pushd /tmp > /dev/null
-    execute curl -fL "$url" -o "$asset"
+    uninstall_nvim_darwin
+
     execute mkdir -p "$opt_path"
-    execute rm -rf "${opt_path:?}/${dir_name}"
-    execute tar -xzf "$asset" -C "$opt_path"
+    execute tar -xzf "$cached_asset_path" -C "$opt_path"
     # curl (unlike Safari/Finder) does not set com.apple.quarantine, so this
     # should normally be a no-op. If it IS present, ask the user to remove it
     # manually rather than running xattr from the script.
@@ -186,13 +160,16 @@ install_nvim_darwin() {
         log "Press Enter to continue when done"
         execute read -p "" </dev/tty
     fi
-    execute rm -f "$asset"
-    execute popd > /dev/null
 
     execute mkdir -p "$install_path"
     execute ln -sf "$opt_path/$dir_name/bin/$bin_name" "$install_path/$bin_name"
 
-    execute "$install_path/$bin_name" --version
+    installed_version="$(get_installed_neovim_version)"
+    if [[ ! "$installed_version" == "$nvim_tag" ]]; then
+        echo "[ERROR] $nvim_tag --version failed after installation"
+        return 1
+    fi
+    log "Installation verified (neovim): $installed_version"
 }
 
 
@@ -228,8 +205,8 @@ case $(uname) in
   Darwin)
     execute "$script_dir/ripgrep" # Required by telescope.
     install_nvim_darwin
-    install_vim_plug
-    install_nerd_fonts
+    execute "$script_dir/vim-plug"
+    execute "$script_dir/nerd-fonts"
     ;;
   *)
     execute sudo $install_command install -y curl git
@@ -237,7 +214,7 @@ case $(uname) in
     execute sudo $install_command install -y ripgrep # Required by telescope.
     execute sudo $install_command install -y xclip # To use clipboard.
     install_from_source
-    install_vim_plug
-    install_nerd_fonts
+    execute "$script_dir/vim-plug"
+    execute "$script_dir/nerd-fonts"
     ;;
 esac

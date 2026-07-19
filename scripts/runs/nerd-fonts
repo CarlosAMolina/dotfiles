@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+# Usage:
+#   ./runs/nerd-fonts             Install.
+#   ./runs/nerd-fonts --dry       Show what would be executed, without doing it.
+
+# https://www.youtube.com/watch?v=mQdB_kHyZn8
+FONT=JetBrainsMono
+FONT_TAG=v3.4.0
+FONTS_FILE=$FONT.tar.xz
+
+dry_run="0"
+downloads_path="$HOME/.cache/dotfiles/downloads"
+# Cache filename includes the tag so different pinned versions never
+# collide or get reused by mistake.
+cached_fonts_path="$downloads_path/${FONT}-${FONT_TAG}.tar.xz"
+
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN] $@"
+    else
+        echo "[DEBUG] $@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+create_dir() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
+    else
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
+    fi
+}
+
+install_nerd_fonts() {
+    case $(uname) in
+      Darwin)
+        FONTS_PATH=$HOME/Library/Fonts/
+        ;;
+      *)
+        FONTS_PATH=$HOME/.local/share/fonts
+        ;;
+    esac
+    if [ -s "$cached_fonts_path" ]; then
+        log "Found cached $cached_fonts_path, skipping download"
+    else
+        log "No valid cached download found at $cached_fonts_path, downloading"
+        create_dir "$downloads_path"
+        execute curl -fL "https://github.com/ryanoasis/nerd-fonts/releases/download/$FONT_TAG/$FONTS_FILE" -o "$cached_fonts_path"
+    fi
+    if [ ! -d $FONTS_PATH ]; then
+        execute mkdir $FONTS_PATH
+    fi
+    execute tar -xvf "$cached_fonts_path" --directory $FONTS_PATH
+    log Showing that the new fonts are available:
+    case $(uname) in
+      Darwin)
+        # fc-list (fontconfig) is not available on macOS by default.
+        execute ls "$FONTS_PATH" | grep $FONT
+        ;;
+      *)
+        execute fc-list | grep $FONT
+        ;;
+    esac
+    # Configure the xfce4-terminal fonts family, to avoid incorrect icons in nvim-tree.
+    # Terminal menu: Edit > Preferences > Appearance > Font.
+    # There, uncheck `Use system font` and select `JetBrainsMono Nerd Font Regular`.
+    # If the fonts family does not appear, close and open the terminal and repeat the menu clicks.
+    # To use a font without ligature (combines characters like `!=`, `==` into one), use
+    # a font that contains NL in its name, example: JetBrainsMonoNL Nerd Font Regular.
+}
+
+install_nerd_fonts
