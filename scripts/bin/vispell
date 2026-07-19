@@ -9,4 +9,4 @@ case $(uname) in
   *BSD*|Darwin)  SED_INPLACE=(-i '') ;;  # BSD or MacOS.
   *)             SED_INPLACE=(-i)    ;;
 esac
-sed "${SED_INPLACE[@]}" "s/set spelllang=.*/set spelllang=${1}/g" "$HOME/.config/nvim/init.vim"
+sed "${SED_INPLACE[@]}" "s/vim.opt.spelllang = '.*'/vim.opt.spelllang = '${1}'/g" "$HOME/.config/nvim/init.lua"
