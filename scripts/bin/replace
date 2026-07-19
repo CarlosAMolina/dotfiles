@@ -5,11 +5,11 @@
 #   replace old_term new_term
 #   replace -w old_term new_term # Whole word match only.
 
-if [ ! -f ~/.config/dotfiles/exclude_dirs ]; then
-    echo "[ERROR] ~/.config/dotfiles/exclude_dirs not found"
+if [ ! -f ~/.config/exclude_dirs/exclude_dirs ]; then
+    echo "[ERROR] ~/.config/exclude_dirs/exclude_dirs not found"
     exit 1
 fi
-. ~/.config/dotfiles/exclude_dirs
+. ~/.config/exclude_dirs/exclude_dirs
 
 is_whole_word_match=false
 if [ "$1" == "-w" ]; then

@@ -4,18 +4,7 @@ set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 repo_root="$( cd "$script_dir/.." && pwd )"
-config_dir="$repo_root/.config"
-
-copy_dir() {
-    pushd $1 > /dev/null
-    to=$2
-    dirs=$(find . -maxdepth 1 -mindepth 1 -type d)
-    for dir in $dirs; do
-        rm -rf $to/$dir
-        cp -r $dir $to/$dir
-    done
-    popd > /dev/null
-}
+dotfiles_dir="$repo_root/dotfiles"
 
 copy_file() {
     from=$1
@@ -35,19 +24,31 @@ backup_file() {
     fi
 }
 
-copy_files() {
-    pushd $1 > /dev/null
-    from_dir=$1 # Don't call `from` to avoid change its value in `copy_file()`.
-    to_dir=$2
+copy_files_to_home() {
+    from_dir=$1
+    pushd $from_dir > /dev/null
     files=$(find . -maxdepth 1 -mindepth 1 -type f)
     for file_ in $files; do
-        backup_file $to_dir/$file_
-        copy_file $from_dir/$file_ $to_dir
+        backup_file $HOME/$file_
+        copy_file $from_dir/$file_ $HOME
     done
     popd > /dev/null
 }
 
-echo "[DEBUG] Copying config folders from $config_dir"
-copy_dir $config_dir $HOME/.config
-echo "[DEBUG] Copying config files from $config_dir"
-copy_files $config_dir $HOME
+copy_dir_to_config() {
+    from_dir=$1
+    name=$(basename $from_dir)
+    rm -rf $HOME/.config/$name
+    cp -r $from_dir $HOME/.config/$name
+}
+
+echo "[DEBUG] Copying bash files"
+copy_files_to_home "$dotfiles_dir/bash"
+echo "[DEBUG] Copying git files"
+copy_files_to_home "$dotfiles_dir/git"
+echo "[DEBUG] Copying tmux files"
+copy_files_to_home "$dotfiles_dir/tmux"
+echo "[DEBUG] Copying nvim config"
+copy_dir_to_config "$dotfiles_dir/nvim"
+echo "[DEBUG] Copying exclude_dirs config"
+copy_dir_to_config "$dotfiles_dir/exclude_dirs"

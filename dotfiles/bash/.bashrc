@@ -13,11 +13,11 @@ alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
 # Color output: https://wiki.archlinux.org/title/Color_output_in_console
 alias grep='grep --color=auto'
-if [ ! -f ~/.config/dotfiles/exclude_dirs ]; then
-    echo "[ERROR] ~/.config/dotfiles/exclude_dirs not found"
+if [ ! -f ~/.config/exclude_dirs/exclude_dirs ]; then
+    echo "[ERROR] ~/.config/exclude_dirs/exclude_dirs not found"
     exit 1
 fi
-source ~/.config/dotfiles/exclude_dirs
+source ~/.config/exclude_dirs/exclude_dirs
 function gre() {
     eval "grep $@ --color=auto --exclude-dir=$exclude_dirs"
 }
