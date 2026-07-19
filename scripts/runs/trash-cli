@@ -2,12 +2,23 @@
 
 set -e # Exit if any command fails.
 
+# Usage:
+#   ./runs/trash-cli             Instal.
+#   ./runs/trash-cli --dry       Show what would be executed, without doing it.
+#   ./runs/trash-cli --uninstall Remove.
+
 dry_run="0"
+uninstall="0"
+install_path="$HOME/.local/bin"
+bin_names=(trash trash-empty trash-list trash-put trash-restore trash-rm)
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
+    fi
+    if [[ "$1" == "--uninstall" ]]; then
+        uninstall="1"
     fi
     shift
 done
@@ -28,14 +39,93 @@ execute() {
     "$@"
 }
 
+uninstall_darwin() {
+    execute uv tool uninstall trash-cli
+}
+
+set_trash_cli_darwin_config() {
+    # Installed via "uv tool install", which manages trash-cli in an isolated
+    # environment under ~/.local/share/uv/tools/trash-cli and symlinks the
+    # entrypoints into ~/.local/bin (confirmed via
+    # ~/.local/share/uv/tools/trash-cli/uv-receipt.toml).
+    #
+    # Pinned to a fixed version (not "latest") for security/reproducibility.
+    version="0.24.5.26"
+}
+
+get_installed_trash_cli_version() {
+    "$install_path/trash" --version 2>/dev/null
+}
+
+is_trash_cli_darwin_installed() {
+    for bin_name in "${bin_names[@]}"; do
+        if [ ! -x "$install_path/$bin_name" ]; then
+            return 1
+        fi
+    done
+
+    local installed_version
+    installed_version="$(get_installed_trash_cli_version)"
+    [[ "$installed_version" == "$version" ]]
+}
+
+install_darwin() {
+    set_trash_cli_darwin_config
+
+    if is_trash_cli_darwin_installed; then
+        log "trash-cli $version is already installed at $install_path, skipping install"
+        return 0
+    fi
+
+    execute uv tool install "trash-cli==${version}"
+}
+
+verify_installation() {
+    if [[ $dry_run == "1" ]]; then
+        log "Skipping installation verification"
+        return
+    fi
+
+    for bin_name in "${bin_names[@]}"; do
+        if [ ! -x "$install_path/$bin_name" ]; then
+            echo "[ERROR] $bin_name binary not found or not executable at $install_path/$bin_name"
+            exit 1
+        fi
+    done
+
+    installed_version="$(get_installed_trash_cli_version)"
+    if [ -z "$installed_version" ]; then
+        echo "[ERROR] $install_path/trash --version failed after installation"
+        exit 1
+    fi
+    if [[ "$installed_version" != "$version" ]]; then
+        echo "[ERROR] $install_path/trash --version failed after installation"
+        exit 1
+    fi
+    log "Installation verified (trash-cli): $installed_version"
+}
+
 case $(uname) in
   Darwin)
-    execute brew install trash-cli
+    if [[ $uninstall == "1" ]]; then
+        uninstall_darwin
+    else
+        install_darwin
+        verify_installation
+    fi
     ;;
   *BSD*)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
+    fi
     execute sudo pkg install -y py311-trash-cli
     ;;
   *)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
+    fi
     execute sudo apt install -y trash-cli
     ;;
 esac
