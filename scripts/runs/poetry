@@ -3,9 +3,9 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/poetry             Install (or reinstall) poetry.
+#   ./runs/poetry             Install.
 #   ./runs/poetry --dry       Show what would be executed, without doing it.
-#   ./runs/poetry --uninstall Remove poetry installed via uv.
+#   ./runs/poetry --uninstall Remove.
 
 dry_run="0"
 uninstall="0"
