@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Print an abbreviated form of the current directory's basename, used by PS1.
+
+dir_name=$(basename "$(pwd)")
+if [ ${#dir_name} -gt 10 ]; then
+    echo "${dir_name:0:3}...${dir_name: -3}"
+else
+    echo "$dir_name"
+fi

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Clone a GitHub repo via SSH using the "user/repo" shorthand.
+# https://stackoverflow.com/questions/70349068/shell-remove-space-before-variable-in-alias
+# Usage: gclone CarlosAMolina/cmoli.es
+
+git clone git@github.com:"$1"

@@ -23,11 +23,6 @@ alias ga='git add'
 alias gb='git branch'
 alias gbc='git branch --show-current'
 alias gc='git commit -m'
-# https://stackoverflow.com/questions/70349068/shell-remove-space-before-variable-in-alias
-# Run example: gclone CarlosAMolina/cmoli.es
-gclone () {
-    git clone git@github.com:"$1"
-}
 # Commmit without running pre-commit
 alias gcn='git commit -nm'
 alias gca='git commit --amend'
@@ -41,47 +36,6 @@ alias gsh='git show'
 alias k='keepassxc > /dev/null 2>&1 &'
 # Open files/folders
 alias o='xdg-open'
-# Replace. Replace all files recursively from the current directory.
-function replace() {
-    is_whole_word_match=false
-    if [ "$1" == "-w" ]; then
-        is_whole_word_match=true
-        shift  # Remove the first argument
-    fi
-    if [ $# -eq 2 ]; then
-        old_term="${@:$#-1:1}"  # Second to last argument
-        new_term="${!#}"   # Last argument
-    else
-        echo "[ERROR] At least two arguments are required"
-        return 1
-    fi
-    sed_command="sed -i"
-    sed_pattern="$old_term"
-    sed_replacement="$new_term"
-    case $(uname) in
-        Darwin)  # MacOS
-            sed_command="$sed_command ''"
-            ;;
-    esac
-    if [ "$is_whole_word_match" == true ]; then
-        sed_command="$sed_command -E"
-        case $(uname) in
-            Darwin)  # MacOS
-                sed_pattern="(^|[^[:alnum:]_])$sed_pattern([^[:alnum:]_]|$)"
-                sed_replacement="\1$sed_replacement\2"  # \1 and \2 are required to not lose word boundaries.
-                ;;
-            *)  # Linux.
-                sed_pattern="\<$sed_pattern\>"
-                ;;
-        esac
-    fi
-    for file_path in $(eval "grep -rl $old_term --exclude-dir=$exclude_dirs ."); do
-        echo "[DEBUG] Replacing $file_path"
-        #echo "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
-        eval "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
-    done
-    echo "[DEBUG] Done. Replaced '$old_term' with '$new_term'"
-}
 # Screen
 # https://unix.stackexchange.com/questions/3773/how-to-pass-parameters-to-an-alias
 #alias screen='f(){ xrandr --output eDP-1 --auto && xrandr --output $1 --auto && xrandr --output eDP-1 --left-of $1;  unset -f f; }; f'
@@ -96,17 +50,6 @@ alias rm='echo "This is not the command you are looking for."; false'
 alias tp='trash-put'
 # Vi
 alias vi='nvim'
-# Change nvim spell check language
-# Run example: vispell en
-# Run example: vispell es
-vispell () {
-    case $(uname) in
-      # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
-      *BSD*|Darwin)  SED_INPLACE=(-i '') ;;  # BSD or MacOS.
-      *)             SED_INPLACE=(-i)    ;;
-    esac
-    sed "${SED_INPLACE[@]}" "s/set spelllang=.*/set spelllang=${1}/g" $HOME/.config/nvim/init.vim
-}
 # Change current user session state
 alias off='systemctl poweroff' # Linux
 alias offb='sudo poweroff' # FreeBSD
@@ -142,14 +85,6 @@ fi
 ###########################
 # Terminal configuration
 ###########################
-get_short_dir() {
-    local dir_name=$(basename "$PWD")
-    if [ ${#dir_name} -gt 10 ]; then
-        echo "${dir_name:0:3}...${dir_name: -3}"
-    else
-        echo "$dir_name"
-    fi
-}
 # https://wiki.archlinux.org/title/Bash/Prompt_customization
 #PS1='[\u@\h \W]\$ '
 # To call get_short_dir each time the path changes, we escape the '$' (https://wiki.archlinux.org/title/Bash/Prompt_customization)

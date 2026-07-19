@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Replace all occurrences of a term in files recursively from the current directory.
+# Usage:
+#   replace old_term new_term
+#   replace -w old_term new_term # Whole word match only.
+
+exclude_dirs={.angular,.eggs,.git,.idea,.pytest_cache,.ruff_cache,.tox,__pycache__,build,env,env_*,htmlcov,node_modules}
+
+is_whole_word_match=false
+if [ "$1" == "-w" ]; then
+    is_whole_word_match=true
+    shift  # Remove the first argument
+fi
+if [ $# -eq 2 ]; then
+    old_term="${@:$#-1:1}"  # Second to last argument
+    new_term="${!#}"   # Last argument
+else
+    echo "[ERROR] At least two arguments are required"
+    exit 1
+fi
+sed_command="sed -i"
+sed_pattern="$old_term"
+sed_replacement="$new_term"
+case $(uname) in
+    Darwin)  # MacOS
+        sed_command="$sed_command ''"
+        ;;
+esac
+if [ "$is_whole_word_match" == true ]; then
+    sed_command="$sed_command -E"
+    case $(uname) in
+        Darwin)  # MacOS
+            sed_pattern="(^|[^[:alnum:]_])$sed_pattern([^[:alnum:]_]|$)"
+            sed_replacement="\1$sed_replacement\2"  # \1 and \2 are required to not lose word boundaries.
+            ;;
+        *)  # Linux.
+            sed_pattern="\<$sed_pattern\>"
+            ;;
+    esac
+fi
+for file_path in $(eval "grep -rl $old_term --exclude-dir=$exclude_dirs ."); do
+    echo "[DEBUG] Replacing $file_path"
+    #echo "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
+    eval "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
+done
+echo "[DEBUG] Done. Replaced '$old_term' with '$new_term'"

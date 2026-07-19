@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Change nvim spell check language.
+# Run example: vispell en
+# Run example: vispell es
+
+case $(uname) in
+  # https://stackoverflow.com/questions/29081799/sed-1-invalid-command-code-f
+  *BSD*|Darwin)  SED_INPLACE=(-i '') ;;  # BSD or MacOS.
+  *)             SED_INPLACE=(-i)    ;;
+esac
+sed "${SED_INPLACE[@]}" "s/set spelllang=.*/set spelllang=${1}/g" "$HOME/.config/nvim/init.vim"

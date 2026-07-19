@@ -126,6 +126,8 @@ else
     copy_files $script_dir/.config $HOME
 fi
 
+execute_script "$script_dir/copy-bin"
+
 execute_script "$script_dir/clone-dotfiles"
 
 # Install software whose installation order is not important.
