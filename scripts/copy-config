@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -e # Exit if any command fails.
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+config_dir="$script_dir/.config"
+
+copy_dir() {
+    pushd $1 > /dev/null
+    to=$2
+    dirs=$(find . -maxdepth 1 -mindepth 1 -type d)
+    for dir in $dirs; do
+        rm -rf $to/$dir
+        cp -r $dir $to/$dir
+    done
+    popd > /dev/null
+}
+
+copy_file() {
+    from=$1
+    to=$2
+    name=$(basename $from)
+    if [ -f "$to/$name" ]; then
+        rm $to/$name
+    fi
+    cp $from $to/$name
+}
+
+backup_file() {
+    # Don't call as in `copy_file()` to avoid change variables with same name.
+    file_path=$1
+    if [ -f "$file_path" ] && [ ! -f "$file_path.bkp" ]; then
+        cp $file_path{,.bkp}
+    fi
+}
+
+copy_files() {
+    pushd $1 > /dev/null
+    from_dir=$1 # Don't call `from` to avoid change its value in `copy_file()`.
+    to_dir=$2
+    files=$(find . -maxdepth 1 -mindepth 1 -type f)
+    for file_ in $files; do
+        backup_file $to_dir/$file_
+        copy_file $from_dir/$file_ $to_dir
+    done
+    popd > /dev/null
+}
+
+echo "[DEBUG] Copying config folders from $config_dir"
+copy_dir $config_dir $HOME/.config
+echo "[DEBUG] Copying config files from $config_dir"
+copy_files $config_dir $HOME

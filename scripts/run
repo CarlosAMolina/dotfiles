@@ -48,47 +48,6 @@ create_dir() {
     fi
 }
 
-copy_dir() {
-    pushd $1 > /dev/null
-    to=$2
-    dirs=$(find . -maxdepth 1 -mindepth 1 -type d)
-    for dir in $dirs; do
-        execute rm -rf $to/$dir
-        execute cp -r $dir $to/$dir
-    done
-    popd > /dev/null
-}
-
-copy_file() {
-    from=$1
-    to=$2
-    name=$(basename $from)
-    if [ -f "$to/$name" ]; then
-        execute rm $to/$name
-    fi
-    execute cp $from $to/$name
-}
-
-backup_file() {
-    # Don't call as in `copy_file()` to avoid change variables with same name.
-    file_path=$1
-    if [ -f "$file_path" ] && [ ! -f "$file_path.bkp" ]; then
-        execute cp $file_path{,.bkp}
-    fi
-}
-
-copy_files() {
-    pushd $1 > /dev/null
-    from_dir=$1 # Don't call `from` to avoid change its value in `copy_file()`.
-    to_dir=$2
-    files=$(find . -maxdepth 1 -mindepth 1 -type f)
-    for file_ in $files; do
-        backup_file $to_dir/$file_
-        copy_file $from_dir/$file_ $to_dir
-    done
-    popd > /dev/null
-}
-
 execute_script() {
     script=$1
     if echo "$script" | grep -qv "$filter"; then
@@ -99,8 +58,6 @@ execute_script() {
 }
 
 log Start host configuration
-
-# First, run software required by other software executed later.
 
 if echo "dir" | grep -qv "$filter"; then
     log "filtered: $filter -- dir"
@@ -120,10 +77,7 @@ fi
 if echo "config" | grep -qv "$filter"; then
     log "filtered: $filter -- config"
 else
-    log Copying config folders from $script_dir/.config
-    copy_dir $script_dir/.config $HOME/.config
-    log Copying config files from $script_dir/.config
-    copy_files $script_dir/.config $HOME
+    execute "$script_dir/copy-config"
 fi
 
 execute_script "$script_dir/copy-bin"
@@ -136,7 +90,6 @@ for script in $scripts; do
     execute_script $script
 done
 
-# Final software to run.
 if echo "autoremove" | grep -qv "$filter"; then
     log "filtered: $filter -- autoremove"
 else
