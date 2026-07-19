@@ -3,13 +3,14 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/uv             Install (or reinstall) uv.
+#   ./runs/uv             Install.
 #   ./runs/uv --dry       Show what would be executed, without doing it.
-#   ./runs/uv --uninstall Remove uv/uvx.
+#   ./runs/uv --uninstall Remove.
 
 dry_run="0"
 uninstall="0"
 install_path="$HOME/.local/bin"
+downloads_path="$HOME/.cache/dotfiles/downloads"
 bin_names=(uv uvx)
 
 while [[ $# -gt 0 ]]; do
@@ -39,20 +40,16 @@ execute() {
     "$@"
 }
 
-backup_darwin_binaries() {
-    for bin_name in "${bin_names[@]}"; do
-        if [ -f "$install_path/$bin_name" ]; then
-            backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
-            log "Backing up current $bin_name to $backup_file"
-            execute cp -p "$install_path/$bin_name" "$backup_file"
-        else
-            log "No existing $bin_name binary found at $install_path, skipping backup"
-        fi
-    done
+create_dir() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
+    else
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
+    fi
 }
 
 uninstall_darwin() {
-    backup_darwin_binaries
     for bin_name in "${bin_names[@]}"; do
         if [ -f "$install_path/$bin_name" ]; then
             execute rm -f "$install_path/$bin_name"
@@ -62,18 +59,59 @@ uninstall_darwin() {
     done
 }
 
-install_darwin() {
+set_uv_darwin_config() {
     # Pinned to a fixed release (not "latest") for security/reproducibility.
     # https://github.com/astral-sh/uv/releases/tag/0.11.29
     version="0.11.29"
+    asset="uv-installer-${version}.sh"
     url="https://astral.sh/uv/${version}/install.sh"
+    # Cache filename includes the version so different pinned releases never
+    # collide or get reused by mistake.
+    cached_asset_path="$downloads_path/${asset}"
+}
 
-    backup_darwin_binaries
+get_installed_uv_version() {
+    "$install_path/uv" --version 2>/dev/null | awk '{print $2}'
+}
+
+is_uv_darwin_installed() {
+    for bin_name in "${bin_names[@]}"; do
+        if [ ! -x "$install_path/$bin_name" ]; then
+            return 1
+        fi
+    done
+
+    local installed_version
+    installed_version="$(get_installed_uv_version)"
+    [[ "$installed_version" == "$version" ]]
+}
+
+download_uv_darwin() {
+    if [ -s "$cached_asset_path" ]; then
+        log "Found cached $cached_asset_path, skipping download"
+        return
+    fi
+    log "No valid cached download found at $cached_asset_path, downloading"
+    create_dir "$downloads_path"
+    execute curl -LsSf "$url" -o "$cached_asset_path"
+}
+
+install_darwin() {
+    set_uv_darwin_config
+
+    if is_uv_darwin_installed; then
+        log "uv $version is already installed at $install_path, skipping install"
+        return 0
+    fi
+
+    download_uv_darwin
+
+    uninstall_darwin
 
     # UV_INSTALL_DIR: install into ~/.local/bin (the default, made explicit here).
     # UV_NO_MODIFY_PATH: dotfiles already add ~/.local/bin to PATH, so don't let
     # the installer touch shell profiles.
-    execute env UV_INSTALL_DIR="$install_path" UV_NO_MODIFY_PATH=1 sh -c "curl -LsSf $url | sh"
+    execute env UV_INSTALL_DIR="$install_path" UV_NO_MODIFY_PATH=1 sh "$cached_asset_path"
 }
 
 verify_installation() {
@@ -89,11 +127,16 @@ verify_installation() {
         fi
     done
 
-    if ! "$install_path/uv" --version >/dev/null 2>&1; then
+    installed_version="$(get_installed_uv_version)"
+    if [ -z "$installed_version" ]; then
         echo "[ERROR] $install_path/uv --version failed after installation"
         exit 1
     fi
-    log "Installation verified: $("$install_path/uv" --version)"
+    if [[ "$installed_version" != "$version" ]]; then
+        echo "[ERROR] $install_path/uv --version failed after installation"
+        exit 1
+    fi
+    log "Installation verified (uv): $installed_version"
 
     # Sanity check: the installer receipt should record the same install_prefix
     # we asked for, so future "uv self update" runs keep reinstalling here.
