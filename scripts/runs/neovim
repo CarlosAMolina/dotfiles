@@ -111,7 +111,7 @@ uninstall_nvim_darwin() {
     fi
 }
 
-get_installed_neovim_version() {
+get_installed_nvim_version() {
     "$opt_path/$dir_name/bin/$bin_name" --version 2>/dev/null | head -n 1 | awk '{print $2}'
 }
 
@@ -122,7 +122,7 @@ is_nvim_darwin_installed() {
     if [ ! -x "$opt_path/$dir_name/bin/$bin_name" ]; then
         return 1
     fi
-    installed_version="$(get_installed_neovim_version)"
+    installed_version="$(get_installed_nvim_version)"
     [[ "$installed_version" == "$nvim_tag" ]]
 }
 
@@ -164,7 +164,7 @@ install_nvim_darwin() {
     execute mkdir -p "$install_path"
     execute ln -sf "$opt_path/$dir_name/bin/$bin_name" "$install_path/$bin_name"
 
-    installed_version="$(get_installed_neovim_version)"
+    installed_version="$(get_installed_nvim_version)"
     if [[ ! "$installed_version" == "$nvim_tag" ]]; then
         echo "[ERROR] $nvim_tag --version failed after installation"
         return 1
