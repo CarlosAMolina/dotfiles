@@ -28,15 +28,12 @@ execute() {
     "$@"
 }
 
-case $(uname) in
-  *BSD*)
-    execute sudo pkg install -y git
-    ;;
-  *)
-    execute sudo apt install -y git
-    ;;
-esac
-if [ ! -f ~/.ssh/id_ed25519 ]; then
+configure_ssh_key() {
+    if [ -f ~/.ssh/id_ed25519 ]; then
+        log ~/.ssh/id_ed25519 already exists, skipping SSH key configuration
+        return
+    fi
+
     log Enter your email to create a new SSH key for GitHub:
     # https://linuxconfig.org/handling-user-input-in-bash-scripts
     execute read -p "" email
@@ -45,11 +42,23 @@ if [ ! -f ~/.ssh/id_ed25519 ]; then
         execute exit 1
     fi
     execute ssh-keygen -t ed25519 -N '' -C "$email" -f ~/.ssh/id_ed25519
-fi
-execute eval "$(ssh-agent -s)"
-execute ssh-add ~/.ssh/id_ed25519
-log Copy the following prasshprase and save it in yout GitHub account \(https://github.com/login, https://github.com/settings/keys\)
-execute cat ~/.ssh/id_ed25519.pub
-# https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
-log Press Enter to continue when the passhprase is stored
-execute read -p "" </dev/tty
+
+    execute eval "$(ssh-agent -s)"
+    execute ssh-add ~/.ssh/id_ed25519
+    log Copy the following prasshprase and save it in yout GitHub account \(https://github.com/login, https://github.com/settings/keys\)
+    execute cat ~/.ssh/id_ed25519.pub
+    # https://stackoverflow.com/questions/35075364/pause-shell-script-until-user-presses-enter
+    log Press Enter to continue when the passhprase is stored
+    execute read -p "" </dev/tty
+}
+
+case $(uname) in
+  *BSD*)
+    execute sudo pkg install -y git
+    ;;
+  *)
+    execute sudo apt install -y git
+    ;;
+esac
+
+configure_ssh_key
