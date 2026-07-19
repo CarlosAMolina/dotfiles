@@ -3,13 +3,14 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/tmux             Install (or reinstall) tmux.
+#   ./runs/tmux             Install.
 #   ./runs/tmux --dry       Show what would be executed, without doing it.
-#   ./runs/tmux --uninstall Remove tmux.
+#   ./runs/tmux --uninstall Remove.
 
 dry_run="0"
 uninstall="0"
 install_path="$HOME/.local/bin"
+downloads_path="$HOME/.cache/dotfiles/downloads"
 bin_name="tmux"
 
 while [[ $# -gt 0 ]]; do
@@ -39,18 +40,16 @@ execute() {
     "$@"
 }
 
-backup_darwin_binary() {
-    if [ -f "$install_path/$bin_name" ]; then
-        backup_file="$install_path/$bin_name.bak.$(date +%Y%m%d%H%M%S)"
-        log "Backing up current $bin_name to $backup_file"
-        execute cp -p "$install_path/$bin_name" "$backup_file"
+create_dir() {
+    if [ -d "$@" ]; then
+        log The "$@" folder already exists
     else
-        log "No existing $bin_name binary found at $install_path, skipping backup"
+        log The "$@" folder does not exists. Creating
+        execute mkdir -p "$@"
     fi
 }
 
 uninstall_darwin() {
-    backup_darwin_binary
     if [ -f "$install_path/$bin_name" ]; then
         execute rm -f "$install_path/$bin_name"
     else
@@ -58,7 +57,7 @@ uninstall_darwin() {
     fi
 }
 
-install_darwin() {
+set_tmux_darwin_config() {
     case $(uname -m) in
       arm64|aarch64)
         arch="arm64"
@@ -74,20 +73,57 @@ install_darwin() {
 
     # Pinned to a fixed release (not "latest") for security/reproducibility.
     # https://github.com/tmux/tmux-builds/releases/tag/v3.7b
-    tag="v3.7b"
-    version="${tag#v}"
+    tmux_tag="v3.7b"
+    version="${tmux_tag#v}"
     asset="tmux-${version}-macos-${arch}.tar.gz"
-    url="https://github.com/tmux/tmux-builds/releases/download/${tag}/${asset}"
+    # Cache filename includes the tag so different pinned versions never
+    # collide or get reused by mistake.
+    cached_asset_path="$downloads_path/${asset}"
+}
 
-    backup_darwin_binary
+get_installed_tmux_version() {
+    # $1: path to (or name of) the tmux binary to query.
+    "$1" -V 2>/dev/null | awk '{print $2}'
+}
+
+is_tmux_darwin_installed() {
+    if [ ! -x "$install_path/$bin_name" ]; then
+        return 1
+    fi
+
+    local installed_version
+    installed_version="$(get_installed_tmux_version "$install_path/$bin_name")"
+    [[ "$installed_version" == "$version" ]]
+}
+
+download_tmux_darwin() {
+    if [ -s "$cached_asset_path" ]; then
+        log "Found cached $cached_asset_path, skipping download"
+        return
+    fi
+    log "No valid cached download found at $cached_asset_path, downloading"
+    create_dir "$downloads_path"
+    url="https://github.com/tmux/tmux-builds/releases/download/${tmux_tag}/${asset}"
+    execute curl -fL "$url" -o "$cached_asset_path"
+}
+
+install_darwin() {
+    set_tmux_darwin_config
+
+    if is_tmux_darwin_installed; then
+        log "$bin_name $version is already installed at $install_path, skipping install"
+        return 0
+    fi
+
+    download_tmux_darwin
+
+    uninstall_darwin
 
     execute pushd /tmp > /dev/null
-    execute curl -fL "$url" -o "$asset"
-    execute tar -xzf "$asset" tmux
+    execute tar -xzf "$cached_asset_path" tmux
     execute mkdir -p "$install_path"
     execute mv tmux "$install_path/$bin_name"
     execute chmod +x "$install_path/$bin_name"
-    execute rm -f "$asset"
     execute popd > /dev/null
 }
 
@@ -111,11 +147,20 @@ verify_installation() {
         exit 1
     fi
 
-    if ! "$tmux_bin" -V >/dev/null 2>&1; then
+    installed_version="$(get_installed_tmux_version "$tmux_bin")"
+    if [ -z "$installed_version" ]; then
         echo "[ERROR] $tmux_bin -V failed after installation"
         exit 1
     fi
-    log "Installation verified: $("$tmux_bin" -V)"
+
+    # $version is only set when installed via install_darwin (pinned release).
+    # Package-manager installs (BSD/apt) have no pinned version to compare against.
+    if [ -n "$version" ] && [[ "$installed_version" != "$version" ]]; then
+        echo "[ERROR] $tmux_bin -V failed after installation"
+        return 1
+    fi
+
+    log "Installation verified (tmux): $installed_version"
 }
 
 case $(uname) in
