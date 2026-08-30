@@ -13,12 +13,13 @@ alias c='xclip' # Example: pwd | c
 alias v='xclip -o' # Example: cd `v`
 # Color output: https://wiki.archlinux.org/title/Color_output_in_console
 alias grep='grep --color=auto'
-if [ ! -f ~/.config/exclude_dirs/exclude_dirs ]; then
-    echo "[ERROR] ~/.config/exclude_dirs/exclude_dirs not found"
-    exit 1
-fi
-source ~/.config/exclude_dirs/exclude_dirs
 function gre() {
+    local config="$HOME/.config/exclude_dirs/exclude_dirs"
+    if [ ! -f "$config" ]; then
+        echo "[ERROR] $config not found" >&2
+        return 1
+    fi
+    source "$config"
     eval "grep $@ --color=auto --exclude-dir=$exclude_dirs"
 }
 alias ls='ls --color=auto'
@@ -50,13 +51,24 @@ alias toc='python ~/Software/toc-markdown/src/main.py'
 # Tmux
 #alias t='tmux'
 # Trash-cli
-alias rm='echo "This is not the command you are looking for."; false'
+if command -v trash-put >/dev/null 2>&1; then  # Check availability.
+    alias rm='echo "[ERROR] This is not the command you are looking for." >&2; false'
+fi
 alias tp='trash-put'
 # Vi
 alias vi='nvim'
 # Change current user session state
-alias off='systemctl poweroff' # Linux
-alias offb='sudo poweroff' # FreeBSD
+case "$(uname -s)" in
+    Darwin)
+        alias off='osascript -e '\''tell application "loginwindow" to «event aevtrsdn»'\'''
+        ;;
+    FreeBSD)
+        alias off='sudo poweroff'
+        ;;
+    Linux)
+        alias off='systemctl poweroff'
+        ;;
+esac
 
 ###########################
 # Exports
