@@ -28,19 +28,24 @@ execute() {
     "$@"
 }
 
-# https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-execute pushd /tmp > /dev/null
-if [ ! -f awscliv2.zip ]; then
-    execute sudo apt install curl;
-    execute curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-fi
-if [ ! -d aws ]; then
-    execute unzip awscliv2.zip
-fi
-if command -v aws 2>&1 >/dev/null; then
-    log aws-cli is already installed
-else
-    execute sudo ./aws/install
-fi
-execute popd > /dev/null
+## https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+case $(uname) in
+  Linux)
+    . /etc/os-release
+    case "$ID" in
+      arch)
+        execute sudo pacman -S --needed curl unzip gnupg
+        execute bash -c 'curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash'
+        ;;
+      *)
+        echo "Unsupported Linux distribution: $ID" >&2
+        exit 1
+        ;;
+    esac
+    ;;
+  *)
+    echo "Unsupported OS: $(uname -s)" >&2
+    exit 1
+    ;;
+esac
 execute aws --version
