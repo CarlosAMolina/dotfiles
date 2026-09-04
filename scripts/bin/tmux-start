@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -e
+
+# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
+log () {
+    TMUX_LOGS=false;
+    if "$TMUX_LOGS";
+    then
+        echo "$1"
+    fi
+}
+
+# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
+# command -v tmux &> /dev/null: check command existence
+# [ -n "$PS1" ]: check for interactive shell
+# [[ ! "$TERM" =~ screen ]]: check if does not contain `screen`
+# [[ ! "$TERM" =~ tmux ]]: check if does not contain `tmux`
+# [ -z "$TMUX" ]: check if it is empty
+#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#  exec tmux
+#fi
+# Tmux will be started automatically.
+# To exit tmux and return to terminal, detach tmux with `control+b d`
+log "1) Check tmux command availability: command -v tmux &> /dev/null"
+if command -v tmux &> /dev/null;
+then
+    log ok
+    log
+    log "2) Check if it is the desired terminal TERM=$TERM"
+    if [[ "$TERM" == "st-256color" ]] || [[ "$TERM" == "xterm-256color" ]];
+    then
+        log ok
+        log
+        log "3) Check if it is empty: -z TMUX. TMUX=$TMUX"
+        if [ -z "$TMUX" ];
+        then
+            log ok
+            log
+            tmux
+        else
+            log ko
+        fi
+    else
+        log ko
+    fi
+else
+    log ko
+fi

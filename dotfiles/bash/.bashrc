@@ -102,10 +102,14 @@ fi
 ###########################
 # Terminal configuration
 ###########################
-# https://wiki.archlinux.org/title/Bash/Prompt_customization
-#PS1='[\u@\h \W]\$ '
-# To call get_short_dir each time the path changes, we escape the '$' (https://wiki.archlinux.org/title/Bash/Prompt_customization)
-PS1="[\$(get_short_dir)]\$ "
+if [ -x ~/.local/bin/get_short_dir ]; then
+    # To call get_short_dir each time the path changes, we escape the '$' (https://wiki.archlinux.org/title/Bash/Prompt_customization)
+    PS1="[\$(get_short_dir)]\$ "
+else
+    # https://wiki.archlinux.org/title/Bash/Prompt_customization
+    PS1='[\u@\h \W]\$ '
+fi
+
 # https://www.reddit.com/r/linuxquestions/comments/18x2vjw/is_it_possible_to_change_ps1_color_when_in_a_ssh/?rdt=57427
 if [ -n "$SSH_TTY" ]; then
     PS1="[ssh@${PS1:1}"
@@ -114,58 +118,12 @@ fi
 # https://stackoverflow.com/questions/15121181/terminal-emulator-or-shell-with-vim-like-commands
 set -o vi
 
-# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
-log () {
-    TMUX_LOGS=false;
-    if "$TMUX_LOGS";
-    then
-        echo "$1"
-    fi
-}
-
-# https://unix.stackexchange.com/questions/43601/how-can-i-set-my-default-shell-to-start-up-tmux
-# command -v tmux &> /dev/null: check command existence
-# [ -n "$PS1" ]: check for interactive shell
-# [[ ! "$TERM" =~ screen ]]: check if does not contain `screen`
-# [[ ! "$TERM" =~ tmux ]]: check if does not contain `tmux`
-# [ -z "$TMUX" ]: check if it is empty
-#if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#  exec tmux
-#fi
-# Tmux will be started automatically.
-# To exit tmux and return to terminal, detach tmux with `control+b d`
-log "1) Check tmux command availability: command -v tmux &> /dev/null"
-if command -v tmux &> /dev/null;
-then
-    log ok
-    log
-    log "2) Check if it is the desired terminal TERM=$TERM"
-    if [[ "$TERM" == "st-256color" ]] || [[ "$TERM" == "xterm-256color" ]];
-    then
-        log ok
-        log
-        log "3) Check if it is empty: -z TMUX. TMUX=$TMUX"
-        if [ -z "$TMUX" ];
-        then
-            log ok
-            log
-            # https://stackoverflow.com/questions/10475599/what-does-n-mean-in-bash
-            log "4) Check for interactive shell (PS1 is not empty): [ -n PS1 ]. PS1=$PS1"
-            if [ -n "$PS1" ];
-            then
-                log ok, this shell is interactive
-                tmux
-            else
-                log ko, this shell is not interactive
-            fi
-        else
-            log ko
-        fi
-    else
-        log ko
-    fi
-else
-    log ko
+###########################
+# Autostart
+###########################
+# Run only in interactive shells (check $-).
+if [[ $- == *i* ]] && [[ -x "$HOME/.local/bin/tmux-start" ]]; then
+    "$HOME/.local/bin/tmux-start"
 fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224

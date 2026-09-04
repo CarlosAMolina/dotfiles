@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Note. This script name must no be `dotfiles` or it won't be filtered in the main run script because the main project name is `dotfiles`.
 

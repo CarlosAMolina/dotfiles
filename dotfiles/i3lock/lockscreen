@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 file_name=lockscreen.png
 file_path_spanish=$HOME/Imágenes/$file_name

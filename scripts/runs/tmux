@@ -163,6 +163,8 @@ verify_installation() {
     log "Installation verified (tmux): $installed_version"
 }
 
+# Install
+
 case $(uname) in
   Darwin)
     if [[ $uninstall == "1" ]]; then
@@ -180,12 +182,48 @@ case $(uname) in
     execute sudo pkg install -y tmux
     verify_installation
     ;;
-  *)
+  Linux)
     if [[ $uninstall == "1" ]]; then
         echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
     fi
-    execute sudo apt install -y tmux
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+    fi
+    if [ "$ID" = "arch" ]; then
+        execute sudo pacman -S tmux
+    else
+        execute sudo apt install -y tmux
+    fi
     verify_installation
     ;;
+  *)
+    echo "[ERROR] Unsupported OS: $(uname -s)" >&2
+    ;;
 esac
+
+# Configure
+
+copy_dotfile() {
+    local origin_path=$1
+    local dest_path="$HOME/$(basename "$origin_path")"
+
+    if [[ -f "$dest_path" && ! -f "$dest_path.bkp" ]]; then
+        execute cp "$dest_path" "$dest_path.bkp"
+    fi
+
+    execute cp "$origin_path" "$dest_path"
+}
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+repo_root="$( cd "$script_dir/../.." && pwd )"
+dotfiles_dir="$repo_root/dotfiles"
+bin_dir="$repo_root/scripts/bin"
+install_path="$HOME/.local/bin"
+
+execute cp "$bin_dir/tmux-start" "$install_path/tmux-start"
+execute chmod +x "$install_path/tmux-start"
+
+copy_dotfile "$dotfiles_dir/bash/.bash_profile"
+copy_dotfile "$dotfiles_dir/bash/.bashrc"
+copy_dotfile "$dotfiles_dir/tmux/.tmux.conf"
