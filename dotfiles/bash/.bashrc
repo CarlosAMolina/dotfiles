@@ -132,7 +132,8 @@ log () {
 #if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 #  exec tmux
 #fi
-
+# Tmux will be started automatically.
+# To exit tmux and return to terminal, detach tmux with `control+b d`
 log "1) Check tmux command availability: command -v tmux &> /dev/null"
 if command -v tmux &> /dev/null;
 then
@@ -153,7 +154,7 @@ then
             if [ -n "$PS1" ];
             then
                 log ok, this shell is interactive
-                exec tmux
+                tmux
             else
                 log ko, this shell is not interactive
             fi
