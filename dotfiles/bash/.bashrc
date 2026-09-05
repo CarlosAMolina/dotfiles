@@ -57,7 +57,13 @@ if command -v trash-put >/dev/null 2>&1; then  # Check availability.
 fi
 alias tp='trash-put'
 # Vi
-alias vi='nvim'
+if command -v nvim >/dev/null 2>&1; then
+    alias vi='nvim'
+else
+    if command -v vim >/dev/null 2>&1; then
+        alias vi='vim'
+    fi
+fi
 # Change current user session state
 case "$(uname -s)" in
     Darwin)
