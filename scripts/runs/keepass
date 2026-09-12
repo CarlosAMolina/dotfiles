@@ -12,32 +12,18 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
-if [ "$(uname -s)" = "Linux" ]; then
-    if [ -f /etc/os-release ]; then
-        source /etc/os-release
-    fi
-    if [ "$ID" = "arch" ]; then
-        execute sudo pacman -S keepassxc
-    else
-        execute sudo apt install -y keepassxc
-    fi
-else
-    echo "[ERROR] Unsupported OS: $(uname -s)" >&2
+case "$(get_os)" in
+  arch)
+    execute sudo pacman -S keepassxc
+    ;;
+  debian)
+    execute sudo apt install -y keepassxc
+    ;;
+  *)
+    echo "[ERROR] Unsupported OS: $(get_os)" >&2
     exit 1
-fi
+    ;;
+esac

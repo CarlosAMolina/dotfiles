@@ -12,39 +12,17 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
 ## https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-case $(uname) in
-  Linux)
-    . /etc/os-release
-    case "$ID" in
-      arch)
-        execute sudo pacman -S --needed curl unzip gnupg
-        execute bash -c 'curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash'
-        ;;
-      *)
-        echo "Unsupported Linux distribution: $ID" >&2
-        exit 1
-        ;;
-    esac
+case "$(get_os)" in
+  arch)
+    execute sudo pacman -S --needed curl unzip gnupg
+    execute bash -c 'curl -fsSL https://awscli.amazonaws.com/v2/install.sh | bash'
     ;;
   *)
-    echo "Unsupported OS: $(uname -s)" >&2
+    echo "Unsupported OS: $(get_os)" >&2
     exit 1
     ;;
 esac

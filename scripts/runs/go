@@ -2,14 +2,11 @@
 
 set -e # Exit if any command fails.
 
-execute() {
-    echo "[DEBUG][go] execute $@"
-    "$@"
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
 # arch linux: sudo pacman -S go
-case $(uname) in
-  Linux)
+case "$(get_os)" in
+  arch|debian)
     path=~/.local/bin
     file_name=go1.25.5.linux-amd64.tar.gz
     # https://go.dev/doc/install

@@ -23,21 +23,8 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
 uninstall_darwin() {
     execute uv tool uninstall trash-cli
@@ -105,8 +92,8 @@ verify_installation() {
     log "Installation verified (trash-cli): $installed_version"
 }
 
-case $(uname) in
-  Darwin)
+case "$(get_os)" in
+  darwin)
     if [[ $uninstall == "1" ]]; then
         uninstall_darwin
     else
@@ -114,7 +101,7 @@ case $(uname) in
         verify_installation
     fi
     ;;
-  *BSD*)
+  bsd)
     if [[ $uninstall == "1" ]]; then
         echo "[ERROR] --uninstall is not supported on this OS"
         exit 1

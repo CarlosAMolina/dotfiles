@@ -12,40 +12,30 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    eval "$@"
-}
-
-case $(uname) in
-  *BSD*)
+case "$(get_os)" in
+  bsd)
     execute sudo pkg install -y node
     execute sudo pkg install -y npm
     ;;
-  *)
-    case $(uname) in
-      Darwin)
-        execute brew install curl
-        ;;
-      *)
-        execute sudo apt install -y curl
-        ;;
-    esac
+  darwin)
+    execute brew install curl
     # https://github.com/nvm-sh/nvm
-    execute "wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"
+    execute bash -c 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
     execute source $HOME/.config/nvm/nvm.sh
     execute nvm install --lts --latest-npm
+    ;;
+  debian)
+    execute sudo apt install -y curl
+    # https://github.com/nvm-sh/nvm
+    execute bash -c 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
+    execute source $HOME/.config/nvm/nvm.sh
+    execute nvm install --lts --latest-npm
+    ;;
+  *)
+    echo "[ERROR] Unsupported OS: $(get_os)"
+    exit 1
     ;;
 esac
 execute node -v # Check command works

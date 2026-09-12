@@ -10,24 +10,11 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
-case $(uname) in
-  Darwin)
+case "$(get_os)" in
+  darwin)
     # https://www.macinstruct.com/tutorials/how-to-enable-git-tab-autocomplete-on-your-mac/
     execute curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
     ;;

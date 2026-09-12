@@ -24,30 +24,9 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
-create_dir() {
-    if [ -d "$@" ]; then
-        log The "$@" folder already exists
-    else
-        log The "$@" folder does not exists. Creating
-        execute mkdir -p "$@"
-    fi
-}
 
 uninstall_darwin() {
     if [ -f "$install_path/$bin_name" ]; then
@@ -165,8 +144,8 @@ verify_installation() {
 
 # Install
 
-case $(uname) in
-  Darwin)
+case "$(get_os)" in
+  darwin)
     if [[ $uninstall == "1" ]]; then
         uninstall_darwin
     else
@@ -174,7 +153,7 @@ case $(uname) in
         verify_installation "$install_path/$bin_name"
     fi
     ;;
-  *BSD*)
+  bsd)
     if [[ $uninstall == "1" ]]; then
         echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
@@ -182,23 +161,24 @@ case $(uname) in
     execute sudo pkg install -y tmux
     verify_installation
     ;;
-  Linux)
+  arch)
     if [[ $uninstall == "1" ]]; then
         echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
     fi
-    if [ -f /etc/os-release ]; then
-        source /etc/os-release
+    execute sudo pacman -S tmux
+    verify_installation
+    ;;
+  debian)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] --uninstall is not supported on this OS"
+        exit 1
     fi
-    if [ "$ID" = "arch" ]; then
-        execute sudo pacman -S tmux
-    else
-        execute sudo apt install -y tmux
-    fi
+    execute sudo apt install -y tmux
     verify_installation
     ;;
   *)
-    echo "[ERROR] Unsupported OS: $(uname -s)" >&2
+    echo "[ERROR] Unsupported OS: $(get_os)" >&2
     ;;
 esac
 

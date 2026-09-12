@@ -21,21 +21,7 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
-
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    eval "$@"
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
 uninstall_darwin() {
     execute uv tool uninstall poetry
@@ -71,8 +57,8 @@ verify_installation() {
     log "Installation verified: $(poetry --version)"
 }
 
-case $(uname) in
-  Darwin)
+case "$(get_os)" in
+  darwin)
     if [[ $uninstall == "1" ]]; then
         uninstall_darwin
     else
@@ -80,13 +66,13 @@ case $(uname) in
         verify_installation
     fi
     ;;
-  *BSD*)
+  bsd)
     if [[ $uninstall == "1" ]]; then
         echo "[ERROR] --uninstall is not supported on this OS"
         exit 1
     fi
     # https://python-poetry.org/docs/#installing-with-the-official-installer
-    execute "curl -sSL https://install.python-poetry.org | python3.11 -"
+    execute bash -c 'curl -sSL https://install.python-poetry.org | python3.11 -'
     ;;
   *)
     if [[ $uninstall == "1" ]]; then

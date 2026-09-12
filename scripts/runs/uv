@@ -24,30 +24,9 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
-create_dir() {
-    if [ -d "$@" ]; then
-        log The "$@" folder already exists
-    else
-        log The "$@" folder does not exists. Creating
-        execute mkdir -p "$@"
-    fi
-}
 
 uninstall_darwin() {
     for bin_name in "${bin_names[@]}"; do
@@ -154,8 +133,8 @@ verify_installation() {
     fi
 }
 
-case $(uname) in
-  Darwin)
+case "$(get_os)" in
+  darwin)
     if [[ $uninstall == "1" ]]; then
         uninstall_darwin
     else
@@ -164,7 +143,7 @@ case $(uname) in
     fi
     ;;
   *)
-    log "uv is not supported on $(uname), skipping"
+    log "uv is not supported on $(get_os), skipping"
     exit 0
     ;;
 esac

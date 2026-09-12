@@ -25,34 +25,13 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
-create_dir() {
-    if [ -d "$@" ]; then
-        log The "$@" folder already exists
-    else
-        log The "$@" folder does not exists. Creating
-        execute mkdir -p "$@"
-    fi
-}
 
 install_nerd_fonts() {
-    case $(uname) in
-      Darwin)
+    case "$(get_os)" in
+      darwin)
         FONTS_PATH=$HOME/Library/Fonts/
         ;;
       *)
@@ -71,8 +50,8 @@ install_nerd_fonts() {
     fi
     execute tar -xvf "$cached_fonts_path" --directory $FONTS_PATH
     log Showing that the new fonts are available:
-    case $(uname) in
-      Darwin)
+    case "$(get_os)" in
+      darwin)
         # fc-list (fontconfig) is not available on macOS by default.
         execute ls "$FONTS_PATH" | grep $FONT
         ;;

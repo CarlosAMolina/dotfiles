@@ -12,25 +12,12 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
 # https://pipx.pypa.io/latest/installation/
-case $(uname) in
-  *BSD*)
+case "$(get_os)" in
+  bsd)
     execute sudo pkg install -y py311-pipx
     ;;
   *)
