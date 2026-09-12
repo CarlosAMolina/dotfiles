@@ -9,6 +9,10 @@ set -e # Exit if any command fails.
 #
 # References:
 # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation
+#
+# Requirements
+# - ripgrep. Required by telescope.
+# - xclip. To use clipboard.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -17,14 +21,22 @@ uninstall="0"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
+
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
     fi
+
     if [[ "$1" == "--uninstall" ]]; then
         uninstall="1"
     fi
+
     shift
 done
+
+
+#
+# Helpers
+#
 
 log() {
     if [[ $dry_run == "1" ]]; then
@@ -36,14 +48,16 @@ log() {
 
 execute() {
     log "execute $@"
+
     if [[ $dry_run == "1" ]]; then
         return
     fi
+
     "$@"
 }
 
 create_dir() {
-    if [ -d "$@" ]; then
+    if [[ -d "$@" ]]; then
         log "The $@ folder already exists"
     else
         log "The $@ folder does not exist. Creating"
@@ -52,10 +66,6 @@ create_dir() {
 }
 
 get_linux_distribution() {
-    if [[ "$(uname)" != "Linux" ]]; then
-        return
-    fi
-
     if [[ ! -f /etc/os-release ]]; then
         echo "[ERROR] Unable to determine Linux distribution"
         exit 1
@@ -65,32 +75,46 @@ get_linux_distribution() {
     . /etc/os-release
 
     case "${ID:-}" in
-        arch|archarm)
+      arch|archarm)
+        echo "arch"
+        ;;
+
+      ubuntu|debian|linuxmint|pop)
+        echo "debian"
+        ;;
+
+      *)
+        # Some derivatives identify themselves through ID_LIKE.
+        case " ${ID_LIKE:-} " in
+          *" arch "*)
             echo "arch"
             ;;
-        ubuntu|debian|linuxmint|pop)
+
+          *" debian "*)
             echo "debian"
             ;;
-        *)
-            # Some Arch/Debian derivatives identify themselves through
-            # ID_LIKE instead of ID.
-            case " ${ID_LIKE:-} " in
-                *" arch "*)
-                    echo "arch"
-                    ;;
-                *" debian "*)
-                    echo "debian"
-                    ;;
-                *)
-                    echo "${ID:-unknown}"
-                    ;;
-            esac
+
+          *)
+            echo "${ID:-unknown}"
             ;;
+        esac
+        ;;
     esac
 }
 
+install_extras() {
+    execute "$script_dir/vim-plug"
+    execute "$script_dir/nerd-fonts"
+}
+
+
+#
+# Install from source
+#
+
 install_from_source() {
     # https://github.com/neovim/neovim/blob/master/BUILD.md#build-prerequisites
+
     execute pushd /tmp > /dev/null
     execute git clone --depth 1 --branch stable https://github.com/neovim/neovim
     execute cd neovim
@@ -100,6 +124,7 @@ install_from_source() {
       *BSD*)
         execute sudo gmake install
         ;;
+
       *)
         execute sudo make install
         ;;
@@ -107,6 +132,11 @@ install_from_source() {
 
     execute popd > /dev/null
 }
+
+
+#
+# Darwin
+#
 
 set_nvim_darwin_config() {
     opt_path="$HOME/.local/opt"
@@ -122,9 +152,11 @@ set_nvim_darwin_config() {
       arm64|aarch64)
         arch="arm64"
         ;;
+
       x86_64|amd64)
         arch="x86_64"
         ;;
+
       *)
         echo "[ERROR] Unsupported architecture: $(uname -m)"
         exit 1
@@ -139,32 +171,19 @@ set_nvim_darwin_config() {
     cached_asset_path="$downloads_path/${dir_name}-${nvim_tag}.tar.gz"
 }
 
-uninstall_nvim_darwin() {
-    set_nvim_darwin_config
-
-    if [ -d "$opt_path/$dir_name" ]; then
-        execute rm -rf "$opt_path/$dir_name"
-    else
-        log "$dir_name is not installed at $opt_path"
-    fi
-
-    if [ -e "$install_path/$bin_name" ] || [ -L "$install_path/$bin_name" ]; then
-        execute rm -f "$install_path/$bin_name"
-    else
-        log "$bin_name is not installed at $install_path"
-    fi
-}
-
 get_installed_nvim_version() {
-    "$opt_path/$dir_name/bin/$bin_name" --version 2>/dev/null | head -n 1 | awk '{print $2}'
+    "$opt_path/$dir_name/bin/$bin_name" \
+        --version 2>/dev/null |
+        head -n 1 |
+        awk '{print $2}'
 }
 
 is_nvim_darwin_installed() {
-    if [ ! -d "$opt_path/$dir_name" ]; then
+    if [[ ! -d "$opt_path/$dir_name" ]]; then
         return 1
     fi
 
-    if [ ! -x "$opt_path/$dir_name/bin/$bin_name" ]; then
+    if [[ ! -x "$opt_path/$dir_name/bin/$bin_name" ]]; then
         return 1
     fi
 
@@ -173,12 +192,13 @@ is_nvim_darwin_installed() {
 }
 
 download_nvim_darwin() {
-    if [ -s "$cached_asset_path" ]; then
+    if [[ -s "$cached_asset_path" ]]; then
         log "Found cached $cached_asset_path, skipping download"
         return
     fi
 
     log "No valid cached download found at $cached_asset_path, downloading"
+
     create_dir "$downloads_path"
 
     url="https://github.com/neovim/neovim/releases/download/${nvim_tag}/${asset}"
@@ -202,19 +222,24 @@ install_nvim_darwin() {
     # curl (unlike Safari/Finder) does not set com.apple.quarantine, so this
     # should normally be a no-op. If it IS present, ask the user to remove it
     # manually rather than running xattr from the script.
-    if [[ $dry_run != "1" ]] && xattr -p com.apple.quarantine "$opt_path/$dir_name" >/dev/null 2>&1; then
+    if [[ $dry_run != "1" ]] &&
+       xattr -p com.apple.quarantine "$opt_path/$dir_name" >/dev/null 2>&1; then
+
         log "The extracted files are quarantined. Please run manually:"
         log "    xattr -dr com.apple.quarantine \"$opt_path/$dir_name\""
         log "Press Enter to continue when done"
+
         execute read -p "" </dev/tty
     fi
 
     execute mkdir -p "$install_path"
-    execute ln -sf "$opt_path/$dir_name/bin/$bin_name" "$install_path/$bin_name"
+    execute ln -sf \
+        "$opt_path/$dir_name/bin/$bin_name" \
+        "$install_path/$bin_name"
 
     installed_version="$(get_installed_nvim_version)"
 
-    if [[ ! "$installed_version" == "$nvim_tag" ]]; then
+    if [[ "$installed_version" != "$nvim_tag" ]]; then
         echo "[ERROR] $nvim_tag --version failed after installation"
         return 1
     fi
@@ -222,26 +247,112 @@ install_nvim_darwin() {
     log "Installation verified (neovim): $installed_version"
 }
 
+uninstall_nvim_darwin() {
+    set_nvim_darwin_config
+
+    if [[ -d "$opt_path/$dir_name" ]]; then
+        execute rm -rf "$opt_path/$dir_name"
+    else
+        log "$dir_name is not installed at $opt_path"
+    fi
+
+    if [[ -e "$install_path/$bin_name" ]] ||
+       [[ -L "$install_path/$bin_name" ]]; then
+
+        execute rm -f "$install_path/$bin_name"
+    else
+        log "$bin_name is not installed at $install_path"
+    fi
+}
+
+install_darwin() {
+    execute "$script_dir/ripgrep"
+    install_nvim_darwin
+    install_extras
+}
+
+
+#
+# Arch Linux
+#
+
+install_arch() {
+    execute sudo pacman -S --needed \
+        neovim \
+        ripgrep \
+        xclip
+
+    install_extras
+}
+
+uninstall_arch() {
+    execute sudo pacman -Rs neovim
+}
+
+
+#
+# Debian / Ubuntu
+#
+
+install_debian() {
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
+
+    execute sudo apt install -y \
+        ninja-build \
+        gettext \
+        cmake \
+        build-essential \
+        curl \
+        ripgrep \
+        xclip
+
+    execute "$script_dir/git"
+
+    install_from_source
+    install_extras
+}
+
+
+#
+# FreeBSD
+#
+
+install_freebsd() {
+    # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
+
+    execute sudo pkg install -y \
+        cmake \
+        gmake \
+        gettext \
+        curl \
+        ripgrep \
+        xclip
+
+    execute "$script_dir/git"
+
+    install_from_source
+    install_extras
+}
+
 
 #
 # Uninstall
 #
 
-if [[ $uninstall == "1" ]]; then
+uninstall_neovim() {
     case $(uname) in
       Darwin)
         uninstall_nvim_darwin
         ;;
 
       Linux)
-        distro="$(get_linux_distribution)"
-
-        case "$distro" in
+        case "$(get_linux_distribution)" in
           arch)
-            execute sudo pacman -Rns --noconfirm neovim
+            uninstall_arch
             ;;
+
           *)
-            echo "[ERROR] --uninstall is not supported on Linux distribution: $distro"
+            echo "[ERROR] --uninstall is not supported on this Linux distribution"
             exit 1
             ;;
         esac
@@ -252,116 +363,56 @@ if [[ $uninstall == "1" ]]; then
         exit 1
         ;;
     esac
-
-    exit 0
-fi
+}
 
 
 #
 # Install
 #
 
-case $(uname) in
-  *BSD*)
-    # https://github.com/neovim/neovim/blob/master/BUILD.md#freebsd
-    execute sudo pkg install -y cmake gmake gettext
-    install_command=pkg
-    ;;
-
-  Darwin)
-    ;;
-
-  Linux)
-    distro="$(get_linux_distribution)"
-
-    case "$distro" in
-      arch)
-        execute sudo pacman -S --needed \
-            neovim \
-            curl \
-            git \
-            ripgrep \
-            xclip
+install_neovim() {
+    case $(uname) in
+      Darwin)
+        install_darwin
         ;;
 
-      debian)
-        # https://github.com/neovim/neovim/blob/master/BUILD.md#ubuntu--debian
-        execute sudo apt install -y \
-            ninja-build \
-            gettext \
-            cmake \
-            build-essential
+      *BSD*)
+        install_freebsd
+        ;;
 
-        install_command=apt
+      Linux)
+        distro="$(get_linux_distribution)"
+
+        case "$distro" in
+          arch)
+            install_arch
+            ;;
+
+          debian)
+            install_debian
+            ;;
+
+          *)
+            echo "[ERROR] Unsupported Linux distribution: $distro"
+            exit 1
+            ;;
+        esac
         ;;
 
       *)
-        echo "[ERROR] Unsupported Linux distribution: $distro"
+        echo "[ERROR] Unsupported OS: $(uname)"
         exit 1
         ;;
     esac
-    ;;
-
-  *)
-    echo "[ERROR] Unsupported OS: $(uname)"
-    exit 1
-    ;;
-esac
+}
 
 
 #
-# Platform-specific installation
+# Main
 #
 
-case $(uname) in
-  Darwin)
-    execute "$script_dir/ripgrep" # Required by telescope.
-    install_nvim_darwin
-    execute "$script_dir/vim-plug"
-    execute "$script_dir/nerd-fonts"
-    ;;
-
-  Linux)
-    distro="$(get_linux_distribution)"
-
-    case "$distro" in
-      arch)
-        # Intallation was done above via pacman.
-        execute "$script_dir/vim-plug"
-        execute "$script_dir/nerd-fonts"
-        ;;
-
-      debian)
-        execute sudo "$install_command" install -y curl
-        execute "$script_dir/git"
-
-        # Required by telescope.
-        execute sudo "$install_command" install -y ripgrep
-
-        # To use clipboard.
-        execute sudo "$install_command" install -y xclip
-
-        install_from_source
-
-        execute "$script_dir/vim-plug"
-        execute "$script_dir/nerd-fonts"
-        ;;
-    esac
-    ;;
-
-  *BSD*)
-    execute sudo "$install_command" install -y curl
-    execute "$script_dir/git"
-
-    # Required by telescope.
-    execute sudo "$install_command" install -y ripgrep
-
-    # To use clipboard.
-    execute sudo "$install_command" install -y xclip
-
-    install_from_source
-
-    execute "$script_dir/vim-plug"
-    execute "$script_dir/nerd-fonts"
-    ;;
-esac
+if [[ $uninstall == "1" ]]; then
+    uninstall_neovim
+else
+    install_neovim
+fi
