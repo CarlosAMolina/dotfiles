@@ -44,6 +44,76 @@ create_dir() {
     fi
 }
 
+get_linux_distribution() {
+    if [[ ! -f /etc/os-release ]]; then
+        echo "[ERROR] Unable to determine Linux distribution"
+        exit 1
+    fi
+
+    . /etc/os-release
+
+    case "${ID:-}" in
+      arch|archarm)
+        echo "arch"
+        ;;
+      ubuntu|debian|linuxmint|pop)
+        echo "debian"
+        ;;
+      *)
+        case " ${ID_LIKE:-} " in
+          *" arch "*)
+            echo "arch"
+            ;;
+          *" debian "*)
+            echo "debian"
+            ;;
+          *)
+            echo "${ID:-unknown}"
+            ;;
+        esac
+        ;;
+    esac
+}
+
+install_curl() {
+    case "$(uname)" in
+      Darwin)
+        if ! command -v curl >/dev/null 2>&1; then
+            echo "[ERROR] curl is expected to be available on macOS"
+            exit 1
+        fi
+        ;;
+
+      *BSD*)
+        execute sudo pkg install -y curl
+        ;;
+
+      Linux)
+        distro="$(get_linux_distribution)"
+
+        case "$distro" in
+          arch)
+            execute sudo pacman -S --needed curl
+            ;;
+
+          debian)
+            execute sudo apt install -y curl
+            ;;
+
+          *)
+            echo "[ERROR] Unsupported Linux distribution: $distro"
+            exit 1
+            ;;
+        esac
+        ;;
+
+      *)
+        echo "[ERROR] Unsupported OS: $(uname)"
+        exit 1
+        ;;
+    esac
+}
+
 install_vim_plug() {
     # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
     if [ -s "$cached_plug_path" ]; then
@@ -56,9 +126,11 @@ install_vim_plug() {
     create_dir "$(dirname "$plug_target")"
     execute cp "$cached_plug_path" "$plug_target"
     # To run the following command the vim_plug must be configured in the config file in ~/.config/nvim/
-    execute nvim -c 'PlugInstall'
-    log Some manual steps are required. Open neovim and execute \`:PlugInstall\`. Press Enter to continue when done
-    execute read -p "" </dev/tty
+    # --headless: run without opening the UI.
+    # +PlugInstall --sync: install plugins and wait for installation to finish.
+    # +qa: quit Neovim afterward.
+    execute nvim --headless '+PlugInstall --sync' +qa
 }
 
+install_curl
 install_vim_plug
