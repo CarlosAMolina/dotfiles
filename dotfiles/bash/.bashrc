@@ -133,7 +133,14 @@ if [[ $- == *i* ]] && [[ -x "$HOME/.local/bin/tmux-start" ]]; then
 fi
 
 # https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found#17707224
-[ -f ~/.config/nvm/nvm.sh ] && source ~/.config/nvm/nvm.sh
-[ -f ~/.nvm/nvm.sh ] && source ~/.nvm/nvm.sh
+if [[ -d "$HOME/.config/nvm" ]]; then
+    export NVM_DIR="$HOME/.config/nvm"
+elif [[ -d "$HOME/.nvm" ]]; then
+    export NVM_DIR="$HOME/.nvm"
+fi
+if [[ -v NVM_DIR ]]; then
+    [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+    [[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

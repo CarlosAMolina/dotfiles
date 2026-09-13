@@ -4,6 +4,9 @@ set -e # Exit if any command fails.
 
 dry_run="0"
 
+NVM_VERSION="v0.40.7"
+DOWNLOAD_URL="https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh"
+
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
@@ -14,29 +17,34 @@ done
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
+install_with_sh() {
+    # https://github.com/nvm-sh/nvm/releases/
+    execute bash -c "curl -fsSL ${DOWNLOAD_URL} | bash"
+    execute source $HOME/.config/nvm/nvm.sh
+    execute nvm install --lts --latest-npm
+}
+
 case "$(get_os)" in
-  bsd)
-    execute sudo pkg install -y node
-    execute sudo pkg install -y npm
-    ;;
-  darwin)
-    execute brew install curl
-    # https://github.com/nvm-sh/nvm
-    execute bash -c 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
-    execute source $HOME/.config/nvm/nvm.sh
-    execute nvm install --lts --latest-npm
-    ;;
-  debian)
-    execute sudo apt install -y curl
-    # https://github.com/nvm-sh/nvm
-    execute bash -c 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash'
-    execute source $HOME/.config/nvm/nvm.sh
-    execute nvm install --lts --latest-npm
-    ;;
-  *)
-    echo "[ERROR] Unsupported OS: $(get_os)"
-    exit 1
-    ;;
+    arch)
+        execute sudo pacman -S --needed curl
+        install_with_sh
+        ;;
+    bsd)
+        execute sudo pkg install -y node
+        execute sudo pkg install -y npm
+        ;;
+    darwin)
+        execute brew install curl
+        install_with_sh
+        ;;
+    debian)
+        execute sudo apt install -y curl
+        install_with_sh
+        ;;
+    *)
+        echo "[ERROR] Unsupported OS: $(get_os)"
+        exit 1
+        ;;
 esac
 execute node -v # Check command works
 execute npm -v # Check command works
