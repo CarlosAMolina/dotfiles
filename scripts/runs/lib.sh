@@ -15,13 +15,24 @@ execute() {
     "$@"
 }
 
-create_dir() {
-    if [[ -d "$@" ]]; then
-        log "The $@ folder already exists"
-    else
-        log "The $@ folder does not exist. Creating"
-        execute mkdir -p "$@"
+copy_dir_config() {
+    local folder=$1
+    if [[ -z "$folder" ]]; then
+        echo "Error: folder must not be empty" >&2
+        return 1
     fi
+    local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    local repo_root="$( cd "$script_path/../.." && pwd )"
+    local dotfiles_path="$repo_root/dotfiles"
+    local from_path="$dotfiles_path/$folder"
+    local config_path_dest="$HOME/.config"
+    if [[ ! -d "$from_path" ]]; then
+        echo "Error: source folder does not exist: $from_path" >&2
+        return 1
+    fi
+    execute mkdir -p "$config_path_dest"
+    execute rm -rf "$config_path_dest/$folder"
+    execute cp -r "$from_path" "$config_path_dest/$folder"
 }
 
 get_linux_distribution() {
@@ -81,4 +92,3 @@ get_os() {
         ;;
     esac
 }
-

@@ -71,7 +71,7 @@ download_uv_darwin() {
         return
     fi
     log "No valid cached download found at $cached_asset_path, downloading"
-    create_dir "$downloads_path"
+    mkdir -p "$downloads_path"
     execute curl -LsSf "$url" -o "$cached_asset_path"
 }
 

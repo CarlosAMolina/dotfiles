@@ -7,9 +7,6 @@ set -e # Exit if any command fails.
 #   ./runs/vim-plug --dry       Show what would be executed, without doing it.
 
 dry_run="0"
-downloads_path="$HOME/.cache/dotfiles/downloads"
-plug_target="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
-cached_plug_path="$downloads_path/plug.vim"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
@@ -21,8 +18,6 @@ done
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
-
-
 install_curl() {
     case "$(get_os)" in
       darwin)
@@ -31,19 +26,15 @@ install_curl() {
             exit 1
         fi
         ;;
-
       bsd)
         execute sudo pkg install -y curl
         ;;
-
       arch)
         execute sudo pacman -S --needed curl
         ;;
-
       debian)
         execute sudo apt install -y curl
         ;;
-
       *)
         echo "[ERROR] Unsupported OS: $(get_os)"
         exit 1
@@ -52,22 +43,26 @@ install_curl() {
 }
 
 install_vim_plug() {
+    local downloads_path="$HOME/.cache/dotfiles/downloads"
+    local plug_target="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+    local cached_plug_path="$downloads_path/plug.vim"
     # https://github.com/junegunn/vim-plug?tab=readme-ov-file#neovim
     if [ -s "$cached_plug_path" ]; then
         log "Found cached $cached_plug_path, skipping download"
     else
         log "No valid cached download found at $cached_plug_path, downloading"
-        create_dir "$downloads_path"
+        mkdir -p "$downloads_path"
         execute curl -fL "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" -o "$cached_plug_path"
     fi
-    create_dir "$(dirname "$plug_target")"
+    mkdir -p "$(dirname "$plug_target")"
     execute cp "$cached_plug_path" "$plug_target"
-    # To run the following command the vim_plug must be configured in the config file in ~/.config/nvim/
+    # The following needs vim_plug to be configured in the config file in ~/.config/nvim/ (done when copying the config)
     # --headless: run without opening the UI.
     # +PlugInstall --sync: install plugins and wait for installation to finish.
     # +qa: quit Neovim afterward.
     execute nvim --headless '+PlugInstall --sync' +qa
 }
 
+copy_dir_config "nvim"
 install_curl
 install_vim_plug

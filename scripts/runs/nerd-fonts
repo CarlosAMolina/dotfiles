@@ -42,7 +42,7 @@ install_nerd_fonts() {
         log "Found cached $cached_fonts_path, skipping download"
     else
         log "No valid cached download found at $cached_fonts_path, downloading"
-        create_dir "$downloads_path"
+        mkdir -p "$downloads_path"
         execute curl -fL "https://github.com/ryanoasis/nerd-fonts/releases/download/$FONT_TAG/$FONTS_FILE" -o "$cached_fonts_path"
     fi
     if [ ! -d $FONTS_PATH ]; then

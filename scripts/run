@@ -37,15 +37,6 @@ execute() {
     "$@"
 }
 
-create_dir() {
-    if [ -d "$@" ]; then
-        log The "$@" folder already exists
-    else
-        log The "$@" folder does not exists. Creating
-        execute mkdir -p "$@"
-    fi
-}
-
 execute_script() {
     script=$1
     if echo "$script" | grep -qv "$filter"; then
@@ -68,7 +59,7 @@ else
         ~/.config
     )
     for dir in "${dirs[@]}"; do
-        create_dir $dir
+        mkdir -p $dir
     done
 fi
 

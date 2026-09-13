@@ -80,7 +80,7 @@ download_ripgrep_darwin() {
         return
     fi
     log "No valid cached download found at $cached_asset_path, downloading"
-    create_dir "$downloads_path"
+    mkdir -p "$downloads_path"
     url="https://github.com/BurntSushi/ripgrep/releases/download/${rg_tag}/${asset}"
     execute curl -fL "$url" -o "$cached_asset_path"
 }
