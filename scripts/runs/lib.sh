@@ -15,12 +15,17 @@ execute() {
     "$@"
 }
 
+get_repo_path() {
+    local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    local repo_root="$( cd "$script_path/../.." && pwd )"
+    echo "$repo_root"
+}
+
 copy_dotfile() {
     local dotfile_path_suffix=$1
     local file=$(basename "$path")
     local dest_path="$2/$file"
-    local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    local repo_root="$( cd "$script_path/../.." && pwd )"
+    local repo_root="$(get_repo_path)"
     local dotfiles_path="$repo_root/dotfiles"
     local from_path="$dotfiles_path/$dotfile_path_suffix"
     execute cp "$from_path" "$dest_path"
@@ -32,8 +37,7 @@ copy_dotfile_dir() {
         echo "Error: folder must not be empty" >&2
         return 1
     fi
-    local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    local repo_root="$( cd "$script_path/../.." && pwd )"
+    local repo_root="$(get_repo_path)"
     local dotfiles_path="$repo_root/dotfiles"
     local from_path="$dotfiles_path/$folder"
     local config_path_dest="$HOME/.config"
