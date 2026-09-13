@@ -15,7 +15,18 @@ execute() {
     "$@"
 }
 
-copy_dir_config() {
+copy_dotfile() {
+    local dotfile_path_suffix=$1
+    local file=$(basename "$path")
+    local dest_path="$2/$file"
+    local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    local repo_root="$( cd "$script_path/../.." && pwd )"
+    local dotfiles_path="$repo_root/dotfiles"
+    local from_path="$dotfiles_path/$dotfile_path_suffix"
+    execute cp "$from_path" "$dest_path"
+}
+
+copy_dotfile_dir() {
     local folder=$1
     if [[ -z "$folder" ]]; then
         echo "Error: folder must not be empty" >&2
