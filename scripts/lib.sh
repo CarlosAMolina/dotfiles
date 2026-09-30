@@ -17,13 +17,13 @@ execute() {
 
 get_repo_path() {
     local script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    local repo_root="$( cd "$script_path/../.." && pwd )"
+    local repo_root="$( cd "$script_path/.." && pwd )"
     echo "$repo_root"
 }
 
 copy_dotfile() {
     local dotfile_path_suffix=$1
-    local file=$(basename "$path")
+    local file=$(basename "$dotfile_path_suffix")
     local dest_path="$2/$file"
     local repo_root="$(get_repo_path)"
     local dotfiles_path="$repo_root/dotfiles"

@@ -3,7 +3,9 @@
 set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-repo_root="$( cd "$script_dir/.." && pwd )"
+source "$script_dir/lib.sh"
+
+repo_root="$(get_repo_path)"
 dotfiles_dir="$repo_root/dotfiles"
 
 copy_file() {
@@ -42,13 +44,13 @@ copy_dir_to_config() {
     cp -r $from_dir $HOME/.config/$name
 }
 
-echo "[DEBUG] Copying bash files"
+log "Copying bash files"
 copy_files_to_home "$dotfiles_dir/bash"
-echo "[DEBUG] Copying git files"
+log "Copying git files"
 copy_files_to_home "$dotfiles_dir/git"
-echo "[DEBUG] Copying tmux files"
+log "Copying tmux files"
 copy_files_to_home "$dotfiles_dir/tmux"
-echo "[DEBUG] Copying nvim config"
+log "Copying nvim config"
 copy_dir_to_config "$dotfiles_dir/nvim"
-echo "[DEBUG] Copying exclude_dirs config"
+log "Copying exclude_dirs config"
 copy_dir_to_config "$dotfiles_dir/exclude_dirs"

@@ -10,6 +10,7 @@ set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 dry_run="0"
+source "$script_dir/lib.sh"
 
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
@@ -20,22 +21,6 @@ while [[ $# -gt 0 ]]; do
     fi
     shift
 done
-
-log() {
-    if [[ $dry_run == "1" ]]; then
-        echo "[DRY_RUN] $@"
-    else
-        echo "[DEBUG] $@"
-    fi
-}
-
-execute() {
-    log "execute $@"
-    if [[ $dry_run == "1" ]]; then
-        return
-    fi
-    "$@"
-}
 
 execute_script() {
     script=$1

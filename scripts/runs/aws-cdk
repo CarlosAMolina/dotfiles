@@ -21,7 +21,7 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib.sh"
 
 
 # https://docs.aws.amazon.com/cdk/v2/guide/getting-started.html

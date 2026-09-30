@@ -12,7 +12,7 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib.sh"
 
 
 echo [DEBUG] Installing github cli

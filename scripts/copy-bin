@@ -3,10 +3,12 @@
 set -e # Exit if any command fails.
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$script_dir/lib.sh"
+
 bin_dir="$script_dir/bin"
 install_path="$HOME/.local/bin"
 
-echo "[DEBUG] Copying custom scripts from $bin_dir"
+log "Copying custom scripts from $bin_dir"
 for file_ in "$bin_dir"/*; do
     name=$(basename "$file_")
     cp "$file_" "$install_path/$name"
