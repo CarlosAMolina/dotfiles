@@ -1,0 +1,38 @@
+FROM debian:bookworm-slim
+
+# Enable debian backports for Emacs 29 (to install most recent software)
+RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list
+
+# -t bookworm-backports. To use backports for the specified packages.
+# - emcas-nox. No GUI is required in Docker.
+# - hunspell. Spell check.
+# - ncurses-term. Provides full 256-color and truecolor terminal definitions.
+# Install Emacs 29, Tree-Sitter libraries, and ncurses for 24-bit color
+RUN apt-get update && \
+    apt-get install -y -t bookworm-backports \
+        emacs-nox && \
+    apt-get install -y \
+        hunspell hunspell-en-us hunspell-es \
+        ncurses-term \
+        sudo && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create user 'x', give sudo privileges, and set up home directory
+RUN useradd -m -s /bin/bash x && \
+    echo "x ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/x && \
+    chmod 0440 /etc/sudoers.d/x
+
+# Write multibyte UTF-8 sequence in emacs (¿, ´, etc).
+ENV LC_ALL=C.UTF-8
+
+# Switch user and working directory
+USER x
+WORKDIR /home/x
+
+# Create .emacs.d and copy init.el into the image
+RUN mkdir -p /home/x/.emacs.d
+COPY --chown=x:x init.el /home/x/.emacs.d/init.el
+# Pre-install all packages and trigger ahead-of-time native compilation
+RUN emacs --batch --eval "(setq native-comp-jit-compilation t)" --load /home/x/.emacs.d/init.el
+
+CMD ["/bin/bash"]
