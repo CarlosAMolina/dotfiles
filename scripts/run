@@ -59,7 +59,7 @@ execute_script "$script_dir/copy-bin"
 execute_script "$script_dir/clone-dotfiles"
 
 # Install software whose installation order is not important.
-scripts=`find $script_dir/runs -mindepth 1 -maxdepth 1 -executable`
+scripts=`find $script_dir/install -mindepth 1 -maxdepth 1 -executable`
 for script in $scripts; do
     execute_script $script
 done

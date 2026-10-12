@@ -3,9 +3,9 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/uv             Install.
-#   ./runs/uv --dry       Show what would be executed, without doing it.
-#   ./runs/uv --uninstall Remove.
+#   ./install/uv             Install.
+#   ./install/uv --dry       Show what would be executed, without doing it.
+#   ./install/uv --uninstall Remove.
 
 dry_run="0"
 uninstall="0"

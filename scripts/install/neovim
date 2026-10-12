@@ -3,9 +3,9 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/neovim             Install.
-#   ./runs/neovim --dry       Show what would be executed, without doing it.
-#   ./runs/neovim --uninstall Remove.
+#   ./install/neovim             Install.
+#   ./install/neovim --dry       Show what would be executed, without doing it.
+#   ./install/neovim --uninstall Remove.
 #
 # References:
 # https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation

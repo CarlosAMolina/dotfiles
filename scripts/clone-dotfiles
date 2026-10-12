@@ -7,7 +7,7 @@ set -e # Exit if any command fails.
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$script_dir/lib.sh"
 
-"$script_dir/runs/git"
+"$script_dir/install/git"
 
 if [ -d ~/Software/dotfiles ]; then
     log "The ~/Software/dotfiles folder already exists. Updating"

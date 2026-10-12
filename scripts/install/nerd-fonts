@@ -3,8 +3,8 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/nerd-fonts             Install.
-#   ./runs/nerd-fonts --dry       Show what would be executed, without doing it.
+#   ./install/nerd-fonts             Install.
+#   ./install/nerd-fonts --dry       Show what would be executed, without doing it.
 
 # https://www.youtube.com/watch?v=mQdB_kHyZn8
 FONT=JetBrainsMono

@@ -3,8 +3,8 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/vim             Configure vim.
-#   ./runs/vim --dry       Show what would be executed, without doing it.
+#   ./install/vim             Configure vim.
+#   ./install/vim --dry       Show what would be executed, without doing it.
 
 dry_run="0"
 

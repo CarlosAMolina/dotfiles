@@ -3,9 +3,9 @@
 set -e # Exit if any command fails.
 
 # Usage:
-#   ./runs/trash-cli             Instal.
-#   ./runs/trash-cli --dry       Show what would be executed, without doing it.
-#   ./runs/trash-cli --uninstall Remove.
+#   ./install/trash-cli             Instal.
+#   ./install/trash-cli --dry       Show what would be executed, without doing it.
+#   ./install/trash-cli --uninstall Remove.
 
 dry_run="0"
 uninstall="0"
