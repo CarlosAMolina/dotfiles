@@ -133,6 +133,38 @@ verify_installation() {
     fi
 }
 
+# https://docs.astral.sh/uv/getting-started/installation/
+install_uv_debian() {
+    execute bash -c 'curl -LsSf https://astral.sh/uv/install.sh | sh'
+}
+
+check_cmd() {
+    command -v "$1" > /dev/null 2>&1
+}
+
+# https://docs.astral.sh/uv/getting-started/installation/#uninstallation
+uninstall_uv_debian() {
+    local is_uv_installed=false
+    if check_cmd uv; then
+        is_uv_installed=true
+    fi
+    if "$is_uv_installed"; then
+        execute uv cache clean
+        if [[ -d $(uv python dir) ]]; then
+            execute bash 'rm -r "$(uv python dir)"'
+        fi
+        if [[ -d $(uv tool dir) ]]; then
+            execute bash 'rm -r "$(uv tool dir)"'
+        fi
+    fi
+    if [[ -f ~/.local/bin/uv ]]; then
+        execute rm ~/.local/bin/uv
+    fi
+    if [[ -f ~/.local/bin/uvx ]]; then
+        execute rm ~/.local/bin/uvx
+    fi
+}
+
 case "$(get_os)" in
   darwin)
     if [[ $uninstall == "1" ]]; then
@@ -140,6 +172,13 @@ case "$(get_os)" in
     else
         install_darwin
         verify_installation
+    fi
+    ;;
+  debian)
+    if [[ $uninstall == "1" ]]; then
+        uninstall_uv_debian
+    else
+        install_uv_debian
     fi
     ;;
   *)
