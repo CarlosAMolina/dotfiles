@@ -26,7 +26,9 @@ done
 
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib.sh"
 
-
+install_uv_arch() {
+    execute sudo pacman -Syu uv
+}
 
 uninstall_darwin() {
     for bin_name in "${bin_names[@]}"; do
@@ -166,6 +168,14 @@ uninstall_uv_debian() {
 }
 
 case "$(get_os)" in
+  arch)
+    if [[ $uninstall == "1" ]]; then
+        echo "[ERROR] Not supported: uninstall uv in Arch Linux"
+        execute exit 1
+    else
+        install_uv_arch
+    fi
+    ;;
   darwin)
     if [[ $uninstall == "1" ]]; then
         uninstall_darwin
